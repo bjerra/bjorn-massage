@@ -21,7 +21,7 @@ function durationText(service: (typeof services)[number]) {
 ---
 
 <div class="space-y-6">
-    <ul class="grid md:grid-cols-2 gap-5 md:gap-6">
+    <ul class="grid md:grid-cols-2 gap-5 md:gap-6 items-start">
         {
             services.map((service) => {
                 const price = priceText(service);
@@ -32,7 +32,7 @@ function durationText(service: (typeof services)[number]) {
                     <li class="list-none">
                         <a
                             href={service.bookingUrl}
-                            class="relative group bg-white/20 backdrop-blur-sm rounded-xl overflow-hidden border border-white/10 flex flex-col items-stretch h-full min-h-64 no-underline"
+                            class="relative group bg-white/20 backdrop-blur-sm rounded-xl overflow-hidden border border-white/10 flex flex-col items-stretch no-underline"
                         >
                             <div>
                                 <Image
@@ -101,7 +101,7 @@ function durationText(service: (typeof services)[number]) {
                                 {service.summary && (
                                     <p class="text-base md:text-xl leading-relaxed opacity-90">{service.summary}</p>
                                 )}
-                                <div class="mt-auto flex justify-end pt-1">
+                                <div class="flex justify-end pt-1 shrink-0">
                                     <div class="inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-primary text-primary-content font-semibold no-underline transition-colors group-hover:bg-primary/85">
                                         <span class="text-base md:text-lg">Boka</span>
                                         <Image
