@@ -1,0 +1,196 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const description =
+    'Interaktiv karta över triggerpunkter hos BjörnMassage i Jönköping. Typiska utstrålningsmönster från litteraturen. Smärta kan ha andra orsaker.';
+---
+
+<Layout title="Triggerpunkter – BjörnMassage" description={description}>
+    <link slot="head" rel="stylesheet" href="/bodymap/bodymap.css" />
+    <link slot="head" rel="stylesheet" href="/bodymap/site-theme.css" />
+
+    <section class="py-2 md:py-6" lang="sv">
+        <div
+            class="mx-auto mb-8 max-w-3xl rounded-xl border border-white/25 bg-surface px-5 py-6 text-espresso shadow-sm sm:px-8 sm:py-8"
+        >
+            <h1 class="mb-4 text-center text-3xl sm:text-5xl">Triggerpunkter</h1>
+            <div class="space-y-4 text-base leading-relaxed sm:text-lg">
+                <p>
+                    En triggerpunkt är ett ömt ställe i en muskel. Det kan göra ont just där, och ibland känns smärtan också
+                    någon annanstans. Kartan visar typiska utstrålningsmönster från triggerpunktslitteraturen (Travell &amp;
+                    Simons).
+                </p>
+                <p>
+                    Smärta kan ha många andra orsaker. Kartan är ingen undersökning och säger inte vad just din smärta beror
+                    på. Vid svår, ihållande eller oförklarad smärta, kontakta vården.
+                </p>
+                <p class="text-sm opacity-80 sm:text-base">
+                    Tryck på området där det gör ont, eller välj en muskel. Namn på områden och muskler är på svenska. Den
+                    korta texten om var på muskeln punkten sitter är på engelska.
+                </p>
+            </div>
+            <p class="mt-6 text-center">
+                <a class="btn" href="/#tjanster">Boka tid</a>
+            </p>
+        </div>
+
+        <div data-bodymap></div>
+        <script is:inline>
+            window.BODYMAP_STRINGS = {
+                title: 'Karta över triggerpunkter',
+                modeLabel: 'Välj hur du vill använda kartan',
+                modeZones: 'Var gör det ont?',
+                modeMuscles: 'Utforska muskler',
+                hintZones:
+                    'Tryck på området där du känner smärta. Kartan visar vilka muskler som ofta strålar dit.',
+                hintMuscles:
+                    'Tryck på en muskel för att se dess triggerpunkter och var de vanligtvis strålar.',
+                front: 'Framsida',
+                back: 'Baksida',
+                frontAria: 'Kroppen sedd framifrån',
+                backAria: 'Kroppen sedd bakifrån',
+                pickZone: 'Eller välj ett område i listan…',
+                pickMuscle: 'Eller välj en muskel i listan…',
+                emptyZonesTitle: 'Var gör det ont?',
+                emptyZonesText:
+                    'Välj ett markerat område på kroppen (fram- eller baksida) för att se vilka muskler som kan stråla dit.',
+                emptyMusclesTitle: 'Utforska muskler',
+                emptyMusclesText:
+                    'Välj en muskel på kroppen för att se dess triggerpunkter och typiska utstrålningsmönster.',
+                zoneKicker: 'Smärtområde',
+                muscleKicker: 'Muskel',
+                zoneMusclesHeading: 'Muskler vars triggerpunkter ofta strålar hit',
+                zoneMusclesNone: 'Inga muskler är registrerade för det här området ännu.',
+                muscleTpsHeading: 'Triggerpunkter',
+                muscleZonesHeading: 'Typiska utstrålningsområden',
+                muscleZonesNone: 'Inga utstrålningsområden är registrerade för den här muskeln ännu.',
+                tpShort: 'TP',
+                tpUnnamed: 'Ytterligare triggerpunkt',
+                refersTo: 'Strålar till',
+                sharedHeading: 'Delar den här platsen på kartan med',
+                seeMuscle: 'Utforska den här muskeln',
+                seeZone: 'Visa det här smärtområdet',
+                clear: 'Rensa',
+                showDetails: 'Detaljer',
+                clearAria: 'Rensa val',
+                legendZone: 'Utstrålningsområde',
+                legendMuscle: 'Muskel med triggerpunkter',
+                legendTp: 'Triggerpunkt',
+                countMuscles: function (n) {
+                    return n === 1 ? '1 muskel' : n + ' muskler';
+                },
+                sideAndView: function (v) {
+                    return v === 'front' ? 'framifrån' : 'bakifrån';
+                },
+                disclaimer:
+                    'Utstrålningsmönstren är typiska kartor från triggerpunktslitteraturen (Travell & Simons). Smärta kan ha många andra orsaker. Vid svår, ihållande eller oförklarad smärta, kontakta vården.',
+                muscles: {
+                    masseter: 'Tuggmuskeln (masseter)',
+                    lateral_pterygoid: 'Yttre vingmuskeln',
+                    medial_pterygoid: 'Inre vingmuskeln',
+                    temporalis: 'Tinningmuskeln (temporalis)',
+                    sternocleidomastoideus: 'Nickmuskeln (SCM)',
+                    scaleni: 'Scalenusmusklerna',
+                    suboccipitals: 'Djupa nackmuskler',
+                    trapezius_desc: 'Övre kappmuskeln',
+                    trapezius_trans: 'Mellersta kappmuskeln',
+                    trapezius_asc: 'Nedre kappmuskeln',
+                    levator_scapulae: 'Skulderbladshöjaren',
+                    rhomboids: 'Rutmusklerna',
+                    supraspinatus: 'Supraspinatus',
+                    infraspinatus: 'Infraspinatus',
+                    subscapularis: 'Subscapularis',
+                    teres_major: 'Teres major',
+                    teres_minor: 'Teres minor',
+                    latissimus_dorsi: 'Breda ryggmuskeln',
+                    deltoideus: 'Deltamuskeln',
+                    pectoralis_major: 'Stora bröstmuskeln',
+                    pectoralis_minor: 'Lilla bröstmuskeln',
+                    serratus_anterior: 'Främre sågmuskeln',
+                    biceps_brachii: 'Biceps',
+                    triceps_brachii: 'Triceps',
+                    forearm_flexors: 'Underarmens böjmuskler',
+                    forearm_extensors: 'Underarmens sträckmuskler',
+                    rectus_abdominis: 'Raka bukmuskeln',
+                    external_oblique: 'Yttre sneda bukmuskeln',
+                    erector_spinae: 'Raka ryggmuskeln',
+                    multifidus: 'Multifidus',
+                    quadratus_lumborum: 'Quadratus lumborum',
+                    iliopsoas: 'Höftböjaren (iliopsoas)',
+                    gluteus_maximus: 'Stora sätesmuskeln',
+                    gluteus_medius: 'Mellersta sätesmuskeln',
+                    gluteus_minimus: 'Lilla sätesmuskeln',
+                    piriformis: 'Piriformis',
+                    tensor_fasciae_latae: 'Lårfasciaspännaren (TFL)',
+                    sartorius: 'Skräddarmuskeln',
+                    rectus_femoris: 'Raka lårmuskeln',
+                    vastus_lateralis: 'Yttre vida lårmuskeln',
+                    vastus_medialis: 'Inre vida lårmuskeln',
+                    adductor_longus: 'Långa inåtföraren',
+                    adductor_magnus: 'Stora inåtföraren',
+                    gracilis: 'Gracilis',
+                    hamstrings: 'Bakre lårmusklerna',
+                    gastrocnemius: 'Tvillingvadmuskeln',
+                    soleus: 'Flundramuskeln (soleus)',
+                    tibialis_anterior: 'Främre skenbensmuskeln',
+                    peroneus_longus: 'Långa vadbensmuskeln',
+                    peroneus_brevis: 'Korta vadbensmuskeln'
+                },
+                zones: {
+                    head_temporal: 'Huvud — tinning',
+                    head_occipital: 'Huvud — bakhuvud / skallbas',
+                    head_eye: 'Huvud — runt ögat',
+                    neck_posterior: 'Nacke — baksida',
+                    neck_lateral: 'Nacke — sida',
+                    shoulder_anterior: 'Axel — framsida',
+                    shoulder_posterior: 'Axel — baksida',
+                    scapula_medial: 'Skulderblad — inre kant',
+                    arm_anterior: 'Arm — framsida',
+                    arm_posterior: 'Arm — baksida',
+                    chest: 'Bröst',
+                    thoracic_spine: 'Bröstrygg',
+                    lumbar: 'Ländrygg',
+                    sacral_gluteal: 'Korsben / säte',
+                    hip_lateral: 'Höft — utsida',
+                    thigh_anterior: 'Lår — framsida',
+                    thigh_posterior: 'Lår — baksida',
+                    knee_anterior: 'Knä — framsida',
+                    knee_posterior: 'Knä — baksida',
+                    lower_leg_anterior: 'Underben — framsida',
+                    lower_leg_posterior: 'Underben — baksida / vad',
+                    foot_ankle_anterior: 'Fot och fotled — framsida',
+                    foot_ankle_posterior: 'Fot och fotled — häl',
+                    face_jaw: 'Ansikte / käke',
+                    elbow_anterior: 'Armbåge — insida',
+                    elbow_posterior: 'Armbåge — utsida',
+                    wrist_hand_anterior: 'Handled och handflata',
+                    wrist_hand_posterior: 'Handled och handrygg',
+                    abdomen_region: 'Mage',
+                    groin_inner_thigh: 'Ljumske / insida lår'
+                },
+                regions: {
+                    head: 'Huvud',
+                    neck: 'Nacke',
+                    shoulder: 'Axel',
+                    arm: 'Arm',
+                    chest: 'Bröst',
+                    thoracic: 'Bröstrygg',
+                    lumbar: 'Ländrygg',
+                    hip: 'Höft / säte',
+                    thigh: 'Lår',
+                    knee: 'Knä',
+                    lower_leg: 'Underben',
+                    foot: 'Fot / fotled',
+                    face: 'Ansikte / käke',
+                    elbow: 'Armbåge',
+                    wrist_hand: 'Handled / hand',
+                    abdomen: 'Mage',
+                    hip_groin: 'Ljumske / insida lår'
+                }
+            };
+        </script>
+        <script src="/bodymap/bodymap-data.js" defer></script>
+        <script src="/bodymap/bodymap-zones.js" defer></script>
+        <script src="/bodymap/bodymap.js" defer></script>
+    </section>
+</Layout>

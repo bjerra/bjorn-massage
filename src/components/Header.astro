@@ -1,13 +1,16 @@
 ---
+const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
+
 const navItems = [
     { linkText: 'Hem', href: '/' },
-    { linkText: 'Tjänster', href: '#tjanster' },
-    { linkText: 'Om mig', href: '#om-mig' },
-    { linkText: 'Kontakt', href: '#kontakt' }
+    { linkText: 'Tjänster', href: '/#tjanster' },
+    { linkText: 'Triggerpunkter', href: '/triggerpunkter' },
+    { linkText: 'Om mig', href: '/#om-mig' },
+    { linkText: 'Kontakt', href: '/#kontakt' }
 ];
 ---
 
-<nav class="flex flex-wrap items-center justify-center pt-6 pb-6 sm:pt-10">
+<nav class="flex flex-wrap items-center justify-center pt-6 pb-6 sm:pt-10" aria-label="Huvudmeny">
     {
         !!navItems?.length && (
             <ul class="flex flex-wrap justify-center gap-x-4 gap-y-1">
@@ -15,7 +18,11 @@ const navItems = [
                     <li>
                         <a
                             href={item.href}
-                            class="inline-block px-1.5 py-1 font-medium no-underline hover:text-primary sm:px-3 sm:py-2"
+                            aria-current={item.href === pathname ? 'page' : undefined}
+                            class:list={[
+                                'inline-block px-1.5 py-1 font-medium no-underline hover:text-primary sm:px-3 sm:py-2',
+                                item.href === pathname && 'text-primary'
+                            ]}
                         >
                             {item.linkText}
                         </a>
