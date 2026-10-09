@@ -1,5 +1,5 @@
 ---
-import '../../src/styles/globals.css';
+import '../styles/globals.css';
 import '@fontsource-variable/inter/wght.css';
 import interWoff2 from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
 import Header from '../components/Header.astro';
@@ -7,32 +7,52 @@ import Footer from '../components/Footer.astro';
 
 interface Props {
     title: string;
-    description?: string;
+    description: string;
+    path?: string;
 }
 
-const { title, description } = Astro.props;
+const { title, description, path = Astro.url.pathname } = Astro.props;
+const site = 'https://bjornmassage.se';
+const canonical = new URL(path, site).href;
+const ogImage = `${site}/og.jpg`;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="sv">
     <head>
         <meta charset="UTF-8" />
         <title>{title}</title>
-        {description && <meta name="description" content={description} />}
+        <meta name="description" content={description} />
         <meta name="viewport" content="width=device-width" />
+        <link rel="canonical" href={canonical} />
+        <meta property="og:type" content="website" />
+        <meta property="og:locale" content="sv_SE" />
+        <meta property="og:site_name" content="BjörnMassage" />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:url" content={canonical} />
+        <meta property="og:image" content={ogImage} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="BjörnMassage" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={ogImage} />
         <meta name="generator" content={Astro.generator} />
-        <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
         <link rel="shortcut icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         <link rel="preload" as="font" type="font/woff2" href={interWoff2} crossorigin />
         <slot name="head" />
     </head>
-    <body class="antialiased text-white bg-complementary">
+    <body class="antialiased text-espresso bg-complementary">
+        <a class="skip-link" href="#innehall">Hoppa till innehållet</a>
         <div class="flex flex-col min-h-screen px-6 bg-noise sm:px-12">
             <div class="flex flex-col w-full max-w-5xl mx-auto grow">
                 <Header />
-                <main class="grow"><slot /></main>
+                <main id="innehall" class="grow"><slot /></main>
                 <Footer />
             </div>
         </div>

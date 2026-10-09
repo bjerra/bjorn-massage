@@ -1,8 +1,18 @@
-# Astro on Netlify Platform Starter
+# BjörnMassage
 
-[Live Demo](https://astro-platform-starter.netlify.app/)
+Webbplats för Björn Eriksson, massageterapeut på Neoskin i Jönköping. Sajten är statisk och byggs med Astro. Den publiceras på Netlify till [bjornmassage.se](https://bjornmassage.se/).
 
-A modern starter based on Astro.js, Tailwind, and [Netlify Core Primitives](https://docs.netlify.com/core/overview/#develop) (Edge Functions, Image CDN, Blobs).
+## Kommandon
+
+| Kommando | Gör |
+| --- | --- |
+| `npm install` | Installerar beroenden |
+| `npm run dev` | Startar lokal utveckling |
+| `npm run build` | Bygger produktionssajten till `dist/` och hämtar aktuella priser |
+| `npm run services` | Uppdaterar `src/data/services.json` från Bokadirekt |
+| `npm run bodymap` | Bygger om triggerpunktskartans data |
+
+`netlify.toml` styr byggkommandot, pekar www mot apex, skickar bort gamla demosidor och sätter säkerhets- och cachehuvuden.
 
 ## Massage prices from Bokadirekt
 
@@ -26,41 +36,3 @@ What to set up in Netlify, after this branch is deployed to the production site:
 4. Confirm the production build command is `npm run build` or `astro build`. Both run the fetch. If the Netlify UI has its own build command, set it to `npm run build`.
 5. Deploy the site. Under **Functions**, `scheduled-rebuild` should show a daily schedule. Scheduled functions run on the production deploy, and only on plans that include them. If the schedule is missing, check the plan.
 6. Optional check: in the functions list, run `scheduled-rebuild` once. The site should start a new build without you pushing a commit.
-
-## Astro Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## Deploying to Netlify
-
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/netlify-templates/astro-platform-starter)
-
-## Developing Locally
-
-| Prerequisites                                                                |
-| :--------------------------------------------------------------------------- |
-| [Node.js](https://nodejs.org/) v18.20.8+.                                    |
-| (optional) [nvm](https://github.com/nvm-sh/nvm) for Node version management. |
-
-1. Clone this repository, then run `npm install` in its root directory.
-
-2. Recommended: link your local repository to a Netlify project. This will ensure you're using the same runtime version for both local development and your deployed project.
-
-```
-netlify link
-```
-
-3. Run the Astro.js development server:
-
-```
-npm run dev
-```

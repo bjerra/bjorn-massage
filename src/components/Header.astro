@@ -11,24 +11,22 @@ const navItems = [
 ---
 
 <nav class="flex flex-wrap items-center justify-center pt-6 pb-6 sm:pt-10" aria-label="Huvudmeny">
-    {
-        !!navItems?.length && (
-            <ul class="flex flex-wrap justify-center gap-x-4 gap-y-1">
-                {navItems.map((item) => (
-                    <li>
-                        <a
-                            href={item.href}
-                            aria-current={item.href === pathname ? 'page' : undefined}
-                            class:list={[
-                                'inline-block px-1.5 py-1 font-medium no-underline hover:text-primary sm:px-3 sm:py-2',
-                                item.href === pathname && 'text-primary'
-                            ]}
-                        >
-                            {item.linkText}
-                        </a>
-                    </li>
-                ))}
-            </ul>
-        )
-    }
+    <ul class="flex flex-wrap justify-center gap-x-4 gap-y-1">
+        {
+            navItems.map((item) => (
+                <li>
+                    <a
+                        href={item.href}
+                        aria-current={item.href === pathname ? 'page' : undefined}
+                        class:list={[
+                            'inline-block px-1.5 py-1 font-medium text-espresso no-underline hover:underline sm:px-3 sm:py-2',
+                            item.href === pathname && 'underline'
+                        ]}
+                    >
+                        {item.linkText}
+                    </a>
+                </li>
+            ))
+        }
+    </ul>
 </nav>
