@@ -1,7 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { Image } from 'astro:assets';
-import logo from '../assets/logotext.png';
+import { Image, Picture } from 'astro:assets';
+import { placeUrl } from '../data/site';
+// Hero photo of the treatment room. Replace src/assets/hero.jpg to change it.
+import hero from '../assets/hero.jpg';
 import neoLogo from '../assets/neo.png';
 import ServiceList from '../components/ServiceList.astro';
 
@@ -9,7 +11,6 @@ const title = 'BjörnMassage – Massage i Jönköping';
 const description =
     'Björn Eriksson ger klassisk massage och triggerpunktsbehandling på Neoskin i Jönköping. Boka tid via Bokadirekt.';
 
-const placeUrl = 'https://www.bokadirekt.se/places/neoskin-39252';
 const mapsUrl = 'https://www.google.com/maps/place/Lantm%C3%A4targr%C3%A4nd+16,+553+20+J%C3%B6nk%C3%B6ping/@57.7815,14.1734,17z';
 const mapEmbed = 'https://maps.google.com/maps?q=57.7815,14.1734&hl=sv&z=16&output=embed';
 
@@ -63,83 +64,78 @@ const jsonLd = {
 
 <Layout title={title} description={description}>
     <script is:inline slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
-    <section class="py-5 md:py-0">
-        <div class="mx-auto max-w-4xl px-5 text-center">
-            <div class="inline-block rounded-xl bg-surface px-6 py-4">
-                <Image
-                    src={logo}
-                    alt="BjörnMassage"
-                    width={800}
-                    height={472}
-                    format="webp"
-                    class="mx-auto w-full max-w-70 sm:max-w-85 md:max-w-105 lg:max-w-125"
-                    loading="eager"
-                />
-            </div>
+    <section class="hero">
+        <h1 class="display">Massage med <em>lugn</em> hand och fast tryck.</h1>
+        <div>
+            <Picture
+                src={hero}
+                formats={['avif', 'webp']}
+                alt="Behandlingsrummet på Neoskin med massagebänk"
+                width={1400}
+                height={1866}
+                widths={[700, 1050, 1400]}
+                sizes="(min-width: 900px) 42vw, 100vw"
+                class="hero-photo"
+                loading="eager"
+            />
+            <p class="hero-copy">
+                Björn Eriksson är certifierad massageterapeut med 15 års erfarenhet. Behandlingen anpassas efter hur det
+                känns för dig.
+            </p>
+            <a class="btn" href={placeUrl}>Boka tid på Bokadirekt</a>
         </div>
     </section>
-    <section id="tjanster" class="mt-6">
-        <h1 class="mb-10 text-center text-espresso">Massage i Jönköping</h1>
+    <section id="tjanster" class="services">
+        <h2>Behandlingar</h2>
         <ServiceList />
     </section>
-    <section id="om-mig" class="my-12 md:my-16">
-        <div class="mx-auto max-w-3xl rounded-xl bg-surface px-6 py-8 text-espresso md:px-10">
-            <h2 class="mb-6">Om mig</h2>
-            <div class="space-y-4 text-lg leading-relaxed md:text-xl">
-                <p>Björn Eriksson, certifierad massageterapeut med 15 års erfarenhet.</p>
-                <p>
-                    Jag arbetar med klassisk massage och triggerpunktsbehandling, med fokus på ställen som känns spända
-                    eller ömma. Hur det upplevs varierar från person till person.
-                </p>
-                <p>Jag jobbar lugnt men tungt, som en björn fast utan klor.</p>
-                <p>Välkommen att boka tid!</p>
-            </div>
+    <section id="om-mig" class="section">
+        <h2>Om mig</h2>
+        <div class="prose">
+            <p>
+                Jag arbetar med klassisk massage och triggerpunktsbehandling, med fokus på ställen som känns spända eller
+                ömma. Hur det upplevs varierar från person till person.
+            </p>
+            <p>Jag jobbar lugnt men tungt, som en björn fast utan klor.</p>
+            <p>Välkommen att boka tid.</p>
         </div>
     </section>
-    <section id="kontakt" class="mb-8">
-        <div class="mx-auto max-w-3xl rounded-xl bg-surface px-6 py-8 text-espresso md:px-10">
-            <h2 class="mb-4">Kontakt och bokning</h2>
-            <p class="text-lg leading-relaxed">
-                Jag tar emot på Neoskin. Tid bokas hos mig via Bokadirekt.
-            </p>
-            <p class="mt-6">
-                <a class="btn btn-lg" href={placeUrl}>Boka tid</a>
-            </p>
-            <div class="mt-8 grid gap-8 md:grid-cols-2">
-                <div class="space-y-3 text-lg">
-                    <p>
-                        <a href="https://neoskin.se/" class="inline-block">
-                            <Image src={neoLogo} alt="Neoskin" width={150} height={62} />
-                        </a>
-                    </p>
-                    <p>
-                        Lantmätargränd 16<br />
-                        553 20 Jönköping
-                    </p>
-                    <h3 class="pt-2 text-xl font-semibold">Öppettider på Neoskin</h3>
-                    <ul>
-                        {
-                            hours.map(([day, time]) => (
-                                <li class="flex justify-between gap-4 border-b border-espresso/10 py-1">
-                                    <span>{day}</span>
-                                    <span>{time}</span>
-                                </li>
-                            ))
-                        }
-                    </ul>
-                </div>
-                <div>
-                    <iframe
-                        title="Karta till Neoskin, Lantmätargränd 16 i Jönköping"
-                        src={mapEmbed}
-                        class="h-64 w-full rounded-lg border-0 md:h-full md:min-h-64"
-                        loading="lazy"
-                        referrerpolicy="no-referrer-when-downgrade"
-                    />
-                    <p class="mt-2">
-                        <a href={mapsUrl}>Öppna adressen i Google Maps</a>
-                    </p>
-                </div>
+    <section id="kontakt" class="section">
+        <h2>Kontakt</h2>
+        <p class="lede">Jag tar emot på Neoskin. Tid bokas hos mig via Bokadirekt.</p>
+        <a class="btn" href={placeUrl}>Boka tid</a>
+        <div class="contact-grid">
+            <div>
+                <a class="neo-link" href="https://neoskin.se/">
+                    <Image src={neoLogo} alt="Neoskin" width={150} height={62} class="neo-mark" />
+                </a>
+                <p>
+                    Lantmätargränd 16<br />
+                    553 20 Jönköping
+                </p>
+                <h3>Öppettider på Neoskin</h3>
+                <ul class="hours">
+                    {
+                        hours.map(([day, time]) => (
+                            <li>
+                                <span>{day}</span>
+                                <span>{time}</span>
+                            </li>
+                        ))
+                    }
+                </ul>
+            </div>
+            <div>
+                <iframe
+                    title="Karta till Neoskin, Lantmätargränd 16 i Jönköping"
+                    src={mapEmbed}
+                    class="map-frame"
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"
+                />
+                <p class="map-link">
+                    <a href={mapsUrl}>Öppna adressen i Google Maps</a>
+                </p>
             </div>
         </div>
     </section>
