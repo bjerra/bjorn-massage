@@ -3,90 +3,139 @@ import { Image } from 'astro:assets';
 import logo from '../assets/logo.png';
 import neck from '../assets/neck.jpg';
 import neckGif from '../assets/neckGif.gif';
+import servicesData from '../data/services.json';
 
-const services = [
-    { title: 'Drop-in Massage 25 min',info: `Klassisk massage med fokus på t.ex nacke eller ländrygg.`, img: neck,img2: neckGif, href: 'https://www.bokadirekt.se/boka-tjanst/neoskin-39252/drop-in-massage-3387452' },
-    { title: 'Klassisk Massage 25 min',info: `Klassisk massage med fokus på t.ex nacke eller ländrygg.`, img: neck,img2: neckGif, href: 'https://www.bokadirekt.se/boka-tjanst/neoskin-39252/klassisk-massage-fokus-3347908' },
-    { title: 'Klassisk Massage 50 min',info: `Klassisk massage, skräddarsys efter önskemål.`, img: neck,img2: neckGif, href: 'https://www.bokadirekt.se/boka-tjanst/neoskin-39252/klassisk-massage-lyx-3347909' },
-    { title: 'Klassisk Massage 75 min',info: `Klassisk helkroppsmassage som skräddarsys efter önskemål.`, img: neck,img2: neckGif, href: 'https://www.bokadirekt.se/boka-tjanst/neoskin-39252/klassisk-massage-extra-lang-3347907' },
-];
+const services = servicesData.services;
+
+function priceText(service: (typeof services)[number], label = service.priceLabel) {
+    if (service.hidePrice) return '';
+    const value = label || (service.price != null ? `${service.price} kr` : '');
+    if (!value) return '';
+    return service.showFrom ? `Från ${value}` : value;
+}
+
+function durationText(service: (typeof services)[number]) {
+    if (service.hideDuration) return '';
+    return service.durationLabel || '';
+}
 ---
 
- <div class="space-y-6">
-  <ul class="grid md:grid-cols-2 gap-5 md:gap-6">
-    {
-      services.map((service) => (
-        <li class="list-none">
-            <a href={service.href} class="
-            relative
-            group
-            bg-white/20 backdrop-blur-sm
-            rounded-xl overflow-hidden
-            border border-white/10
-            flex flex-col
-            items-stretch
-            h-60 md:h-75
-            no-underline
-          ">
-            <!-- Image -->
-            <div>
-                <Image
-                  src={service.img}
-                  alt="BjönMassage"
-                  width={320}
-                  height={240}
-                  layout="constrained"   
-                  class="absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ease-in-out group-hover:opacity-0"
-                  />
-                    <Image
-                  src={service.img2}
-                  alt="Hover view"
-                  width={320}
-                  height={240}
-                  layout="constrained"  
-                  class="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-500 ease-in-out group-hover:opacity-100"
-                  />
-            </div>
-            <!-- Content -->
-            <div class="flex-1 p-5 md:p-6 flex flex-col gap-3 md:gap-4 z-10 bg-surface/95 text-black">
-              <h3 class="text-xl md:text-3xl font-medium opacity-90">
-                {service.title}
-              </h3>
-
-              <p class="text-base md:text-xl leading-relaxed opacity-90 flex-1">
-                {service.info}
-              </p>
-
-              <!-- Booking button/link area -->
-              <div class="flex justify-end">
-                <div
-                  class="
-                    inline-flex items-center gap-2
-                    px-3 py-1.5 md:px-4 md:py-2
-                    rounded-full
-                    bg-primary text-primary-content font-semibold
-                    no-underline
-                    transition-colors
-                    group-hover:bg-primary/85
-                  "
-                >
-                  <span class="text-base md:text-lg">Boka</span>
-                   <Image
-                    src={logo}
-                    width={28}
-                    height={28}
-                    alt=""
-                    class="w-6 md:w-7 h-6 md:h-7 object-contain"
-                  />
-                </div>
-              </div>
-            </div>
-          </a>
-        </li>
-      ))
-    }
-  </ul>
+<div class="space-y-6">
+    <ul class="grid md:grid-cols-2 gap-5 md:gap-6 items-start">
+        {
+            services.map((service) => {
+                const price = priceText(service);
+                const duration = durationText(service);
+                const campaign = service.campaign;
+                const campaignPrice = campaign ? priceText(service, campaign.priceLabel) : '';
+                return (
+                    <li class="list-none">
+                        <a
+                            href={service.bookingUrl}
+                            class="relative group bg-white/20 backdrop-blur-sm rounded-xl overflow-hidden border border-white/10 flex flex-col items-stretch no-underline"
+                        >
+                            <div>
+                                <Image
+                                    src={neck}
+                                    alt=""
+                                    width={320}
+                                    height={240}
+                                    layout="constrained"
+                                    class="absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ease-in-out group-hover:opacity-0"
+                                />
+                                <Image
+                                    src={neckGif}
+                                    alt=""
+                                    width={320}
+                                    height={240}
+                                    layout="constrained"
+                                    class="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-500 ease-in-out group-hover:opacity-100"
+                                />
+                            </div>
+                            <div class="flex-1 p-5 md:p-6 flex flex-col gap-3 md:gap-4 z-10 bg-surface/95 text-black">
+                                <h3 class="text-xl md:text-3xl font-medium opacity-90">{service.name}</h3>
+                                {(duration || price || campaignPrice) && (
+                                    <div
+                                        class="flex flex-col gap-2"
+                                        data-campaign={campaign ? 'active' : undefined}
+                                        data-start={campaign?.startDate}
+                                        data-end={campaign?.endDate}
+                                    >
+                                        <p class="text-base md:text-lg font-semibold leading-snug">
+                                            {duration && <span class="whitespace-nowrap">{duration}</span>}
+                                            {duration && (price || campaignPrice) && <span aria-hidden="true"> · </span>}
+                                            {campaign && campaignPrice ? (
+                                                <>
+                                                    <span data-sale-view>
+                                                        {price && (
+                                                            <span class="whitespace-nowrap font-medium text-black/55 line-through decoration-black/40">
+                                                                <span class="sr-only">Ordinarie pris </span>
+                                                                {price}
+                                                            </span>
+                                                        )}
+                                                        {price && ' '}
+                                                        <span class="whitespace-nowrap text-lg md:text-xl font-bold">
+                                                            <span class="sr-only">Kampanjpris </span>
+                                                            {campaignPrice}
+                                                        </span>
+                                                    </span>
+                                                    {price && (
+                                                        <span data-regular-view class="whitespace-nowrap" hidden>
+                                                            {price}
+                                                        </span>
+                                                    )}
+                                                </>
+                                            ) : (
+                                                price && <span class="whitespace-nowrap">{price}</span>
+                                            )}
+                                        </p>
+                                        {campaign && (
+                                            <p data-sale-badge>
+                                                <span class="inline-flex items-center rounded-full bg-primary px-2.5 py-0.5 text-sm font-semibold text-primary-content">
+                                                    Kampanj {campaign.endLabel}
+                                                </span>
+                                            </p>
+                                        )}
+                                    </div>
+                                )}
+                                {service.summary && (
+                                    <p class="text-base md:text-xl leading-relaxed opacity-90">{service.summary}</p>
+                                )}
+                                <div class="flex justify-end pt-1 shrink-0">
+                                    <div class="inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-primary text-primary-content font-semibold no-underline transition-colors group-hover:bg-primary/85">
+                                        <span class="text-base md:text-lg">Boka</span>
+                                        <Image
+                                            src={logo}
+                                            width={28}
+                                            height={28}
+                                            alt=""
+                                            class="w-6 md:w-7 h-6 md:h-7 object-contain"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                );
+            })
+        }
+    </ul>
+    <script is:inline>
+        (function () {
+            var now = Date.now() / 1000;
+            var nodes = document.querySelectorAll('[data-campaign]');
+            for (var i = 0; i < nodes.length; i++) {
+                var el = nodes[i];
+                var start = Number(el.getAttribute('data-start'));
+                var end = Number(el.getAttribute('data-end'));
+                var active = now >= start && now < end;
+                var sale = el.querySelector('[data-sale-view]');
+                var regular = el.querySelector('[data-regular-view]');
+                var badge = el.querySelector('[data-sale-badge]');
+                if (sale) sale.hidden = !active;
+                if (regular) regular.hidden = active;
+                if (badge) badge.hidden = !active;
+            }
+        })();
+    </script>
 </div>
- 
- 
- 
