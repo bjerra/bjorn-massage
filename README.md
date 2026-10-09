@@ -14,9 +14,11 @@ Webbplats för Björn Eriksson, massageterapeut på Neoskin i Jönköping. Sajte
 
 `netlify.toml` styr byggkommandot, pekar www mot apex, skickar bort gamla demosidor och sätter säkerhets- och cachehuvuden.
 
+Hero-bilden är `src/assets/hero.jpg`. Byt den filen när ett porträtt ska in. Just nu är det den befintliga massagebilden, visad i svartvitt.
+
 ## Massage prices from Bokadirekt
 
-The service cards on the homepage are built from Björn's listing at Neoskin (Bokadirekt place `39252`, employee `315850`). There is no public API. Each production build makes one request to the place page, reads `window.__PRELOADED_STATE__`, and keeps Björn's active services in Bokadirekt's category order.
+The treatment list on the homepage is built from Björn's listing at Neoskin (Bokadirekt place `39252`, employee `315850`). There is no public API. Each production build makes one request to the place page, reads `window.__PRELOADED_STATE__`, and keeps Björn's active services in Bokadirekt's category order.
 
 `src/data/services.json` is the committed snapshot. If the request fails, times out after 10 seconds, or the page no longer contains his services, the build logs a warning and uses that file. The list is never left empty because of a failed fetch. Run `npm run services` to refresh the snapshot locally and commit it when the prices change and you want the fallback updated.
 

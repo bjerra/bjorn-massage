@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { placeUrl } from '../data/site';
 
 const description =
     'Interaktiv karta över triggerpunkter hos BjörnMassage i Jönköping. Typiska utstrålningsmönster från litteraturen. Smärta kan ha andra orsaker.';
@@ -9,32 +10,31 @@ const description =
     <link slot="head" rel="stylesheet" href="/bodymap/bodymap.css" />
     <link slot="head" rel="stylesheet" href="/bodymap/site-theme.css" />
 
-    <section class="py-2 md:py-6" lang="sv">
-        <div
-            class="mx-auto mb-8 max-w-3xl rounded-xl border border-white/25 bg-surface px-5 py-6 text-espresso shadow-sm sm:px-8 sm:py-8"
-        >
-            <h1 class="mb-4 text-center text-3xl sm:text-5xl">Triggerpunkter</h1>
-            <div class="space-y-4 text-base leading-relaxed sm:text-lg">
-                <p>
-                    En triggerpunkt är ett ömt ställe i en muskel. Det kan göra ont just där, och ibland känns smärtan också
-                    någon annanstans. Kartan visar typiska utstrålningsmönster från triggerpunktslitteraturen (Travell &amp;
-                    Simons).
-                </p>
-                <p>
-                    Smärta kan ha många andra orsaker. Kartan är ingen undersökning och säger inte vad just din smärta beror
-                    på. Vid svår, ihållande eller oförklarad smärta, kontakta vården.
-                </p>
-                <p class="text-sm opacity-80 sm:text-base">
-                    Tryck på området där det gör ont, eller välj en muskel. Namn på områden och muskler är på svenska. Den
-                    korta texten om var på muskeln punkten sitter är på engelska.
-                </p>
-            </div>
-            <p class="mt-6 text-center">
-                <a class="btn" href="/#tjanster">Boka tid</a>
+    <section class="section trigger-intro" lang="sv">
+        <h1>Triggerpunkter</h1>
+        <div class="prose">
+            <p>
+                En triggerpunkt är ett ömt ställe i en muskel. Det kan göra ont just där, och ibland känns smärtan också
+                någon annanstans. Kartan visar typiska utstrålningsmönster från triggerpunktslitteraturen (Travell &amp;
+                Simons).
+            </p>
+            <p>
+                Smärta kan ha många andra orsaker. Kartan är ingen undersökning och säger inte vad just din smärta beror
+                på. Vid svår, ihållande eller oförklarad smärta, kontakta vården.
+            </p>
+            <p>
+                Tryck på området där det gör ont, eller välj en muskel. Namn på områden och muskler är på svenska. Den
+                korta texten om var på muskeln punkten sitter är på engelska.
             </p>
         </div>
+        <p class="mt-8">
+            <a class="btn" href={placeUrl}>Boka tid</a>
+        </p>
+    </section>
+    <div class="trigger-map">
 
         <div data-bodymap></div>
+    </div>
         <script is:inline>
             window.BODYMAP_STRINGS = {
                 title: 'Karta över triggerpunkter',
@@ -192,5 +192,4 @@ const description =
         <script src="/bodymap/bodymap-data.js" defer></script>
         <script src="/bodymap/bodymap-zones.js" defer></script>
         <script src="/bodymap/bodymap.js" defer></script>
-    </section>
 </Layout>

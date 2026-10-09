@@ -1,7 +1,4 @@
 ---
-import { Image } from 'astro:assets';
-import logo from '../assets/logo.png';
-import neck from '../assets/neck.jpg';
 import servicesData from '../data/services.json';
 
 const services = servicesData.services;
@@ -17,110 +14,79 @@ function durationText(service: (typeof services)[number]) {
     if (service.hideDuration) return '';
     return service.durationLabel || '';
 }
+
+function displaySummary(summary: string) {
+    const text = summary
+        .replaceAll('Är dörren låt?', 'Är dörren låst?')
+        .replace(/Glöm inte bort att använda ditt friskvårdsbidrag hos oss[!.]?/gi, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+    return text || summary;
+}
 ---
 
-<div class="space-y-6">
-    <ul class="grid items-start gap-5 md:grid-cols-2 md:gap-6">
+<div>
+    <ol class="service-list">
         {
-            services.map((service) => {
+            services.map((service, index) => {
                 const price = priceText(service);
                 const duration = durationText(service);
                 const campaign = service.campaign;
                 const campaignPrice = campaign ? priceText(service, campaign.priceLabel) : '';
+                const summary = service.summary ? displaySummary(service.summary) : '';
                 return (
-                    <li class="list-none">
-                        <a
-                            href={service.bookingUrl}
-                            class="group relative flex flex-col items-stretch overflow-hidden rounded-xl border border-white/10 bg-white/20 no-underline backdrop-blur-sm"
-                        >
-                            <Image
-                                src={neck}
-                                alt="Massage av nacke och axlar"
-                                width={480}
-                                height={720}
-                                format="webp"
-                                loading="lazy"
-                                class="absolute inset-0 h-full w-full object-cover"
-                            />
-                            <video
-                                class="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100 group-focus-visible:opacity-100"
-                                muted
-                                loop
-                                playsinline
-                                preload="none"
-                                data-hover-video
+                    <li class="service-row">
+                        <div class="service-num">{String(index + 1).padStart(2, '0')}</div>
+                        <div>
+                            <h3>{service.name}</h3>
+                            {summary && <p class="summary">{summary}</p>}
+                        </div>
+                        <div class="service-meta">
+                            <div class="service-dur">{duration}</div>
+                            <div
+                                class="service-price"
+                                data-campaign={campaign ? 'active' : undefined}
+                                data-start={campaign?.startDate}
+                                data-end={campaign?.endDate}
                             >
-                                <source src="/media/neck.webm" type="video/webm" />
-                                <source src="/media/neck.mp4" type="video/mp4" />
-                            </video>
-                            <div class="relative z-10 flex flex-col gap-3 bg-surface/95 p-5 text-black md:gap-4 md:p-6">
-                                <h2 class="text-xl font-medium opacity-90 md:text-3xl">{service.name}</h2>
-                                {(duration || price || campaignPrice) && (
-                                    <div
-                                        class="flex flex-col gap-2"
-                                        data-campaign={campaign ? 'active' : undefined}
-                                        data-start={campaign?.startDate}
-                                        data-end={campaign?.endDate}
-                                    >
-                                        <p class="text-base font-semibold leading-snug md:text-lg">
-                                            {duration && <span class="whitespace-nowrap">{duration}</span>}
-                                            {duration && (price || campaignPrice) && <span aria-hidden="true"> · </span>}
-                                            {campaign && campaignPrice ? (
-                                                <>
-                                                    <span data-sale-view>
-                                                        {price && (
-                                                            <span class="whitespace-nowrap font-medium text-black/55 line-through decoration-black/40">
-                                                                <span class="sr-only">Ordinarie pris </span>
-                                                                {price}
-                                                            </span>
-                                                        )}
-                                                        {price && ' '}
-                                                        <span class="whitespace-nowrap text-lg font-bold md:text-xl">
-                                                            <span class="sr-only">Kampanjpris </span>
-                                                            {campaignPrice}
-                                                        </span>
-                                                    </span>
-                                                    {price && (
-                                                        <span data-regular-view class="whitespace-nowrap" hidden>
-                                                            {price}
-                                                        </span>
-                                                    )}
-                                                </>
-                                            ) : (
-                                                price && <span class="whitespace-nowrap">{price}</span>
+                                {campaign && campaignPrice ? (
+                                    <>
+                                        <p data-sale-view>
+                                            {price && (
+                                                <s>
+                                                    <span class="sr-only">Ordinarie pris </span>
+                                                    {price}
+                                                </s>
                                             )}
+                                            <b>
+                                                <span class="sr-only">Kampanjpris </span>
+                                                {campaignPrice}
+                                            </b>
                                         </p>
-                                        {campaign && (
-                                            <p data-sale-badge>
-                                                <span class="inline-flex items-center rounded-full bg-primary px-2.5 py-0.5 text-sm font-semibold text-primary-content">
-                                                    Kampanj {campaign.endLabel}
-                                                </span>
+                                        {price && (
+                                            <p data-regular-view hidden>
+                                                <b>{price}</b>
                                             </p>
                                         )}
-                                    </div>
+                                        <p class="service-tag" data-sale-badge>
+                                            Kampanj {campaign.endLabel}
+                                        </p>
+                                    </>
+                                ) : (
+                                    price && <b>{price}</b>
                                 )}
-                                {service.summary && (
-                                    <p class="text-base leading-relaxed opacity-90 md:text-xl">{service.summary}</p>
-                                )}
-                                <div class="flex shrink-0 justify-end pt-1">
-                                    <div class="inline-flex items-center gap-2 rounded-full bg-primary px-3 py-1.5 font-semibold text-primary-content no-underline transition-colors group-hover:bg-primary/85 md:px-4 md:py-2">
-                                        <span class="text-base md:text-lg">Boka</span>
-                                        <Image
-                                            src={logo}
-                                            width={28}
-                                            height={28}
-                                            alt=""
-                                            class="h-6 w-6 object-contain md:h-7 md:w-7"
-                                        />
-                                    </div>
-                                </div>
                             </div>
-                        </a>
+                            <a class="book-link" href={service.bookingUrl}>
+                                Boka <span aria-hidden="true">↗</span>
+                                <span class="sr-only"> {service.name}</span>
+                            </a>
+                        </div>
                     </li>
                 );
             })
         }
-    </ul>
+    </ol>
+    <p class="friskvard">Friskvårdsbidrag kan användas.</p>
     <script is:inline>
         (function () {
             var now = Date.now() / 1000;
@@ -140,21 +106,3 @@ function durationText(service: (typeof services)[number]) {
         })();
     </script>
 </div>
-<script>
-    document.querySelectorAll('[data-hover-video]').forEach((node) => {
-        const video = node as HTMLVideoElement;
-        const card = video.closest('a');
-        if (!card) return;
-        const play = () => {
-            video.play().catch(() => {});
-        };
-        const stop = () => {
-            video.pause();
-            video.currentTime = 0;
-        };
-        card.addEventListener('pointerenter', play);
-        card.addEventListener('pointerleave', stop);
-        card.addEventListener('focus', play);
-        card.addEventListener('blur', stop);
-    });
-</script>

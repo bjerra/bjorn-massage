@@ -1,7 +1,11 @@
 ---
 import '../styles/globals.css';
 import '@fontsource-variable/inter/wght.css';
+import '@fontsource/instrument-serif/400.css';
+import '@fontsource/instrument-serif/400-italic.css';
 import interWoff2 from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
+import serifWoff2 from '@fontsource/instrument-serif/files/instrument-serif-latin-400-normal.woff2?url';
+import serifItalicWoff2 from '@fontsource/instrument-serif/files/instrument-serif-latin-400-italic.woff2?url';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 
@@ -21,6 +25,9 @@ const ogImage = `${site}/og.jpg`;
 <html lang="sv">
     <head>
         <meta charset="UTF-8" />
+        <script is:inline>
+            document.documentElement.classList.add('js');
+        </script>
         <title>{title}</title>
         <meta name="description" content={description} />
         <meta name="viewport" content="width=device-width" />
@@ -45,16 +52,18 @@ const ogImage = `${site}/og.jpg`;
         <link rel="shortcut icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         <link rel="preload" as="font" type="font/woff2" href={interWoff2} crossorigin />
+        <link rel="preload" as="font" type="font/woff2" href={serifWoff2} crossorigin />
+        <link rel="preload" as="font" type="font/woff2" href={serifItalicWoff2} crossorigin />
         <slot name="head" />
     </head>
-    <body class="antialiased text-espresso bg-complementary">
+    <body class="bg-paper text-ink antialiased">
         <a class="skip-link" href="#innehall">Hoppa till innehållet</a>
-        <div class="flex flex-col min-h-screen px-6 bg-noise sm:px-12">
-            <div class="flex flex-col w-full max-w-5xl mx-auto grow">
-                <Header />
-                <main id="innehall" class="grow"><slot /></main>
-                <Footer />
-            </div>
+        <div class="mx-auto flex min-h-screen w-full max-w-[1280px] flex-col px-5 md:px-10 lg:px-14">
+            <Header />
+            <main id="innehall" class="grow">
+                <slot />
+            </main>
+            <Footer />
         </div>
     </body>
 </html>

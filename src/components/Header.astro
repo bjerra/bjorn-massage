@@ -1,8 +1,9 @@
 ---
+import { placeUrl } from '../data/site';
+
 const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
 
 const navItems = [
-    { linkText: 'Hem', href: '/' },
     { linkText: 'Tjänster', href: '/#tjanster' },
     { linkText: 'Triggerpunkter', href: '/triggerpunkter' },
     { linkText: 'Om mig', href: '/#om-mig' },
@@ -10,23 +11,75 @@ const navItems = [
 ];
 ---
 
-<nav class="flex flex-wrap items-center justify-center pt-6 pb-6 sm:pt-10" aria-label="Huvudmeny">
-    <ul class="flex flex-wrap justify-center gap-x-4 gap-y-1">
-        {
-            navItems.map((item) => (
+<header class="site-header">
+    <div class="header-bar">
+        <a class="wordmark" href="/">Björn Massage</a>
+        <button
+            type="button"
+            class="menu-button"
+            aria-expanded="false"
+            aria-controls="huvudmeny"
+            data-menu-button
+        >
+            <span class="sr-only" data-menu-label>Meny</span>
+            <svg class="icon-open" width="18" height="12" viewBox="0 0 18 12" aria-hidden="true">
+                <path d="M0 1h18M0 6h18M0 11h18" fill="none" stroke="currentColor" stroke-width="1.5" />
+            </svg>
+            <svg class="icon-close" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+                <path d="M2 2l12 12M14 2L2 14" fill="none" stroke="currentColor" stroke-width="1.5" />
+            </svg>
+        </button>
+        <nav id="huvudmeny" class="site-nav" aria-label="Huvudmeny" data-open="false">
+            <ul class="nav-list">
+                {
+                    navItems.map((item) => (
+                        <li>
+                            <a
+                                class="nav-link"
+                                href={item.href}
+                                aria-current={item.href === pathname ? 'page' : undefined}
+                            >
+                                {item.linkText}
+                            </a>
+                        </li>
+                    ))
+                }
                 <li>
-                    <a
-                        href={item.href}
-                        aria-current={item.href === pathname ? 'page' : undefined}
-                        class:list={[
-                            'inline-block px-1.5 py-1 font-medium text-espresso no-underline hover:underline sm:px-3 sm:py-2',
-                            item.href === pathname && 'underline'
-                        ]}
-                    >
-                        {item.linkText}
-                    </a>
+                    <a class="btn btn-sm" href={placeUrl}>Boka tid</a>
                 </li>
-            ))
-        }
-    </ul>
-</nav>
+            </ul>
+        </nav>
+    </div>
+    <p class="eyebrow">
+        <span>Jönköping · Neoskin, Lantmätargränd 16</span>
+        <span>Klassisk massage · Triggerpunkter</span>
+    </p>
+</header>
+
+<script>
+    const button = document.querySelector('[data-menu-button]');
+    const nav = document.getElementById('huvudmeny');
+    const label = button?.querySelector('[data-menu-label]');
+    if (button instanceof HTMLButtonElement && nav && label) {
+        const setOpen = (open: boolean) => {
+            nav.setAttribute('data-open', open ? 'true' : 'false');
+            button.setAttribute('aria-expanded', open ? 'true' : 'false');
+            label.textContent = open ? 'Stäng meny' : 'Meny';
+        };
+
+        button.addEventListener('click', () => {
+            setOpen(button.getAttribute('aria-expanded') !== 'true');
+        });
+
+        nav.addEventListener('click', (event) => {
+            if (event.target instanceof Element && event.target.closest('a')) setOpen(false);
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && button.getAttribute('aria-expanded') === 'true') {
+                setOpen(false);
+                button.focus();
+            }
+        });
+    }
+</script>

@@ -1,55 +1,52 @@
 /* Theme overrides for the body map on bjornmassage.se.
-   Loaded after bodymap.css. The widget exposes these custom properties. */
+   Loaded after bodymap.css. Colours follow the editorial palette. */
 
 [data-bodymap].bm {
-    --bm-bg: #fbf6ef;
-    --bm-surface: #fffdfb;
-    --bm-text: #4a372c;
-    --bm-muted: #6d5648;
-    --bm-line: #e6d5c6;
-    --bm-skin: #f6ebe1;
-    --bm-skin-line: #cbb5a3;
-    --bm-landmark: #eadccf;
-    --bm-muscle: #edd9c8;
-    --bm-muscle-line: #d4bba6;
-    --bm-muscle-hover: #e4c6b0;
-    /* Espresso for muscles, rose (the site pink, deepened so it reads on skin) for referral areas. */
-    --bm-source: #4a372c;
-    --bm-source-soft: #c4a894;
-    --bm-zone: #e35d78;
-    --bm-tp: #9a3044;
-    --bm-focus: #4a372c;
-    --bm-radius: 16px;
-    --bm-font: inherit;
+    --bm-bg: #faf8f4;
+    --bm-surface: #ffffff;
+    --bm-text: #171513;
+    --bm-muted: #55504a;
+    --bm-line: #ddd8cf;
+    --bm-skin: #f3eee8;
+    --bm-skin-line: #cfc6bc;
+    --bm-landmark: #e7e0d8;
+    --bm-muscle: #e6ddd4;
+    --bm-muscle-line: #c9bfb4;
+    --bm-muscle-hover: #ddd2c6;
+    --bm-source: #171513;
+    --bm-source-soft: #8a8178;
+    --bm-zone: #7a3b2e;
+    --bm-tp: #5c2418;
+    --bm-focus: #7a3b2e;
+    --bm-font: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
 
     max-width: 100%;
     color: var(--bm-text);
-    box-shadow: 0 10px 30px rgba(74, 55, 44, 0.12);
+    box-shadow: none;
 }
 
-/* The site underlines links. Anything linked inside the card stays on the card color. */
 [data-bodymap].bm a {
     color: inherit;
     text-underline-offset: 2px;
 }
 
 [data-bodymap].bm .bm-seg {
-    background: #efe4d8;
+    background: #efeae3;
 }
 
 [data-bodymap].bm .bm-item:hover {
-    background: #f8f1ea;
-    border-color: #d7b5a4;
+    background: #f4f0ea;
+    border-color: #cfc4b8;
 }
 
 [data-bodymap].bm .bm-close:hover {
-    background: #f3e8dc;
+    background: #f4f0ea;
     color: var(--bm-text);
 }
 
 [data-bodymap].bm .bm-chip-on,
 [data-bodymap].bm .bm-peekbar.bm-on {
-    color: #fff;
+    color: #faf8f4;
 }
 
 [data-bodymap].bm .bm-peekbar.bm-on {
@@ -57,15 +54,15 @@
 }
 
 [data-bodymap].bm .bm-peek-go {
-    color: #f6c2cb;
+    color: #f3d2c8;
 }
 
 [data-bodymap].bm .bm-tag {
-    border-color: #f0c2cb;
-    background: #fdf1f3;
-    color: #8f2d44;
+    border-color: #e4d3cc;
+    background: #f8f1ee;
+    color: #7a3b2e;
 }
 
 [data-bodymap].bm .bm-tag:hover {
-    background: #fbe4e9;
+    background: #f3e6e0;
 }
