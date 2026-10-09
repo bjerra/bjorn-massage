@@ -1,51 +1,7 @@
 ---
-import { Image } from 'astro:assets';
-import neoLogo from '../assets/neo.png';
+const year = new Date().getFullYear();
 ---
 
-<footer id="kontakt" class="pt-16 pb-12 sm:pt-24 sm:pb-16">
-        <div class="rounded-xl border border-gray-500 bg-surface p-6 shadow-sm max-w-md m-auto">
-          <div class="flex flex-col gap-4 items-center">
-            <div class="flex flex-col gap-4 items-center">
-              <a 
-              href="https://neoskin.se" 
-              target="_blank" 
-              rel="noopener noreferrer"
-            >
-                <Image
-                    src={neoLogo}
-                    alt="Neoskin"
-                    layout="constrained"   
-                />
-            </a>
-         <p class="text-lg leading-relaxed text-gray-700">
-            Jag jobbar på 
-            <a 
-              href="https://neoskin.se" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              class="font-semibold text-primary hover:text-primary/80 underline underline-offset-2"
-            >
-            Neoskin
-            </a> 
-          i centrala Jönköping
-        </p>
-        </div>
-        <a
-          href="https://www.google.com/maps/search/?api=1&query=Lantm%C3%A4targr%C3%A4nd+16%2C+553+20+J%C3%B6nk%C3%B6ping"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="inline-flex items-center gap-2 text-gray-700 hover:text-primary font-medium group"
-        >
-          <svg class="w-5 h-5 opacity-80 group-hover:opacity-100" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-          </svg>
-          <span class="group-hover:underline underline-offset-4">
-            Lantmätargränd 16, 553 20 Jönköping
-          </span>
-        </a>
-      </div>
-       
-    </div>
+<footer class="pt-10 pb-12 text-center text-sm text-espresso/80">
+    <p>© {year} BjörnMassage</p>
 </footer>

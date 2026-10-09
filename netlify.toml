@@ -1,0 +1,126 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# Apex is the canonical host.
+[[redirects]]
+  from = "https://www.bjornmassage.se/*"
+  to = "https://bjornmassage.se/:splat"
+  status = 301
+  force = true
+
+# Retired Netlify starter pages.
+[[redirects]]
+  from = "/blobs"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blobs/*"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/edge"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/edge/*"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/image-cdn"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/image-cdn/*"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/revalidation"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/revalidation/*"
+  to = "/"
+  status = 301
+  force = true
+
+# Retired starter APIs. 410 so clients are not sent the homepage.
+[[redirects]]
+  from = "/api/revalidate"
+  to = "/410"
+  status = 410
+  force = true
+
+[[redirects]]
+  from = "/api/blob"
+  to = "/410"
+  status = 410
+  force = true
+
+[[redirects]]
+  from = "/api/blobs"
+  to = "/410"
+  status = 410
+  force = true
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
+    Content-Security-Policy = "default-src 'self'; img-src 'self' data:; media-src 'self'; font-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; frame-src https://maps.google.com https://www.google.com; connect-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'"
+
+[[headers]]
+  for = "/_astro/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/media/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/favicon.svg"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/favicon.ico"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/favicon-96x96.png"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/apple-touch-icon.png"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/og.jpg"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"

@@ -1,16 +1,18 @@
 import { defineConfig } from 'astro/config';
 import netlify from '@astrojs/netlify';
-import react from '@astrojs/react';
+import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 import { refreshServices } from './tools/bokadirekt/fetch-services.mjs';
 
-// https://astro.build/config
 export default defineConfig({
+    site: 'https://bjornmassage.se',
     vite: {
         plugins: [tailwindcss()]
     },
     integrations: [
-        react(),
+        sitemap({
+            filter: (page) => !page.endsWith('/404') && !page.endsWith('/410') && !page.includes('/404/') && !page.includes('/410/')
+        }),
         {
             name: 'bokadirekt-services',
             hooks: {
