@@ -7,11 +7,11 @@ import servicesData from '../data/services.json';
 
 const services = servicesData.services;
 
-function priceText(service: (typeof services)[number]) {
+function priceText(service: (typeof services)[number], label = service.priceLabel) {
     if (service.hidePrice) return '';
-    const label = service.priceLabel || (service.price != null ? `${service.price} kr` : '');
-    if (!label) return '';
-    return service.showFrom ? `Från ${label}` : label;
+    const value = label || (service.price != null ? `${service.price} kr` : '');
+    if (!value) return '';
+    return service.showFrom ? `Från ${value}` : value;
 }
 
 function durationText(service: (typeof services)[number]) {
@@ -26,6 +26,8 @@ function durationText(service: (typeof services)[number]) {
             services.map((service) => {
                 const price = priceText(service);
                 const duration = durationText(service);
+                const campaign = service.campaign;
+                const campaignPrice = campaign ? priceText(service, campaign.priceLabel) : '';
                 return (
                     <li class="list-none">
                         <a
@@ -52,12 +54,49 @@ function durationText(service: (typeof services)[number]) {
                             </div>
                             <div class="flex-1 p-5 md:p-6 flex flex-col gap-3 md:gap-4 z-10 bg-surface/95 text-black">
                                 <h3 class="text-xl md:text-3xl font-medium opacity-90">{service.name}</h3>
-                                {(duration || price) && (
-                                    <p class="text-base md:text-lg font-semibold leading-snug">
-                                        {duration && <span class="whitespace-nowrap">{duration}</span>}
-                                        {duration && price && <span aria-hidden="true"> · </span>}
-                                        {price && <span class="whitespace-nowrap">{price}</span>}
-                                    </p>
+                                {(duration || price || campaignPrice) && (
+                                    <div
+                                        class="flex flex-col gap-2"
+                                        data-campaign={campaign ? 'active' : undefined}
+                                        data-start={campaign?.startDate}
+                                        data-end={campaign?.endDate}
+                                    >
+                                        <p class="text-base md:text-lg font-semibold leading-snug">
+                                            {duration && <span class="whitespace-nowrap">{duration}</span>}
+                                            {duration && (price || campaignPrice) && <span aria-hidden="true"> · </span>}
+                                            {campaign && campaignPrice ? (
+                                                <>
+                                                    <span data-sale-view>
+                                                        {price && (
+                                                            <span class="whitespace-nowrap font-medium text-black/55 line-through decoration-black/40">
+                                                                <span class="sr-only">Ordinarie pris </span>
+                                                                {price}
+                                                            </span>
+                                                        )}
+                                                        {price && ' '}
+                                                        <span class="whitespace-nowrap text-lg md:text-xl font-bold">
+                                                            <span class="sr-only">Kampanjpris </span>
+                                                            {campaignPrice}
+                                                        </span>
+                                                    </span>
+                                                    {price && (
+                                                        <span data-regular-view class="whitespace-nowrap" hidden>
+                                                            {price}
+                                                        </span>
+                                                    )}
+                                                </>
+                                            ) : (
+                                                price && <span class="whitespace-nowrap">{price}</span>
+                                            )}
+                                        </p>
+                                        {campaign && (
+                                            <p data-sale-badge>
+                                                <span class="inline-flex items-center rounded-full bg-primary px-2.5 py-0.5 text-sm font-semibold text-primary-content">
+                                                    Kampanj {campaign.endLabel}
+                                                </span>
+                                            </p>
+                                        )}
+                                    </div>
                                 )}
                                 {service.summary && (
                                     <p class="text-base md:text-xl leading-relaxed opacity-90">{service.summary}</p>
@@ -81,4 +120,22 @@ function durationText(service: (typeof services)[number]) {
             })
         }
     </ul>
+    <script is:inline>
+        (function () {
+            var now = Date.now() / 1000;
+            var nodes = document.querySelectorAll('[data-campaign]');
+            for (var i = 0; i < nodes.length; i++) {
+                var el = nodes[i];
+                var start = Number(el.getAttribute('data-start'));
+                var end = Number(el.getAttribute('data-end'));
+                var active = now >= start && now < end;
+                var sale = el.querySelector('[data-sale-view]');
+                var regular = el.querySelector('[data-regular-view]');
+                var badge = el.querySelector('[data-sale-badge]');
+                if (sale) sale.hidden = !active;
+                if (regular) regular.hidden = active;
+                if (badge) badge.hidden = !active;
+            }
+        })();
+    </script>
 </div>

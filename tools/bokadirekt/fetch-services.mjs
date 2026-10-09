@@ -55,6 +55,119 @@ export function parseJsonValue(text, from) {
     throw new Error('Preloaded state JSON was truncated.');
 }
 
+const SWEDISH_MONTHS = ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'];
+
+/** Round half up, including x.5, for positive and negative amounts. */
+export function roundHalfUp(value) {
+    if (!Number.isFinite(value)) return null;
+    const sign = value < 0 ? -1 : 1;
+    return sign * Math.floor(Math.abs(value) + 0.5);
+}
+
+function formatSek(amount) {
+    const grouped = new Intl.NumberFormat('sv-SE', { maximumFractionDigits: 0 })
+        .format(amount)
+        .replace(/\u202f/g, '\u00a0');
+    return `${grouped}\u00a0kr`;
+}
+
+/**
+ * Sale price: discountPrice when Bokadirekt set one, otherwise
+ * round-half-up(price * (1 - discountPercent/100)).
+ */
+export function campaignPrice(price, offer) {
+    if (offer?.discountPrice != null && offer.discountPrice !== '') {
+        const discount = Number(offer.discountPrice);
+        if (Number.isFinite(discount)) return roundHalfUp(discount);
+    }
+    const percent = Number(offer?.discountPercent);
+    if (!Number.isFinite(price) || !Number.isFinite(percent)) return null;
+    return roundHalfUp((price * (100 - percent)) / 100);
+}
+
+/** Bokadirekt's "till 25 okt": the end instant's calendar date in Stockholm. */
+export function campaignEndLabel(endUnix) {
+    const parts = new Intl.DateTimeFormat('sv-SE', {
+        timeZone: 'Europe/Stockholm',
+        day: 'numeric',
+        month: 'numeric'
+    }).formatToParts(new Date(endUnix * 1000));
+    const day = parts.find((part) => part.type === 'day')?.value;
+    const month = Number(parts.find((part) => part.type === 'month')?.value);
+    if (!day || !SWEDISH_MONTHS[month - 1]) return '';
+    return `till ${day} ${SWEDISH_MONTHS[month - 1]}`;
+}
+
+function campaignsForPlace(state, placeId) {
+    const key = String(placeId);
+    const fromPlace = state.place?.[key]?.campaigns ?? state.place?.[Number(key)]?.campaigns;
+    const fromSsr = state.ssrPlace?.campaigns;
+    const merged = new Map();
+    for (const list of [fromPlace, fromSsr]) {
+        if (!Array.isArray(list)) continue;
+        for (const campaign of list) {
+            if (!campaign || campaign.id == null) continue;
+            const id = String(campaign.id);
+            if (!merged.has(id)) merged.set(id, campaign);
+        }
+    }
+    return [...merged.values()];
+}
+
+function campaignIsActive(campaign, nowSec) {
+    if (Number(campaign?.status) !== 1) return false;
+    const start = Number(campaign.startDate);
+    const end = Number(campaign.endDate);
+    if (!Number.isFinite(start) || !Number.isFinite(end)) return false;
+    return nowSec >= start && nowSec < end;
+}
+
+function normalizeSpace(value) {
+    return String(value || '')
+        .replace(/\u00a0/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+}
+
+/** "Kampanjpris till 25 okt" printed next to a service name in the place HTML. */
+function pageCampaignPhrase(html, serviceName, serviceNames) {
+    let from = 0;
+    while (from < html.length) {
+        const at = html.indexOf(serviceName, from);
+        if (at < 0) return null;
+        const slice = html.slice(at + serviceName.length, at + serviceName.length + 700);
+        const match = slice.match(/Kampanjpris till\s+([^<]+)/);
+        if (match) {
+            const before = slice.slice(0, match.index);
+            const blocked = serviceNames.some((name) => name !== serviceName && before.includes(name));
+            if (!blocked) return normalizeSpace(`Kampanjpris till ${match[1]}`);
+        }
+        from = at + serviceName.length;
+    }
+    return null;
+}
+
+function applyPageCampaignLabels(html, data) {
+    const names = data.services.map((service) => service.name);
+    for (const service of data.services) {
+        if (!service.campaign) continue;
+        const expected = `Kampanjpris ${service.campaign.endLabel}`;
+        const page = pageCampaignPhrase(html, service.name, names);
+        if (!page) {
+            console.warn(
+                `[bokadirekt] No "Kampanjpris till ..." text for ${service.name}. Using the computed label "${service.campaign.endLabel}".`
+            );
+            continue;
+        }
+        if (normalizeSpace(page) !== normalizeSpace(expected)) {
+            console.warn(
+                `[bokadirekt] Campaign label for ${service.name} computed as "${expected}" but the page says "${page}". Using the page text.`
+            );
+            service.campaign.endLabel = normalizeSpace(page).replace(/^Kampanjpris\s+/i, '');
+        }
+    }
+}
+
 function summarize(description) {
     const text = String(description || '')
         .replace(/\s+/g, ' ')
@@ -77,7 +190,7 @@ function summarize(description) {
  * Björn's active services, in Bokadirekt category order.
  * Services listed on the employee but missing from the catalog are skipped.
  */
-export function servicesFromState(state) {
+export function servicesFromState(state, nowMs = Date.now()) {
     const employees = state?.employees?.all;
     const catalog = state?.services?.all;
     const categories = state?.serviceCategories?.all;
@@ -122,6 +235,19 @@ export function servicesFromState(state) {
         ordered.push({ id: key, category: '' });
     }
 
+    const nowSec = nowMs / 1000;
+    const offersByService = new Map();
+    for (const campaign of campaignsForPlace(state, placeId)) {
+        if (!campaignIsActive(campaign, nowSec)) continue;
+        for (const offer of campaign.services || []) {
+            const key = String(offer?.id ?? '');
+            if (!wanted.has(key)) continue;
+            const list = offersByService.get(key) ?? [];
+            list.push({ campaign, offer });
+            offersByService.set(key, list);
+        }
+    }
+
     const services = [];
     for (const { id, category } of ordered) {
         const service = catalog[id];
@@ -139,6 +265,7 @@ export function servicesFromState(state) {
             ? `https://www.bokadirekt.se/boka-tjanst/${placeSlug}/${slug}-${service.id}`
             : `https://www.bokadirekt.se/places/${placeSlug}`;
         const description = String(service.about?.description || '').trim();
+        const campaign = settings.hidePrice ? null : activeCampaignFor(service, offersByService.get(id));
         services.push({
             id: service.id,
             name: service.name,
@@ -153,7 +280,8 @@ export function servicesFromState(state) {
             hidePrice: Boolean(settings.hidePrice),
             hideDuration: Boolean(settings.hideDuration),
             category,
-            bookingUrl
+            bookingUrl,
+            campaign
         });
     }
 
@@ -172,11 +300,42 @@ export function servicesFromState(state) {
     };
 }
 
-export function servicesFromHtml(html) {
+function activeCampaignFor(service, offers) {
+    if (!offers?.length) return null;
+    let best = null;
+    for (const { campaign, offer } of offers) {
+        const price = campaignPrice(service.price, offer);
+        const endLabel = campaignEndLabel(Number(campaign.endDate));
+        if (price == null || !endLabel) {
+            console.warn(`[bokadirekt] Skipping campaign ${campaign.id} on ${service.name}: no sale price or end date.`);
+            continue;
+        }
+        if (best && price > best.price) continue;
+        best = {
+            id: campaign.id,
+            name: campaign.name || '',
+            startDate: Number(campaign.startDate),
+            endDate: Number(campaign.endDate),
+            price,
+            priceLabel: formatSek(price),
+            endLabel
+        };
+    }
+    if (best) {
+        console.log(
+            `[bokadirekt] ${service.name}: ${service.priceLabel || service.price} → ${best.priceLabel} (Kampanj ${best.endLabel}).`
+        );
+    }
+    return best;
+}
+
+export function servicesFromHtml(html, nowMs = Date.now()) {
     const marker = 'window.__PRELOADED_STATE__ =';
     const at = html.indexOf(marker);
     if (at < 0) throw new Error('Could not find window.__PRELOADED_STATE__ on the place page.');
-    return servicesFromState(parseJsonValue(html, at + marker.length));
+    const data = servicesFromState(parseJsonValue(html, at + marker.length), nowMs);
+    applyPageCampaignLabels(html, data);
+    return data;
 }
 
 function sameServices(previousText, nextData) {

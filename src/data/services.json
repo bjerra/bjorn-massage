@@ -1,6 +1,6 @@
 {
   "source": "https://www.bokadirekt.se/places/neoskin-39252",
-  "fetchedAt": "2026-10-09T08:28:50.367Z",
+  "fetchedAt": "2026-10-09T08:39:26.008Z",
   "placeId": 39252,
   "placeSlug": "neoskin-39252",
   "employeeId": 315850,
@@ -20,7 +20,8 @@
       "hidePrice": false,
       "hideDuration": false,
       "category": "Massage",
-      "bookingUrl": "https://www.bokadirekt.se/boka-tjanst/neoskin-39252/klassisk-massage-fokus-3347908"
+      "bookingUrl": "https://www.bokadirekt.se/boka-tjanst/neoskin-39252/klassisk-massage-fokus-3347908",
+      "campaign": null
     },
     {
       "id": 3387452,
@@ -36,7 +37,8 @@
       "hidePrice": false,
       "hideDuration": false,
       "category": "Massage",
-      "bookingUrl": "https://www.bokadirekt.se/boka-tjanst/neoskin-39252/drop-in-massage-3387452"
+      "bookingUrl": "https://www.bokadirekt.se/boka-tjanst/neoskin-39252/drop-in-massage-3387452",
+      "campaign": null
     },
     {
       "id": 3347909,
@@ -52,7 +54,16 @@
       "hidePrice": false,
       "hideDuration": false,
       "category": "Massage",
-      "bookingUrl": "https://www.bokadirekt.se/boka-tjanst/neoskin-39252/klassisk-massage-lyx-3347909"
+      "bookingUrl": "https://www.bokadirekt.se/boka-tjanst/neoskin-39252/klassisk-massage-lyx-3347909",
+      "campaign": {
+        "id": 1021390,
+        "name": "50 min massage",
+        "startDate": 1787788800,
+        "endDate": 1792886400,
+        "price": 697,
+        "priceLabel": "697 kr",
+        "endLabel": "till 25 okt"
+      }
     },
     {
       "id": 3347907,
@@ -68,7 +79,16 @@
       "hidePrice": false,
       "hideDuration": false,
       "category": "Massage",
-      "bookingUrl": "https://www.bokadirekt.se/boka-tjanst/neoskin-39252/klassisk-massage-extra-lang-3347907"
+      "bookingUrl": "https://www.bokadirekt.se/boka-tjanst/neoskin-39252/klassisk-massage-extra-lang-3347907",
+      "campaign": {
+        "id": 1067259,
+        "name": "Massage",
+        "startDate": 1789689600,
+        "endDate": 1795996800,
+        "price": 837,
+        "priceLabel": "837 kr",
+        "endLabel": "till 30 nov"
+      }
     }
   ]
 }

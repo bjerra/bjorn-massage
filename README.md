@@ -10,6 +10,8 @@ The service cards on the homepage are built from Björn's listing at Neoskin (Bo
 
 `src/data/services.json` is the committed snapshot. If the request fails, times out after 10 seconds, or the page no longer contains his services, the build logs a warning and uses that file. The list is never left empty because of a failed fetch. Run `npm run services` to refresh the snapshot locally and commit it when the prices change and you want the fallback updated.
 
+A campaign is included only when its status is active and the build time is inside `[startDate, endDate)`. The sale price is Bokadirekt's `discountPrice`, or the ordinary price with the discount percent rounded half up. The badge date is the end instant in Europe/Stockholm (`till 25 okt`). If the place page prints a different `Kampanjpris till …` label, that text is used. The snapshot stores the start and end timestamps, and a small script on the page hides the sale and restores the ordinary price outside that window, so a daily rebuild that is a few hours late does not keep an expired price on screen.
+
 `npm run build` runs the fetch once, via the `bokadirekt-services` Astro integration, before the pages are rendered. `npm run dev` does not call Bokadirekt; it uses the snapshot.
 
 ### Daily rebuild
