@@ -13,8 +13,7 @@ const placeUrl = 'https://www.bokadirekt.se/places/neoskin-39252';
 const mapsUrl = 'https://www.google.com/maps/place/Lantm%C3%A4targr%C3%A4nd+16,+553+20+J%C3%B6nk%C3%B6ping/@57.7815,14.1734,17z';
 const mapEmbed = 'https://maps.google.com/maps?q=57.7815,14.1734&hl=sv&z=16&output=embed';
 
-// Public salon details from neoskin.se and Bokadirekt place 39252.
-// Björn does not publish a separate phone number.
+// Neoskin's published opening hours, from Bokadirekt place 39252.
 const hours = [
     ['Måndag', '08:30–17:00'],
     ['Tisdag', '08:30–17:00'],
@@ -32,8 +31,6 @@ const jsonLd = {
     description,
     url: 'https://bjornmassage.se/',
     image: 'https://bjornmassage.se/og.jpg',
-    telephone: '+46722065222',
-    email: 'anais@neoskin.se',
     address: {
         '@type': 'PostalAddress',
         streetAddress: 'Lantmätargränd 16',
@@ -119,11 +116,6 @@ const jsonLd = {
                         Lantmätargränd 16<br />
                         553 20 Jönköping
                     </p>
-                    <p>
-                        <a href="tel:+46722065222">072 20 65 222</a><br />
-                        <a href="mailto:anais@neoskin.se">anais@neoskin.se</a>
-                    </p>
-                    <p class="text-base">Telefon och e-post går till salongen Neoskin.</p>
                     <h3 class="pt-2 text-xl font-semibold">Öppettider på Neoskin</h3>
                     <ul>
                         {
