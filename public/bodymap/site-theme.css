@@ -1,0 +1,71 @@
+/* Theme overrides for the body map on bjornmassage.se.
+   Loaded after bodymap.css. The widget exposes these custom properties. */
+
+[data-bodymap].bm {
+    --bm-bg: #fbf6ef;
+    --bm-surface: #fffdfb;
+    --bm-text: #4a372c;
+    --bm-muted: #6d5648;
+    --bm-line: #e6d5c6;
+    --bm-skin: #f6ebe1;
+    --bm-skin-line: #cbb5a3;
+    --bm-landmark: #eadccf;
+    --bm-muscle: #edd9c8;
+    --bm-muscle-line: #d4bba6;
+    --bm-muscle-hover: #e4c6b0;
+    /* Espresso for muscles, rose (the site pink, deepened so it reads on skin) for referral areas. */
+    --bm-source: #4a372c;
+    --bm-source-soft: #c4a894;
+    --bm-zone: #e35d78;
+    --bm-tp: #9a3044;
+    --bm-focus: #4a372c;
+    --bm-radius: 16px;
+    --bm-font: inherit;
+
+    max-width: 100%;
+    color: var(--bm-text);
+    box-shadow: 0 10px 30px rgba(74, 55, 44, 0.12);
+}
+
+/* The site underlines links. Anything linked inside the card stays on the card color. */
+[data-bodymap].bm a {
+    color: inherit;
+    text-underline-offset: 2px;
+}
+
+[data-bodymap].bm .bm-seg {
+    background: #efe4d8;
+}
+
+[data-bodymap].bm .bm-item:hover {
+    background: #f8f1ea;
+    border-color: #d7b5a4;
+}
+
+[data-bodymap].bm .bm-close:hover {
+    background: #f3e8dc;
+    color: var(--bm-text);
+}
+
+[data-bodymap].bm .bm-chip-on,
+[data-bodymap].bm .bm-peekbar.bm-on {
+    color: #fff;
+}
+
+[data-bodymap].bm .bm-peekbar.bm-on {
+    background: var(--bm-text);
+}
+
+[data-bodymap].bm .bm-peek-go {
+    color: #f6c2cb;
+}
+
+[data-bodymap].bm .bm-tag {
+    border-color: #f0c2cb;
+    background: #fdf1f3;
+    color: #8f2d44;
+}
+
+[data-bodymap].bm .bm-tag:hover {
+    background: #fbe4e9;
+}
