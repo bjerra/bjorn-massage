@@ -1,8 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { Image } from 'astro:assets';
+import { Image, Picture } from 'astro:assets';
 import { placeUrl } from '../data/site';
-// Hero portrait. Replace this one file to use a photo of Björn.
+// Hero photo of the treatment room. Replace src/assets/hero.jpg to change it.
 import hero from '../assets/hero.jpg';
 import neoLogo from '../assets/neo.png';
 import ServiceList from '../components/ServiceList.astro';
@@ -67,12 +67,14 @@ const jsonLd = {
     <section class="hero">
         <h1 class="display">Massage med <em>lugn</em> hand och fast tryck.</h1>
         <div>
-            <Image
+            <Picture
                 src={hero}
-                alt="Massage av nacke och axlar"
-                width={800}
-                height={1192}
-                format="webp"
+                formats={['avif', 'webp']}
+                alt="Behandlingsrummet på Neoskin med massagebänk"
+                width={1400}
+                height={1866}
+                widths={[700, 1050, 1400]}
+                sizes="(min-width: 900px) 42vw, 100vw"
                 class="hero-photo"
                 loading="eager"
             />

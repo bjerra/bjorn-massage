@@ -14,7 +14,7 @@ Webbplats för Björn Eriksson, massageterapeut på Neoskin i Jönköping. Sajte
 
 `netlify.toml` styr byggkommandot, pekar www mot apex, skickar bort gamla demosidor och sätter säkerhets- och cachehuvuden.
 
-Hero-bilden är `src/assets/hero.jpg`. Byt den filen när ett porträtt ska in. Just nu är det den befintliga massagebilden, visad i svartvitt.
+Hero-bilden är `src/assets/hero.jpg`, ett foto av behandlingsrummet på Neoskin. Byt den filen om bilden ska bytas.
 
 ## Massage prices from Bokadirekt
 
