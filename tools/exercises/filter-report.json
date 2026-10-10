@@ -1,0 +1,411 @@
+{
+  "source": "data/exercises.json",
+  "sourceCount": 873,
+  "stretching": 123,
+  "strengthenBeforeNameFilter": 272,
+  "dropped": [
+    {
+      "name": "Alternating Hang Clean",
+      "id": "Alternating_Hang_Clean",
+      "reasons": [
+        "Clean"
+      ]
+    },
+    {
+      "name": "Bottoms-Up Clean From The Hang Position",
+      "id": "Bottoms-Up_Clean_From_The_Hang_Position",
+      "reasons": [
+        "Clean"
+      ]
+    },
+    {
+      "name": "Double Kettlebell Alternating Hang Clean",
+      "id": "Double_Kettlebell_Alternating_Hang_Clean",
+      "reasons": [
+        "Clean"
+      ]
+    },
+    {
+      "name": "Double Kettlebell Jerk",
+      "id": "Double_Kettlebell_Jerk",
+      "reasons": [
+        "Jerk"
+      ]
+    },
+    {
+      "name": "Dumbbell Clean",
+      "id": "Dumbbell_Clean",
+      "reasons": [
+        "Clean"
+      ]
+    },
+    {
+      "name": "Iron Cross",
+      "id": "Iron_Cross",
+      "reasons": [
+        "Iron Cross"
+      ]
+    },
+    {
+      "name": "Kettlebell Dead Clean",
+      "id": "Kettlebell_Dead_Clean",
+      "reasons": [
+        "Clean"
+      ]
+    },
+    {
+      "name": "Kettlebell Hang Clean",
+      "id": "Kettlebell_Hang_Clean",
+      "reasons": [
+        "Clean"
+      ]
+    },
+    {
+      "name": "Kettlebell Pirate Ships",
+      "id": "Kettlebell_Pirate_Ships",
+      "reasons": [
+        "Pirate Ships"
+      ]
+    },
+    {
+      "name": "Kettlebell Thruster",
+      "id": "Kettlebell_Thruster",
+      "reasons": [
+        "Thruster"
+      ]
+    },
+    {
+      "name": "One-Arm Kettlebell Clean",
+      "id": "One-Arm_Kettlebell_Clean",
+      "reasons": [
+        "Clean"
+      ]
+    },
+    {
+      "name": "One-Arm Kettlebell Clean and Jerk",
+      "id": "One-Arm_Kettlebell_Clean_and_Jerk",
+      "reasons": [
+        "Clean",
+        "Jerk"
+      ]
+    },
+    {
+      "name": "One-Arm Kettlebell Jerk",
+      "id": "One-Arm_Kettlebell_Jerk",
+      "reasons": [
+        "Jerk"
+      ]
+    },
+    {
+      "name": "One-Arm Kettlebell Split Jerk",
+      "id": "One-Arm_Kettlebell_Split_Jerk",
+      "reasons": [
+        "Jerk"
+      ]
+    },
+    {
+      "name": "One-Arm Kettlebell Swings",
+      "id": "One-Arm_Kettlebell_Swings",
+      "reasons": [
+        "Swing power move"
+      ]
+    },
+    {
+      "name": "One-Arm Open Palm Kettlebell Clean",
+      "id": "One-Arm_Open_Palm_Kettlebell_Clean",
+      "reasons": [
+        "Clean"
+      ]
+    },
+    {
+      "name": "Power Partials",
+      "id": "Power_Partials",
+      "reasons": [
+        "Power Partials"
+      ]
+    },
+    {
+      "name": "Two-Arm Kettlebell Clean",
+      "id": "Two-Arm_Kettlebell_Clean",
+      "reasons": [
+        "Clean"
+      ]
+    },
+    {
+      "name": "Two-Arm Kettlebell Jerk",
+      "id": "Two-Arm_Kettlebell_Jerk",
+      "reasons": [
+        "Jerk"
+      ]
+    },
+    {
+      "name": "Vertical Swing",
+      "id": "Vertical_Swing",
+      "reasons": [
+        "Swing power move"
+      ]
+    }
+  ],
+  "strengthenKept": 252,
+  "totalKept": 375,
+  "missingSwedishCues": [
+    "Side Jackknife",
+    "Side Bridge"
+  ],
+  "supraspinatus": [
+    {
+      "name": "Alternating Deltoid Raise",
+      "name_sv": "Alternerande deltoidlyft",
+      "id": "Alternating_Deltoid_Raise",
+      "type": "strengthen",
+      "muscleIds": [
+        "deltoideus",
+        "supraspinatus"
+      ]
+    },
+    {
+      "name": "Dumbbell Scaption",
+      "name_sv": "Scaption med hantlar",
+      "id": "Dumbbell_Scaption",
+      "type": "strengthen",
+      "muscleIds": [
+        "deltoideus",
+        "trapezius_desc",
+        "trapezius_trans",
+        "supraspinatus"
+      ]
+    },
+    {
+      "name": "Lateral Raise - With Bands",
+      "name_sv": "Sidolyft med band",
+      "id": "Lateral_Raise_-_With_Bands",
+      "type": "strengthen",
+      "muscleIds": [
+        "deltoideus",
+        "supraspinatus"
+      ]
+    },
+    {
+      "name": "One-Arm Incline Lateral Raise",
+      "name_sv": "Enarmad sidolyft på lutande bänk",
+      "id": "One-Arm_Incline_Lateral_Raise",
+      "type": "strengthen",
+      "muscleIds": [
+        "deltoideus",
+        "supraspinatus"
+      ]
+    },
+    {
+      "name": "One-Arm Side Laterals",
+      "name_sv": "Enarms sidolyft",
+      "id": "One-Arm_Side_Laterals",
+      "type": "strengthen",
+      "muscleIds": [
+        "deltoideus",
+        "supraspinatus"
+      ]
+    },
+    {
+      "name": "Seated Side Lateral Raise",
+      "name_sv": "Sittande sidolyft",
+      "id": "Seated_Side_Lateral_Raise",
+      "type": "strengthen",
+      "muscleIds": [
+        "deltoideus",
+        "supraspinatus"
+      ]
+    },
+    {
+      "name": "Side Lateral Raise",
+      "name_sv": "Sidolyft med hantlar",
+      "id": "Side_Lateral_Raise",
+      "type": "strengthen",
+      "muscleIds": [
+        "deltoideus",
+        "supraspinatus"
+      ]
+    },
+    {
+      "name": "Side Laterals to Front Raise",
+      "name_sv": "Sidolyft med övergång till framlyft",
+      "id": "Side_Laterals_to_Front_Raise",
+      "type": "strengthen",
+      "muscleIds": [
+        "deltoideus",
+        "trapezius_desc",
+        "trapezius_trans",
+        "supraspinatus"
+      ]
+    }
+  ],
+  "infraspinatus": [
+    {
+      "name": "External Rotation",
+      "name_sv": "Utåtrotation med hantel",
+      "id": "External_Rotation",
+      "type": "strengthen",
+      "muscleIds": [
+        "deltoideus",
+        "infraspinatus",
+        "teres_minor"
+      ]
+    },
+    {
+      "name": "External Rotation with Band",
+      "name_sv": "Utåtrotation med band",
+      "id": "External_Rotation_with_Band",
+      "type": "strengthen",
+      "muscleIds": [
+        "deltoideus",
+        "infraspinatus",
+        "teres_minor"
+      ]
+    },
+    {
+      "name": "Reverse Flyes With External Rotation",
+      "name_sv": "Omvända flyes med extern rotation",
+      "id": "Reverse_Flyes_With_External_Rotation",
+      "type": "strengthen",
+      "muscleIds": [
+        "deltoideus",
+        "infraspinatus",
+        "teres_minor"
+      ]
+    },
+    {
+      "name": "Band Pull Apart",
+      "name_sv": "Band pull apart",
+      "id": "Band_Pull_Apart",
+      "type": "strengthen",
+      "muscleIds": [
+        "deltoideus",
+        "trapezius_trans",
+        "rhomboids",
+        "trapezius_desc",
+        "infraspinatus",
+        "teres_minor"
+      ]
+    },
+    {
+      "name": "Cuban Press",
+      "name_sv": "Cuban press",
+      "id": "Cuban_Press",
+      "type": "strengthen",
+      "muscleIds": [
+        "deltoideus",
+        "trapezius_desc",
+        "trapezius_trans",
+        "infraspinatus",
+        "teres_minor"
+      ]
+    },
+    {
+      "name": "Shoulder Stretch",
+      "name_sv": "Axelstretch",
+      "id": "Shoulder_Stretch",
+      "type": "stretching",
+      "muscleIds": [
+        "deltoideus",
+        "infraspinatus",
+        "teres_minor"
+      ]
+    }
+  ],
+  "teres_minor": [
+    {
+      "name": "External Rotation",
+      "name_sv": "Utåtrotation med hantel",
+      "id": "External_Rotation",
+      "type": "strengthen",
+      "muscleIds": [
+        "deltoideus",
+        "infraspinatus",
+        "teres_minor"
+      ]
+    },
+    {
+      "name": "External Rotation with Band",
+      "name_sv": "Utåtrotation med band",
+      "id": "External_Rotation_with_Band",
+      "type": "strengthen",
+      "muscleIds": [
+        "deltoideus",
+        "infraspinatus",
+        "teres_minor"
+      ]
+    },
+    {
+      "name": "Reverse Flyes With External Rotation",
+      "name_sv": "Omvända flyes med extern rotation",
+      "id": "Reverse_Flyes_With_External_Rotation",
+      "type": "strengthen",
+      "muscleIds": [
+        "deltoideus",
+        "infraspinatus",
+        "teres_minor"
+      ]
+    },
+    {
+      "name": "Band Pull Apart",
+      "name_sv": "Band pull apart",
+      "id": "Band_Pull_Apart",
+      "type": "strengthen",
+      "muscleIds": [
+        "deltoideus",
+        "trapezius_trans",
+        "rhomboids",
+        "trapezius_desc",
+        "infraspinatus",
+        "teres_minor"
+      ]
+    },
+    {
+      "name": "Cuban Press",
+      "name_sv": "Cuban press",
+      "id": "Cuban_Press",
+      "type": "strengthen",
+      "muscleIds": [
+        "deltoideus",
+        "trapezius_desc",
+        "trapezius_trans",
+        "infraspinatus",
+        "teres_minor"
+      ]
+    },
+    {
+      "name": "Shoulder Stretch",
+      "name_sv": "Axelstretch",
+      "id": "Shoulder_Stretch",
+      "type": "stretching",
+      "muscleIds": [
+        "deltoideus",
+        "infraspinatus",
+        "teres_minor"
+      ]
+    }
+  ],
+  "subscapularis": [
+    {
+      "name": "Internal Rotation with Band",
+      "name_sv": "Inåtrotation med band",
+      "id": "Internal_Rotation_with_Band",
+      "type": "strengthen",
+      "muscleIds": [
+        "deltoideus",
+        "subscapularis"
+      ]
+    }
+  ],
+  "notes": [
+    "infraspinatus and teres_minor are assigned together.",
+    "No exercise in the source is named Empty Can, Full Can, or Sleeper Stretch.",
+    "Dumbbell Scaption is thumbs-up abduction in the scapular plane.",
+    "One-Arm Side Laterals, Seated Side Lateral Raise, Side Lateral Raise and Lateral Raise - With Bands use the pouring-water (empty-can) cue.",
+    "Lying One-Arm Lateral Raise, Dumbbell Lying Rear Lateral Raise, Lying Rear Delt Raise and the other rear-delt raises are horizontal abduction and are not tagged as cuff muscles.",
+    "Reverse Flyes (without external rotation) stays on deltoideus only. Reverse Flyes With External Rotation is tagged infraspinatus and teres_minor.",
+    "Shoulder Stretch is the cross-body posterior cuff stretch.",
+    "Side Wrist Pull crosses the midline, but the cue says to feel the stretch in the back, so it is not tagged.",
+    "No kept stretch clearly lengthens subscapularis.",
+    "Cable Internal Rotation, Cable Seated Lateral Raise and External Rotation with Cable are in the source and were excluded by the equipment rule."
+  ]
+}
