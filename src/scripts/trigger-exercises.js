@@ -92,7 +92,7 @@ function writeHash(map) {
     const next = parts.join('&');
     if (next) {
         if (location.hash !== '#' + next) history.replaceState(null, '', '#' + next);
-    } else if (location.hash) {
+    } else if (location.hash && !/^#movement=/.test(location.hash)) {
         history.replaceState(null, '', location.pathname + location.search);
     }
 }
@@ -649,6 +649,13 @@ async function start() {
         if (next.ex && next.ex !== state.openId) openExercise(next.ex, null);
     });
 }
+
+window.addEventListener('bodymap-strings', () => {
+    state.exercises.forEach((exercise) => {
+        delete exercise._search;
+    });
+    if (state.ready) renderSearch();
+});
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
 else start();

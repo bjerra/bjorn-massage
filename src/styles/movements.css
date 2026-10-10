@@ -1,0 +1,149 @@
+/* Movement lookup. Editorial palette, same controls as the exercise search. */
+
+.mv-search {
+    padding: 2.25rem 0 0.5rem;
+    border-top: 1px solid var(--color-rule);
+}
+
+.mv-search h2 {
+    margin: 0.2rem 0 0.85rem;
+}
+
+.mv-search .lede {
+    margin-bottom: 1.25rem;
+    max-width: 40rem;
+}
+
+.mv-form {
+    display: grid;
+    gap: 0.85rem;
+    max-width: 40rem;
+}
+
+.mv-field {
+    display: grid;
+    gap: 0.35rem;
+    font-size: 0.92rem;
+}
+
+.mv-field input,
+.mv-field select {
+    width: 100%;
+    min-height: 44px;
+    padding: 0.55rem 0.7rem;
+    border: 1px solid var(--color-ink);
+    border-radius: 2px;
+    background: #fff;
+    color: var(--color-ink);
+    font: inherit;
+}
+
+.mv-field input:focus-visible,
+.mv-field select:focus-visible,
+.mv-clear:focus-visible,
+.mv-suggest button:focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 2px;
+}
+
+.mv-suggest {
+    list-style: none;
+    margin: 0.35rem 0 0;
+    padding: 0;
+    border: 1px solid var(--color-ink);
+    background: #fff;
+    max-height: 16rem;
+    overflow: auto;
+}
+
+.mv-suggest button {
+    display: block;
+    width: 100%;
+    min-height: 44px;
+    padding: 0.55rem 0.7rem;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.mv-suggest button[aria-selected='true'],
+.mv-suggest button:hover {
+    background: #f4f0ea;
+}
+
+.mv-clear {
+    justify-self: start;
+    min-height: 44px;
+    padding: 0.45rem 0.9rem;
+    border: 1px solid var(--color-ink);
+    border-radius: 2px;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+}
+
+.mv-clear:hover {
+    background: #f4f0ea;
+}
+
+.mv-status {
+    min-height: 1.4em;
+    margin: 0.75rem 0 0;
+    color: var(--color-muted);
+    font-size: 0.92rem;
+}
+
+.mv-note,
+.mv-side {
+    margin: 0 0 0.9rem;
+    color: var(--color-muted);
+    font-size: 0.92rem;
+}
+
+.mv-side {
+    padding: 0.75rem 0.85rem;
+    border-left: 3px solid var(--color-accent);
+    background: #f8f1ee;
+    color: var(--color-ink);
+}
+
+.mv-key {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem 1.25rem;
+    margin: 0 0 0.9rem;
+    font-size: 0.92rem;
+}
+
+.mv-swatch {
+    display: inline-block;
+    width: 0.85rem;
+    height: 0.85rem;
+    margin-right: 0.35rem;
+    border-radius: 2px;
+    vertical-align: -0.1rem;
+}
+
+.mv-swatch-prime {
+    background: #7a3b2e;
+}
+
+.mv-swatch-syn {
+    background: #c9a197;
+}
+
+.mv-offmap {
+    display: block;
+    margin-top: 0.15rem;
+    color: var(--color-muted);
+    font-size: 0.82rem;
+    font-weight: 450;
+}
+
+.bm-panel .mv-offmap {
+    color: var(--bm-muted, #55504a);
+}

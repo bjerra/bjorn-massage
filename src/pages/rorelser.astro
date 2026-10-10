@@ -1,0 +1,55 @@
+---
+import Layout from '../layouts/Layout.astro';
+import MovementLookup from '../components/MovementLookup.astro';
+import { placeUrl } from '../data/site';
+import '../styles/exercises.css';
+import '../styles/movements.css';
+
+const description =
+    'Slå upp vilka muskler som vanligtvis arbetar i en rörelse, till exempel halsryggens extension. Latinska muskelnamn. Ingen undersökning.';
+---
+
+<Layout title="Rörelser – BjörnMassage" description={description} noindex>
+    <link slot="head" rel="stylesheet" href="/bodymap/bodymap.css" />
+    <link slot="head" rel="stylesheet" href="/bodymap/site-theme.css" />
+
+    <section class="section trigger-intro" lang="sv">
+        <h1>Rörelser</h1>
+        <div class="prose">
+            <p>
+                Välj en led och en rörelse. Kartan markerar muskler som vanligtvis arbetar då: primära muskler i mörkare
+                färg, synergister i ljusare. Namnen är latinska.
+            </p>
+            <p>
+                Listan är ingen undersökning och säger inte vad en viss smärta beror på. Tryck på en muskel för att se
+                triggerpunkter och övningar, där sådana finns.
+            </p>
+        </div>
+        <p class="mt-8">
+            <a class="btn" href={placeUrl}>Boka tid</a>
+        </p>
+    </section>
+
+    <MovementLookup />
+
+    <div class="trigger-map">
+        <div data-bodymap data-mode="movements"></div>
+    </div>
+
+    <script is:inline>window.BODYMAP_MOVEMENT_MODE = true;</script>
+    <script is:inline src="/bodymap/strings-sv.js"></script>
+    <script is:inline src="/bodymap/bodymap-data.js" defer></script>
+    <script is:inline src="/bodymap/bodymap-zones.js" defer></script>
+    <script is:inline src="/bodymap/bodymap.js" defer></script>
+
+    <dialog id="ex-dialog" class="ex-dialog" aria-labelledby="ex-dialog-title">
+        <div class="ex-dialog-top">
+            <button type="button" class="ex-close">Stäng</button>
+        </div>
+        <div id="ex-dialog-body" class="ex-dialog-body"></div>
+    </dialog>
+    <script>
+        import '../scripts/trigger-exercises.js';
+        import '../scripts/movements.js';
+    </script>
+</Layout>

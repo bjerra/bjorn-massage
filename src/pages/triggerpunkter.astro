@@ -1,7 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import MovementLookup from '../components/MovementLookup.astro';
 import { placeUrl } from '../data/site';
+import { SHOW_MOVEMENT_LOOKUP } from '../data/features';
 import '../styles/exercises.css';
+import '../styles/movements.css';
 
 const description =
     'Interaktiv karta över triggerpunkter hos BjörnMassage i Jönköping, med stretch- och styrkeövningar att slå upp. Typiska utstrålningsmönster från litteraturen. Smärta kan ha andra orsaker.';
@@ -74,219 +77,16 @@ const description =
         <button type="button" id="ex-search-more" class="ex-more" hidden>Visa fler</button>
     </section>
 
-    <div class="trigger-map">
+    {SHOW_MOVEMENT_LOOKUP && <MovementLookup toggleWithMode />}
 
+    <div class="trigger-map">
         <div data-bodymap></div>
     </div>
-        <script is:inline>
-            window.BODYMAP_STRINGS = {
-                title: 'Karta över triggerpunkter',
-                modeLabel: 'Välj hur du vill använda kartan',
-                modeZones: 'Var gör det ont?',
-                modeMuscles: 'Utforska muskler',
-                hintZones:
-                    'Tryck på området där du känner smärta. Kartan visar vilka muskler som ofta strålar dit.',
-                hintMuscles:
-                    'Tryck på en muskel för att se dess triggerpunkter, utstrålning och övningar.',
-                front: 'Framsida',
-                back: 'Baksida',
-                frontAria: 'Kroppen sedd framifrån',
-                backAria: 'Kroppen sedd bakifrån',
-                pickZone: 'Eller välj ett område i listan…',
-                pickMuscle: 'Eller välj en muskel i listan…',
-                emptyZonesTitle: 'Var gör det ont?',
-                emptyZonesText:
-                    'Välj ett markerat område på kroppen (fram- eller baksida) för att se vilka muskler som kan stråla dit.',
-                emptyMusclesTitle: 'Utforska muskler',
-                emptyMusclesText:
-                    'Välj en muskel på kroppen för att se dess triggerpunkter och typiska utstrålningsmönster.',
-                zoneKicker: 'Smärtområde',
-                muscleKicker: 'Muskel',
-                zoneMusclesHeading: 'Muskler vars triggerpunkter ofta strålar hit',
-                zoneMusclesNone: 'Inga muskler är registrerade för det här området ännu.',
-                muscleTpsHeading: 'Triggerpunkter',
-                muscleZonesHeading: 'Typiska utstrålningsområden',
-                muscleZonesNone: 'Inga utstrålningsområden är registrerade för den här muskeln ännu.',
-                tpShort: 'TP',
-                tpUnnamed: 'Ytterligare triggerpunkt',
-                refersTo: 'Strålar till',
-                sharedHeading: 'Delar den här platsen på kartan med',
-                seeMuscle: 'Utforska den här muskeln',
-                seeZone: 'Visa det här smärtområdet',
-                clear: 'Rensa',
-                showDetails: 'Detaljer',
-                clearAria: 'Rensa val',
-                legendZone: 'Utstrålningsområde',
-                legendMuscle: 'Muskel med triggerpunkter',
-                legendTp: 'Triggerpunkt',
-                countMuscles: function (n) {
-                    return n === 1 ? '1 muskel' : n + ' muskler';
-                },
-                sideAndView: function (v) {
-                    return v === 'front' ? 'framifrån' : 'bakifrån';
-                },
-                disclaimer:
-                    'Utstrålningsmönstren är typiska kartor från triggerpunktslitteraturen (Travell & Simons). Smärta kan ha många andra orsaker. Vid svår, ihållande eller oförklarad smärta, kontakta vården.',
-                muscles: {
-                    masseter: 'Masseter',
-                    lateral_pterygoid: 'Pterygoideus lateralis',
-                    medial_pterygoid: 'Pterygoideus medialis',
-                    temporalis: 'Temporalis',
-                    sternocleidomastoideus: 'Sternocleidomastoideus',
-                    scaleni: 'Scaleni',
-                    suboccipitals: 'Suboccipitales',
-                    trapezius_desc: 'Trapezius pars descendens',
-                    trapezius_trans: 'Trapezius pars transversa',
-                    trapezius_asc: 'Trapezius pars ascendens',
-                    levator_scapulae: 'Levator scapulae',
-                    rhomboids: 'Rhomboidei',
-                    supraspinatus: 'Supraspinatus',
-                    infraspinatus: 'Infraspinatus',
-                    subscapularis: 'Subscapularis',
-                    teres_major: 'Teres major',
-                    teres_minor: 'Teres minor',
-                    latissimus_dorsi: 'Latissimus dorsi',
-                    deltoideus: 'Deltoideus',
-                    pectoralis_major: 'Pectoralis major',
-                    pectoralis_minor: 'Pectoralis minor',
-                    serratus_anterior: 'Serratus anterior',
-                    biceps_brachii: 'Biceps brachii',
-                    triceps_brachii: 'Triceps brachii',
-                    forearm_flexors: 'Flexores antebrachii',
-                    forearm_extensors: 'Extensores antebrachii',
-                    rectus_abdominis: 'Rectus abdominis',
-                    external_oblique: 'Obliquus externus abdominis',
-                    erector_spinae: 'Erector spinae',
-                    multifidus: 'Multifidus',
-                    quadratus_lumborum: 'Quadratus lumborum',
-                    iliopsoas: 'Iliopsoas',
-                    gluteus_maximus: 'Gluteus maximus',
-                    gluteus_medius: 'Gluteus medius',
-                    gluteus_minimus: 'Gluteus minimus',
-                    piriformis: 'Piriformis',
-                    tensor_fasciae_latae: 'Tensor fasciae latae',
-                    sartorius: 'Sartorius',
-                    rectus_femoris: 'Rectus femoris',
-                    vastus_lateralis: 'Vastus lateralis',
-                    vastus_medialis: 'Vastus medialis',
-                    adductor_longus: 'Adductor longus',
-                    adductor_magnus: 'Adductor magnus',
-                    gracilis: 'Gracilis',
-                    hamstrings: 'Ischiocrurales',
-                    gastrocnemius: 'Gastrocnemius',
-                    soleus: 'Soleus',
-                    tibialis_anterior: 'Tibialis anterior',
-                    peroneus_longus: 'Fibularis longus',
-                    peroneus_brevis: 'Fibularis brevis'
-                },
-                muscleFind: {
-                    masseter: 'Tuggmuskeln Masseter',
-                    lateral_pterygoid: 'Yttre vingmuskeln Lateral pterygoid',
-                    medial_pterygoid: 'Inre vingmuskeln Medial pterygoid',
-                    temporalis: 'Tinningmuskeln Temporalis',
-                    sternocleidomastoideus: 'Nickmuskeln SCM Sternocleidomastoid',
-                    scaleni: 'Scalenusmusklerna Scalenes',
-                    suboccipitals: 'Djupa nackmuskler Suboccipitals',
-                    trapezius_desc: 'Övre kappmuskeln kappmuskeln Upper trapezius',
-                    trapezius_trans: 'Mellersta kappmuskeln kappmuskeln Middle trapezius',
-                    trapezius_asc: 'Nedre kappmuskeln kappmuskeln Lower trapezius',
-                    levator_scapulae: 'Skulderbladshöjaren Levator scapulae',
-                    rhomboids: 'Rutmusklerna Rhomboids',
-                    supraspinatus: 'Supraspinatus',
-                    infraspinatus: 'Infraspinatus',
-                    subscapularis: 'Subscapularis',
-                    teres_major: 'Teres major',
-                    teres_minor: 'Teres minor',
-                    latissimus_dorsi: 'Breda ryggmuskeln Latissimus dorsi',
-                    deltoideus: 'Deltamuskeln Deltoid',
-                    pectoralis_major: 'Stora bröstmuskeln Pectoralis major',
-                    pectoralis_minor: 'Lilla bröstmuskeln Pectoralis minor',
-                    serratus_anterior: 'Främre sågmuskeln Serratus anterior',
-                    biceps_brachii: 'Biceps brachii',
-                    triceps_brachii: 'Triceps brachii',
-                    forearm_flexors: 'Underarmens böjmuskler Forearm flexors',
-                    forearm_extensors: 'Underarmens sträckmuskler Forearm extensors',
-                    rectus_abdominis: 'Raka bukmuskeln Rectus abdominis',
-                    external_oblique: 'Yttre sneda bukmuskeln External oblique',
-                    erector_spinae: 'Raka ryggmuskeln Erector spinae',
-                    multifidus: 'Multifidus',
-                    quadratus_lumborum: 'Quadratus lumborum',
-                    iliopsoas: 'Höftböjaren iliopsoas',
-                    gluteus_maximus: 'Stora sätesmuskeln Gluteus maximus',
-                    gluteus_medius: 'Mellersta sätesmuskeln Gluteus medius',
-                    gluteus_minimus: 'Lilla sätesmuskeln Gluteus minimus',
-                    piriformis: 'Piriformis',
-                    tensor_fasciae_latae: 'Lårfasciaspännaren TFL Tensor fasciae latae',
-                    sartorius: 'Skräddarmuskeln Sartorius',
-                    rectus_femoris: 'Raka lårmuskeln Rectus femoris',
-                    vastus_lateralis: 'Yttre vida lårmuskeln Vastus lateralis',
-                    vastus_medialis: 'Inre vida lårmuskeln Vastus medialis',
-                    adductor_longus: 'Långa inåtföraren Adductor longus',
-                    adductor_magnus: 'Stora inåtföraren Adductor magnus',
-                    gracilis: 'Gracilis',
-                    hamstrings: 'Bakre lårmusklerna Hamstrings',
-                    gastrocnemius: 'Tvillingvadmuskeln Gastrocnemius',
-                    soleus: 'Flundramuskeln Soleus',
-                    tibialis_anterior: 'Främre skenbensmuskeln Tibialis anterior',
-                    peroneus_longus: 'Långa vadbensmuskeln Peroneus longus Fibularis longus',
-                    peroneus_brevis: 'Korta vadbensmuskeln Peroneus brevis Fibularis brevis'
-                },
-                zones: {
-                    head_temporal: 'Huvud — tinning',
-                    head_occipital: 'Huvud — bakhuvud / skallbas',
-                    head_eye: 'Huvud — runt ögat',
-                    neck_posterior: 'Nacke — baksida',
-                    neck_lateral: 'Nacke — sida',
-                    shoulder_anterior: 'Axel — framsida',
-                    shoulder_posterior: 'Axel — baksida',
-                    scapula_medial: 'Skulderblad — inre kant',
-                    arm_anterior: 'Arm — framsida',
-                    arm_posterior: 'Arm — baksida',
-                    chest: 'Bröst',
-                    thoracic_spine: 'Bröstrygg',
-                    lumbar: 'Ländrygg',
-                    sacral_gluteal: 'Korsben / säte',
-                    hip_lateral: 'Höft — utsida',
-                    thigh_anterior: 'Lår — framsida',
-                    thigh_posterior: 'Lår — baksida',
-                    knee_anterior: 'Knä — framsida',
-                    knee_posterior: 'Knä — baksida',
-                    lower_leg_anterior: 'Underben — framsida',
-                    lower_leg_posterior: 'Underben — baksida / vad',
-                    foot_ankle_anterior: 'Fot och fotled — framsida',
-                    foot_ankle_posterior: 'Fot och fotled — häl',
-                    face_jaw: 'Ansikte / käke',
-                    elbow_anterior: 'Armbåge — insida',
-                    elbow_posterior: 'Armbåge — utsida',
-                    wrist_hand_anterior: 'Handled och handflata',
-                    wrist_hand_posterior: 'Handled och handrygg',
-                    abdomen_region: 'Mage',
-                    groin_inner_thigh: 'Ljumske / insida lår'
-                },
-                regions: {
-                    head: 'Huvud',
-                    neck: 'Nacke',
-                    shoulder: 'Axel',
-                    arm: 'Arm',
-                    chest: 'Bröst',
-                    thoracic: 'Bröstrygg',
-                    lumbar: 'Ländrygg',
-                    hip: 'Höft / säte',
-                    thigh: 'Lår',
-                    knee: 'Knä',
-                    lower_leg: 'Underben',
-                    foot: 'Fot / fotled',
-                    face: 'Ansikte / käke',
-                    elbow: 'Armbåge',
-                    wrist_hand: 'Handled / hand',
-                    abdomen: 'Mage',
-                    hip_groin: 'Ljumske / insida lår'
-                }
-            };
-        </script>
-        <script src="/bodymap/bodymap-data.js" defer></script>
-        <script src="/bodymap/bodymap-zones.js" defer></script>
-        <script src="/bodymap/bodymap.js" defer></script>
+        {SHOW_MOVEMENT_LOOKUP && <script is:inline>window.BODYMAP_MOVEMENT_MODE = true;</script>}
+        <script is:inline src="/bodymap/strings-sv.js"></script>
+        <script is:inline src="/bodymap/bodymap-data.js" defer></script>
+        <script is:inline src="/bodymap/bodymap-zones.js" defer></script>
+        <script is:inline src="/bodymap/bodymap.js" defer></script>
 
         <dialog id="ex-dialog" class="ex-dialog" aria-labelledby="ex-dialog-title">
             <div class="ex-dialog-top">
@@ -297,4 +97,11 @@ const description =
         <script>
             import '../scripts/trigger-exercises.js';
         </script>
+        {
+            SHOW_MOVEMENT_LOOKUP && (
+                <script>
+                    import '../scripts/movements.js';
+                </script>
+            )
+        }
 </Layout>

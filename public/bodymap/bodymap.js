@@ -37,6 +37,8 @@
     muscleTpsHeading: 'Trigger points',
     muscleZonesHeading: 'Typical referral areas',
     muscleZonesNone: 'No referral areas recorded for this muscle yet.',
+    muscleTpsNone: 'No trigger points are registered for this muscle yet.',
+    notOnMap: 'Not drawn on the map.',
     tpShort: 'TP',
     tpUnnamed: 'Additional trigger point',
     refersTo: 'Refers to',
@@ -58,13 +60,13 @@
       medial_pterygoid: 'Pterygoideus medialis',
       temporalis: 'Temporalis',
       sternocleidomastoideus: 'Sternocleidomastoideus',
-      scaleni: 'Scaleni',
-      suboccipitals: 'Suboccipitales',
+      scaleni: 'Scaleni (anterior, medius, posterior)',
+      suboccipitals: 'Mm. suboccipitales',
       trapezius_desc: 'Trapezius pars descendens',
       trapezius_trans: 'Trapezius pars transversa',
       trapezius_asc: 'Trapezius pars ascendens',
       levator_scapulae: 'Levator scapulae',
-      rhomboids: 'Rhomboidei',
+      rhomboids: 'Mm. rhomboidei (major et minor)',
       supraspinatus: 'Supraspinatus',
       infraspinatus: 'Infraspinatus',
       subscapularis: 'Subscapularis',
@@ -77,11 +79,11 @@
       serratus_anterior: 'Serratus anterior',
       biceps_brachii: 'Biceps brachii',
       triceps_brachii: 'Triceps brachii',
-      forearm_flexors: 'Flexores antebrachii',
-      forearm_extensors: 'Extensores antebrachii',
+      forearm_flexors: 'Mm. flexores antebrachii',
+      forearm_extensors: 'Mm. extensores antebrachii',
       rectus_abdominis: 'Rectus abdominis',
       external_oblique: 'Obliquus externus abdominis',
-      erector_spinae: 'Erector spinae',
+      erector_spinae: 'Mm. erectores spinae',
       multifidus: 'Multifidus',
       quadratus_lumborum: 'Quadratus lumborum',
       iliopsoas: 'Iliopsoas',
@@ -97,12 +99,12 @@
       adductor_longus: 'Adductor longus',
       adductor_magnus: 'Adductor magnus',
       gracilis: 'Gracilis',
-      hamstrings: 'Ischiocrurales',
+      hamstrings: 'Mm. ischiocrurales (Hamstrings)',
       gastrocnemius: 'Gastrocnemius',
       soleus: 'Soleus',
       tibialis_anterior: 'Tibialis anterior',
-      peroneus_longus: 'Fibularis longus',
-      peroneus_brevis: 'Fibularis brevis'
+      peroneus_longus: 'Peroneus longus',
+      peroneus_brevis: 'Peroneus brevis'
     },
     // Zone + region labels default to the data file; override here to translate.
     zones: {},
@@ -146,7 +148,11 @@
     this.shapes = opts.zoneShapes || window.BODYMAP_ZONE_SHAPES || {};
     this.t = merge(merge(STRINGS, window.BODYMAP_STRINGS), opts.strings);
     this.id = 'bm' + (++uid);
-    this.mode = opts.mode === 'muscles' ? 'muscles' : 'zones';
+    var requested = opts.mode;
+    if (requested !== 'muscles' && requested !== 'movements') requested = 'zones';
+    if (requested === 'movements' && !this.t.modeMovements) requested = 'zones';
+    this.mode = requested;
+    this.movementPaint = null;
     this.sel = null; // { type: 'zone'|'muscle', id }
     this.focusTp = null;
     if (!this.data) { root.textContent = 'Body map data missing (bodymap-data.js).'; return; }
@@ -194,13 +200,18 @@
     var bar = h('div', { class: 'bm-bar' }, root);
     var seg = h('div', { class: 'bm-seg', role: 'radiogroup', 'aria-label': t.modeLabel }, bar);
     this.modeBtns = {};
-    [['zones', t.modeZones], ['muscles', t.modeMuscles]].forEach(function (m) {
+    var modeList = [['zones', t.modeZones], ['muscles', t.modeMuscles]];
+    if (t.modeMovements) modeList.push(['movements', t.modeMovements]);
+    this.modeOrder = modeList.map(function (m) { return m[0]; });
+    modeList.forEach(function (m) {
       var b = h('button', { type: 'button', class: 'bm-seg-btn', role: 'radio', 'data-mode': m[0] }, seg, m[1]);
       b.addEventListener('click', function () { self.setMode(m[0]); });
       b.addEventListener('keydown', function (e) {
         if (e.key === 'ArrowRight' || e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'ArrowDown') {
           e.preventDefault();
-          var next = self.mode === 'zones' ? 'muscles' : 'zones';
+          var idx = self.modeOrder.indexOf(self.mode);
+          var dir = (e.key === 'ArrowRight' || e.key === 'ArrowDown') ? 1 : -1;
+          var next = self.modeOrder[(idx + dir + self.modeOrder.length) % self.modeOrder.length];
           self.setMode(next); self.modeBtns[next].focus();
         }
       });
@@ -216,6 +227,7 @@
 
     var main = h('div', { class: 'bm-main' }, root);
     var figs = h('div', { class: 'bm-figs' }, main);
+    this.figs = figs;
     this.svgs = {};
     this.muscleEls = { front: {}, back: {} };
     this.zoneEls = { front: {}, back: {} };
@@ -348,22 +360,32 @@
   // ── State ─────────────────────────────────────────────────────────────────
   BodyMap.prototype.setMode = function (mode) {
     var self = this, t = this.t;
-    this.mode = mode === 'muscles' ? 'muscles' : 'zones';
+    if (mode !== 'muscles' && mode !== 'movements') mode = 'zones';
+    if (mode === 'movements' && !t.modeMovements) mode = 'zones';
+    this.mode = mode;
     this.root.setAttribute('data-mode', this.mode);
     for (var k in this.modeBtns) {
       var on = k === this.mode;
       this.modeBtns[k].setAttribute('aria-checked', on ? 'true' : 'false');
       this.modeBtns[k].tabIndex = on ? 0 : -1;
     }
-    this.hint.textContent = this.mode === 'zones' ? t.hintZones : t.hintMuscles;
-    // tab stops: only the active layer is focusable
+    var hint = t.hintZones;
+    if (this.mode === 'muscles') hint = t.hintMuscles;
+    if (this.mode === 'movements') hint = t.hintMovements || t.hintMuscles;
+    this.hint.textContent = hint;
+    var muscleFocus = this.mode === 'muscles' || this.mode === 'movements';
     ['front', 'back'].forEach(function (v) {
       var id;
       for (id in self.zoneEls[v]) self.zoneEls[v][id].setAttribute('tabindex', self.mode === 'zones' ? '0' : '-1');
-      for (id in self.muscleEls[v]) self.muscleEls[v][id].setAttribute('tabindex', self.mode === 'muscles' ? '0' : '-1');
+      for (id in self.muscleEls[v]) self.muscleEls[v][id].setAttribute('tabindex', muscleFocus ? '0' : '-1');
     });
     this._fillPicker();
-    if (this.sel && ((this.sel.type === 'zone') !== (this.mode === 'zones'))) this.sel = null;
+    if (this.mode !== 'movements') {
+      this.movementPaint = null;
+      this._clearMovementClasses();
+    }
+    if (this.mode === 'movements') this.sel = null;
+    else if (this.sel && ((this.sel.type === 'zone') !== (this.mode === 'zones'))) this.sel = null;
     this._render();
   };
 
@@ -393,7 +415,7 @@
     this.sel = id ? { type: 'zone', id: id } : null; this.focusTp = null; this._render();
   };
   BodyMap.prototype.selectMuscle = function (id) {
-    if (id && !this.data.muscleViews[id]) return;
+    if (id && !this.data.muscleViews[id] && !(this.t.muscles && this.t.muscles[id])) return;
     if (this.mode !== 'muscles') this.setMode('muscles');
     this.sel = id ? { type: 'muscle', id: id } : null; this.focusTp = null; this._render();
   };
@@ -456,6 +478,7 @@
     });
     this.picker.value = sel ? sel.id : '';
     this._renderPanel();
+    if (this.mode === 'movements' && this.movementPaint) this._applyMovementPaint();
     this._updatePeek();
   };
 
@@ -475,8 +498,15 @@
     var body = h('div', { class: 'bm-panel-body' }, p);
     if (!sel) {
       p.classList.remove('bm-panel-active');
-      h('h3', { class: 'bm-panel-title' }, body, this.mode === 'zones' ? t.emptyZonesTitle : t.emptyMusclesTitle);
-      h('p', { class: 'bm-muted' }, body, this.mode === 'zones' ? t.emptyZonesText : t.emptyMusclesText);
+      var emptyTitle = t.emptyZonesTitle;
+      var emptyText = t.emptyZonesText;
+      if (this.mode === 'muscles') { emptyTitle = t.emptyMusclesTitle; emptyText = t.emptyMusclesText; }
+      if (this.mode === 'movements') {
+        emptyTitle = t.emptyMovementsTitle || t.emptyMusclesTitle;
+        emptyText = t.emptyMovementsText || t.emptyMusclesText;
+      }
+      h('h3', { class: 'bm-panel-title' }, body, emptyTitle);
+      h('p', { class: 'bm-muted' }, body, emptyText);
     } else if (sel.type === 'zone') {
       p.classList.add('bm-panel-active');
       var z = this.zoneById[sel.id];
@@ -516,8 +546,12 @@
       }
       var tpList = this.data.triggerPoints[mid] || [];
       var refs = this.zonesByMuscle[mid] || [];
+      if (window.BODYMAP_NO_SVG && window.BODYMAP_NO_SVG[mid]) {
+        h('p', { class: 'bm-muted' }, body, t.notOnMap || 'Not drawn on the map.');
+      }
       h('h4', { class: 'bm-h' }, body, t.muscleTpsHeading);
-      var ul2 = h('ul', { class: 'bm-list bm-tplist' }, body);
+      if (!tpList.length) h('p', { class: 'bm-muted' }, body, t.muscleTpsNone || 'No trigger points are registered for this muscle yet.');
+      var ul2 = tpList.length ? h('ul', { class: 'bm-list bm-tplist' }, body) : null;
       tpList.forEach(function (tp) {
         var zs = refs.filter(function (r) { return r.tp === tp.n; });
         var li = h('li', null, ul2);
@@ -550,6 +584,69 @@
     h('h3', { class: 'bm-panel-title' }, tt, title);
     var c = h('button', { type: 'button', class: 'bm-close', 'aria-label': this.t.clearAria, title: this.t.clear }, head, '×');
     c.addEventListener('click', function () { self.clear(); });
+  };
+
+  BodyMap.prototype._clearMovementClasses = function () {
+    var self = this;
+    this.root.classList.remove('bm-has-move');
+    ['front', 'back'].forEach(function (v) {
+      var id;
+      for (id in self.muscleEls[v]) self.muscleEls[v][id].classList.remove('bm-prime', 'bm-syn');
+    });
+    this._orderViews({ front: 1, back: 0 });
+  };
+
+  BodyMap.prototype._orderViews = function (scores) {
+    if (!this.figs) return;
+    var front = this.figs.querySelector('.bm-fig-front');
+    var back = this.figs.querySelector('.bm-fig-back');
+    var legend = this.figs.querySelector('.bm-legend');
+    if (!front || !back) return;
+    var backFirst = (scores.back || 0) > (scores.front || 0);
+    var first = backFirst ? back : front;
+    var second = backFirst ? front : back;
+    this.figs.insertBefore(first, legend || null);
+    this.figs.insertBefore(second, legend || null);
+  };
+
+  BodyMap.prototype._applyMovementPaint = function () {
+    var paint = this.movementPaint || { prime: [], synergist: [] };
+    var prime = {}, syn = {}, i, id, g;
+    var primes = paint.prime || [];
+    var syns = paint.synergist || [];
+    for (i = 0; i < primes.length; i++) {
+      id = primes[i];
+      g = this.groupOf[id] || id;
+      prime[g] = true;
+    }
+    for (i = 0; i < syns.length; i++) {
+      id = syns[i];
+      g = this.groupOf[id] || id;
+      if (!prime[g]) syn[g] = true;
+    }
+    var scores = { front: 0, back: 0 };
+    var self = this;
+    ['front', 'back'].forEach(function (v) {
+      var mid, el, isP, isS;
+      for (mid in self.muscleEls[v]) {
+        el = self.muscleEls[v][mid];
+        isP = !!prime[mid];
+        isS = !!syn[mid];
+        el.classList.toggle('bm-prime', isP);
+        el.classList.toggle('bm-syn', isS);
+        if (isP) scores[v] += 2;
+        else if (isS) scores[v] += 1;
+      }
+    });
+    var any = scores.front + scores.back > 0;
+    this.root.classList.toggle('bm-has-move', any);
+    this._orderViews(any ? scores : { front: 1, back: 0 });
+  };
+
+  BodyMap.prototype.setMovementHighlight = function (paint) {
+    this.movementPaint = paint || null;
+    if (this.mode === 'movements') this._applyMovementPaint();
+    else if (!this.movementPaint) this._clearMovementClasses();
   };
 
   BodyMap.prototype._peekMuscle = function (mid, on) {
