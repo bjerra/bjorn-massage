@@ -1,0 +1,51 @@
+---
+interface Props {
+    toggleWithMode?: boolean;
+}
+
+const { toggleWithMode = false } = Astro.props;
+---
+
+<section
+    class="mv-search"
+    aria-labelledby="mv-title"
+    data-mv-toggle={toggleWithMode ? 'mode' : undefined}
+    hidden={toggleWithMode}
+>
+    <h2 id="mv-title">Sök rörelse</h2>
+    <p class="lede">
+        Välj en led och en rörelse för att se muskler som vanligtvis arbetar då. Namnen är latinska.
+    </p>
+    <form id="mv-form" class="mv-form">
+        <div class="mv-field">
+            <label for="mv-q">Sök</label>
+            <input
+                id="mv-q"
+                type="search"
+                name="q"
+                autocomplete="off"
+                enterkeyhint="search"
+                role="combobox"
+                aria-autocomplete="list"
+                aria-controls="mv-suggest"
+                aria-expanded="false"
+                placeholder="Till exempel nackextension eller höftflexion"
+            />
+            <ul id="mv-suggest" class="mv-suggest" role="listbox" hidden></ul>
+        </div>
+        <div class="mv-field">
+            <label for="mv-joint">Led</label>
+            <select id="mv-joint" name="joint">
+                <option value="">Välj led</option>
+            </select>
+        </div>
+        <div class="mv-field">
+            <label for="mv-movement">Rörelse</label>
+            <select id="mv-movement" name="movement" disabled>
+                <option value="">Välj rörelse</option>
+            </select>
+        </div>
+        <button type="button" id="mv-clear" class="mv-clear">Rensa</button>
+    </form>
+    <p id="mv-status" class="mv-status" aria-live="polite"></p>
+</section>

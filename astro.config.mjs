@@ -11,7 +11,12 @@ export default defineConfig({
     },
     integrations: [
         sitemap({
-            filter: (page) => !page.endsWith('/404') && !page.endsWith('/410') && !page.includes('/404/') && !page.includes('/410/')
+            filter: (page) =>
+                !page.endsWith('/404') &&
+                !page.endsWith('/410') &&
+                !page.includes('/404/') &&
+                !page.includes('/410/') &&
+                !page.includes('/rorelser')
         }),
         {
             name: 'bokadirekt-services',

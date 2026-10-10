@@ -1,0 +1,2830 @@
+{
+  "meta": {
+    "source": "movements.extended.ts",
+    "generated": "2026-10-10",
+    "notes": [
+      "Only PrimeMover and Synergist roles are exported; antagonist and stabiliser rows are omitted.",
+      "Ipsilateral/Contralateral are relative to the side of the muscle: rotating the head to the LEFT uses left-side \"same side\" rotators and right-side \"opposite side\" rotators.",
+      "nameSv is the Latin anatomical name (the standard term in Swedish anatomy); commonNameSv is a Swedish vernacular name where one is in common use (please proofread), otherwise null.",
+      "noSvg=true: muscle is not drawn on the body map yet."
+    ]
+  },
+  "labels": {
+    "joints": {
+      "Cervical": {
+        "sv": "Halsrygg",
+        "en": "Cervical spine"
+      },
+      "Thoracic": {
+        "sv": "Bröstrygg",
+        "en": "Thoracic spine"
+      },
+      "Lumbar": {
+        "sv": "Ländrygg",
+        "en": "Lumbar spine"
+      },
+      "Scapula": {
+        "sv": "Skulderblad",
+        "en": "Scapula"
+      },
+      "Shoulder": {
+        "sv": "Axelled",
+        "en": "Shoulder"
+      },
+      "Elbow": {
+        "sv": "Armbågsled",
+        "en": "Elbow"
+      },
+      "Forearm": {
+        "sv": "Underarm (radioulnarlederna)",
+        "en": "Forearm (radioulnar joints)"
+      },
+      "Wrist": {
+        "sv": "Handled",
+        "en": "Wrist"
+      },
+      "Hip": {
+        "sv": "Höftled",
+        "en": "Hip"
+      },
+      "Knee": {
+        "sv": "Knäled",
+        "en": "Knee"
+      },
+      "Ankle": {
+        "sv": "Fotled (övre språngbensleden)",
+        "en": "Ankle (talocrural)"
+      },
+      "Foot": {
+        "sv": "Fot (nedre språngbensleden)",
+        "en": "Foot (subtalar)"
+      },
+      "Mandible": {
+        "sv": "Käkled",
+        "en": "Jaw (TMJ)"
+      }
+    },
+    "movements": {
+      "Abduction": {
+        "sv": "Abduktion",
+        "en": "Abduction"
+      },
+      "Adduction": {
+        "sv": "Adduktion",
+        "en": "Adduction"
+      },
+      "ContralateralRotation": {
+        "sv": "Rotation åt motsatt sida",
+        "en": "Rotation to the opposite side"
+      },
+      "Depression": {
+        "sv": "Depression",
+        "en": "Depression"
+      },
+      "Dorsiflexion": {
+        "sv": "Dorsalflexion",
+        "en": "Dorsiflexion"
+      },
+      "DownwardRotation": {
+        "sv": "Nedåtrotation",
+        "en": "Downward rotation"
+      },
+      "Elevation": {
+        "sv": "Elevation",
+        "en": "Elevation"
+      },
+      "Eversion": {
+        "sv": "Eversion",
+        "en": "Eversion"
+      },
+      "Extension": {
+        "sv": "Extension",
+        "en": "Extension"
+      },
+      "ExternalRotation": {
+        "sv": "Utåtrotation",
+        "en": "External rotation"
+      },
+      "Flexion": {
+        "sv": "Flexion",
+        "en": "Flexion"
+      },
+      "HorizontalAbduction": {
+        "sv": "Horisontell abduktion",
+        "en": "Horizontal abduction"
+      },
+      "HorizontalAdduction": {
+        "sv": "Horisontell adduktion",
+        "en": "Horizontal adduction"
+      },
+      "InternalRotation": {
+        "sv": "Inåtrotation",
+        "en": "Internal rotation"
+      },
+      "Inversion": {
+        "sv": "Inversion",
+        "en": "Inversion"
+      },
+      "IpsilateralLateralFlexion": {
+        "sv": "Lateralflexion åt samma sida",
+        "en": "Lateral flexion to the same side"
+      },
+      "IpsilateralRotation": {
+        "sv": "Rotation åt samma sida",
+        "en": "Rotation to the same side"
+      },
+      "LateralDeviation": {
+        "sv": "Sidoförskjutning (laterotrusion)",
+        "en": "Lateral deviation"
+      },
+      "Plantarflexion": {
+        "sv": "Plantarflexion",
+        "en": "Plantarflexion"
+      },
+      "Pronation": {
+        "sv": "Pronation",
+        "en": "Pronation"
+      },
+      "Protraction": {
+        "sv": "Protraktion",
+        "en": "Protraction"
+      },
+      "Protrusion": {
+        "sv": "Protrusion",
+        "en": "Protrusion"
+      },
+      "RadialDeviation": {
+        "sv": "Radialdeviation",
+        "en": "Radial deviation"
+      },
+      "Retraction": {
+        "sv": "Retraktion",
+        "en": "Retraction"
+      },
+      "Supination": {
+        "sv": "Supination",
+        "en": "Supination"
+      },
+      "UlnarDeviation": {
+        "sv": "Ulnardeviation",
+        "en": "Ulnar deviation"
+      },
+      "UpwardRotation": {
+        "sv": "Uppåtrotation",
+        "en": "Upward rotation"
+      }
+    },
+    "jointMovementOverridesSv": {
+      "Mandible.Elevation": "Elevation (stänga munnen)",
+      "Mandible.Depression": "Depression (öppna munnen)",
+      "Mandible.Retraction": "Retrusion"
+    },
+    "roles": {
+      "PrimeMover": {
+        "sv": "Primär agonist",
+        "en": "Prime mover"
+      },
+      "Synergist": {
+        "sv": "Synergist",
+        "en": "Synergist"
+      }
+    },
+    "regions": {
+      "cervical": {
+        "sv": "Hals"
+      },
+      "thoracic": {
+        "sv": "Bröstrygg/skuldra"
+      },
+      "shoulder": {
+        "sv": "Axel/överarm"
+      },
+      "lumbar": {
+        "sv": "Ländrygg/buk"
+      },
+      "hip": {
+        "sv": "Höft/lår"
+      },
+      "knee": {
+        "sv": "Lår/knä"
+      },
+      "ankle": {
+        "sv": "Underben/fot"
+      },
+      "forearm": {
+        "sv": "Underarm/hand"
+      },
+      "face": {
+        "sv": "Käke/ansikte"
+      }
+    }
+  },
+  "muscles": [
+    {
+      "id": "trapezius_desc",
+      "latinName": "Trapezius pars descendens",
+      "nameSv": "Trapezius pars descendens",
+      "commonNameSv": "kappmuskeln (övre delen)",
+      "region": "cervical",
+      "regionSv": "Hals",
+      "svgPathIds": {
+        "front": "trap-desc-front",
+        "back": "trap-desc-back"
+      },
+      "noSvg": false,
+      "functions": [
+        {
+          "joint": "Scapula",
+          "movement": "Elevation",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Scapula",
+          "movement": "UpwardRotation",
+          "role": "Synergist"
+        },
+        {
+          "joint": "Scapula",
+          "movement": "Retraction",
+          "role": "Synergist"
+        },
+        {
+          "joint": "Cervical",
+          "movement": "Extension",
+          "role": "Synergist"
+        },
+        {
+          "joint": "Cervical",
+          "movement": "IpsilateralLateralFlexion",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Cervical",
+          "movement": "ContralateralRotation",
+          "role": "Synergist"
+        }
+      ]
+    },
+    {
+      "id": "trapezius_trans",
+      "latinName": "Trapezius pars transversa",
+      "nameSv": "Trapezius pars transversa",
+      "commonNameSv": "kappmuskeln (mellersta delen)",
+      "region": "thoracic",
+      "regionSv": "Bröstrygg/skuldra",
+      "svgPathIds": {
+        "back": "trap-trans-back"
+      },
+      "noSvg": false,
+      "functions": [
+        {
+          "joint": "Scapula",
+          "movement": "Retraction",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Scapula",
+          "movement": "UpwardRotation",
+          "role": "Synergist"
+        }
+      ]
+    },
+    {
+      "id": "trapezius_asc",
+      "latinName": "Trapezius pars ascendens",
+      "nameSv": "Trapezius pars ascendens",
+      "commonNameSv": "kappmuskeln (nedre delen)",
+      "region": "thoracic",
+      "regionSv": "Bröstrygg/skuldra",
+      "svgPathIds": {
+        "back": "trap-asc-back"
+      },
+      "noSvg": false,
+      "functions": [
+        {
+          "joint": "Scapula",
+          "movement": "Depression",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Scapula",
+          "movement": "UpwardRotation",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Scapula",
+          "movement": "Retraction",
+          "role": "Synergist"
+        }
+      ]
+    },
+    {
+      "id": "sternocleidomastoideus",
+      "latinName": "Sternocleidomastoideus",
+      "nameSv": "Sternocleidomastoideus",
+      "commonNameSv": "nickmuskeln",
+      "region": "cervical",
+      "regionSv": "Hals",
+      "svgPathIds": {
+        "front": "scm-front"
+      },
+      "noSvg": false,
+      "functions": [
+        {
+          "joint": "Cervical",
+          "movement": "Flexion",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Cervical",
+          "movement": "IpsilateralLateralFlexion",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Cervical",
+          "movement": "ContralateralRotation",
+          "role": "PrimeMover"
+        }
+      ]
+    },
+    {
+      "id": "levator_scapulae",
+      "latinName": "Levator scapulae",
+      "nameSv": "Levator scapulae",
+      "commonNameSv": "skulderbladslyftaren",
+      "region": "cervical",
+      "regionSv": "Hals",
+      "svgPathIds": {
+        "back": "levator-back"
+      },
+      "noSvg": false,
+      "functions": [
+        {
+          "joint": "Scapula",
+          "movement": "Elevation",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Scapula",
+          "movement": "DownwardRotation",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Cervical",
+          "movement": "IpsilateralLateralFlexion",
+          "role": "Synergist"
+        },
+        {
+          "joint": "Cervical",
+          "movement": "Extension",
+          "role": "Synergist"
+        },
+        {
+          "joint": "Cervical",
+          "movement": "IpsilateralRotation",
+          "role": "Synergist"
+        }
+      ]
+    },
+    {
+      "id": "scaleni",
+      "latinName": "Scaleni (anterior, medius, posterior)",
+      "nameSv": "Scaleni (anterior, medius, posterior)",
+      "commonNameSv": null,
+      "region": "cervical",
+      "regionSv": "Hals",
+      "svgPathIds": {
+        "front": "scaleni-front"
+      },
+      "noSvg": false,
+      "functions": [
+        {
+          "joint": "Cervical",
+          "movement": "IpsilateralLateralFlexion",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Cervical",
+          "movement": "Flexion",
+          "role": "Synergist"
+        },
+        {
+          "joint": "Cervical",
+          "movement": "ContralateralRotation",
+          "role": "Synergist"
+        }
+      ]
+    },
+    {
+      "id": "suboccipitals",
+      "latinName": "Mm. suboccipitales",
+      "nameSv": "Mm. suboccipitales",
+      "commonNameSv": null,
+      "region": "cervical",
+      "regionSv": "Hals",
+      "svgPathIds": {
+        "back": "suboccipitals-back"
+      },
+      "noSvg": false,
+      "functions": [
+        {
+          "joint": "Cervical",
+          "movement": "Extension",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Cervical",
+          "movement": "IpsilateralRotation",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Cervical",
+          "movement": "IpsilateralLateralFlexion",
+          "role": "Synergist"
+        }
+      ]
+    },
+    {
+      "id": "pectoralis_major",
+      "latinName": "Pectoralis major",
+      "nameSv": "Pectoralis major",
+      "commonNameSv": "stora bröstmuskeln",
+      "region": "shoulder",
+      "regionSv": "Axel/överarm",
+      "svgPathIds": {
+        "front": "pec-major-front"
+      },
+      "noSvg": false,
+      "functions": [
+        {
+          "joint": "Shoulder",
+          "movement": "Flexion",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Shoulder",
+          "movement": "HorizontalAdduction",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Shoulder",
+          "movement": "InternalRotation",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Shoulder",
+          "movement": "Adduction",
+          "role": "PrimeMover"
+        }
+      ]
+    },
+    {
+      "id": "pectoralis_minor",
+      "latinName": "Pectoralis minor",
+      "nameSv": "Pectoralis minor",
+      "commonNameSv": "lilla bröstmuskeln",
+      "region": "shoulder",
+      "regionSv": "Axel/överarm",
+      "svgPathIds": {
+        "front": "pec-minor-front"
+      },
+      "noSvg": false,
+      "functions": [
+        {
+          "joint": "Scapula",
+          "movement": "Protraction",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Scapula",
+          "movement": "Depression",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Scapula",
+          "movement": "DownwardRotation",
+          "role": "PrimeMover"
+        }
+      ]
+    },
+    {
+      "id": "rhomboids",
+      "latinName": "Mm. rhomboidei (major et minor)",
+      "nameSv": "Mm. rhomboidei (major et minor)",
+      "commonNameSv": null,
+      "region": "thoracic",
+      "regionSv": "Bröstrygg/skuldra",
+      "svgPathIds": {
+        "back": "rhomboids-back"
+      },
+      "noSvg": false,
+      "functions": [
+        {
+          "joint": "Scapula",
+          "movement": "Retraction",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Scapula",
+          "movement": "DownwardRotation",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Scapula",
+          "movement": "Elevation",
+          "role": "Synergist"
+        }
+      ]
+    },
+    {
+      "id": "serratus_anterior",
+      "latinName": "Serratus anterior",
+      "nameSv": "Serratus anterior",
+      "commonNameSv": "främre sågmuskeln",
+      "region": "shoulder",
+      "regionSv": "Axel/överarm",
+      "svgPathIds": {
+        "front": "serratus-front"
+      },
+      "noSvg": false,
+      "functions": [
+        {
+          "joint": "Scapula",
+          "movement": "Protraction",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Scapula",
+          "movement": "UpwardRotation",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Shoulder",
+          "movement": "Abduction",
+          "role": "Synergist"
+        },
+        {
+          "joint": "Shoulder",
+          "movement": "Flexion",
+          "role": "Synergist"
+        }
+      ]
+    },
+    {
+      "id": "infraspinatus",
+      "latinName": "Infraspinatus",
+      "nameSv": "Infraspinatus",
+      "commonNameSv": null,
+      "region": "shoulder",
+      "regionSv": "Axel/överarm",
+      "svgPathIds": {
+        "back": "infraspinatus-back"
+      },
+      "noSvg": false,
+      "functions": [
+        {
+          "joint": "Shoulder",
+          "movement": "ExternalRotation",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Shoulder",
+          "movement": "Abduction",
+          "role": "Synergist"
+        },
+        {
+          "joint": "Shoulder",
+          "movement": "Extension",
+          "role": "Synergist"
+        },
+        {
+          "joint": "Shoulder",
+          "movement": "HorizontalAbduction",
+          "role": "Synergist"
+        }
+      ]
+    },
+    {
+      "id": "subscapularis",
+      "latinName": "Subscapularis",
+      "nameSv": "Subscapularis",
+      "commonNameSv": null,
+      "region": "shoulder",
+      "regionSv": "Axel/överarm",
+      "svgPathIds": {
+        "front": "subscapularis-front"
+      },
+      "noSvg": false,
+      "functions": [
+        {
+          "joint": "Shoulder",
+          "movement": "InternalRotation",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Shoulder",
+          "movement": "Adduction",
+          "role": "Synergist"
+        },
+        {
+          "joint": "Shoulder",
+          "movement": "Extension",
+          "role": "Synergist"
+        }
+      ]
+    },
+    {
+      "id": "deltoideus",
+      "latinName": "Deltoideus",
+      "nameSv": "Deltoideus",
+      "commonNameSv": "deltamuskeln",
+      "region": "shoulder",
+      "regionSv": "Axel/överarm",
+      "svgPathIds": {
+        "front": "deltoid-front",
+        "back": "deltoid-back"
+      },
+      "noSvg": false,
+      "functions": [
+        {
+          "joint": "Shoulder",
+          "movement": "Abduction",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Shoulder",
+          "movement": "Flexion",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Shoulder",
+          "movement": "Extension",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Shoulder",
+          "movement": "InternalRotation",
+          "role": "Synergist"
+        },
+        {
+          "joint": "Shoulder",
+          "movement": "ExternalRotation",
+          "role": "Synergist"
+        },
+        {
+          "joint": "Shoulder",
+          "movement": "HorizontalAdduction",
+          "role": "Synergist"
+        },
+        {
+          "joint": "Shoulder",
+          "movement": "HorizontalAbduction",
+          "role": "PrimeMover"
+        }
+      ]
+    },
+    {
+      "id": "erector_spinae",
+      "latinName": "Mm. erectores spinae",
+      "nameSv": "Mm. erectores spinae",
+      "commonNameSv": "ryggresarna",
+      "region": "lumbar",
+      "regionSv": "Ländrygg/buk",
+      "svgPathIds": {
+        "back": "erector-back"
+      },
+      "noSvg": false,
+      "functions": [
+        {
+          "joint": "Lumbar",
+          "movement": "Extension",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Thoracic",
+          "movement": "Extension",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Lumbar",
+          "movement": "IpsilateralLateralFlexion",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Thoracic",
+          "movement": "IpsilateralLateralFlexion",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Cervical",
+          "movement": "Extension",
+          "role": "Synergist"
+        }
+      ]
+    },
+    {
+      "id": "multifidus",
+      "latinName": "Multifidus",
+      "nameSv": "Multifidus",
+      "commonNameSv": null,
+      "region": "lumbar",
+      "regionSv": "Ländrygg/buk",
+      "svgPathIds": {
+        "back": "multifidus-back"
+      },
+      "noSvg": false,
+      "functions": [
+        {
+          "joint": "Lumbar",
+          "movement": "Extension",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Thoracic",
+          "movement": "ContralateralRotation",
+          "role": "Synergist"
+        },
+        {
+          "joint": "Lumbar",
+          "movement": "ContralateralRotation",
+          "role": "Synergist"
+        },
+        {
+          "joint": "Thoracic",
+          "movement": "IpsilateralLateralFlexion",
+          "role": "Synergist"
+        },
+        {
+          "joint": "Lumbar",
+          "movement": "IpsilateralLateralFlexion",
+          "role": "Synergist"
+        },
+        {
+          "joint": "Thoracic",
+          "movement": "Extension",
+          "role": "Synergist"
+        }
+      ]
+    },
+    {
+      "id": "quadratus_lumborum",
+      "latinName": "Quadratus lumborum",
+      "nameSv": "Quadratus lumborum",
+      "commonNameSv": "fyrkantiga ländmuskeln",
+      "region": "lumbar",
+      "regionSv": "Ländrygg/buk",
+      "svgPathIds": {
+        "back": "ql-back"
+      },
+      "noSvg": false,
+      "functions": [
+        {
+          "joint": "Lumbar",
+          "movement": "IpsilateralLateralFlexion",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Lumbar",
+          "movement": "Extension",
+          "role": "Synergist"
+        }
+      ]
+    },
+    {
+      "id": "iliopsoas",
+      "latinName": "Iliopsoas",
+      "nameSv": "Iliopsoas",
+      "commonNameSv": null,
+      "region": "hip",
+      "regionSv": "Höft/lår",
+      "svgPathIds": {
+        "front": "iliopsoas-front"
+      },
+      "noSvg": false,
+      "functions": [
+        {
+          "joint": "Hip",
+          "movement": "Flexion",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Hip",
+          "movement": "ExternalRotation",
+          "role": "Synergist"
+        },
+        {
+          "joint": "Lumbar",
+          "movement": "Flexion",
+          "role": "Synergist"
+        }
+      ]
+    },
+    {
+      "id": "tensor_fasciae_latae",
+      "latinName": "Tensor fasciae latae",
+      "nameSv": "Tensor fasciae latae",
+      "commonNameSv": null,
+      "region": "hip",
+      "regionSv": "Höft/lår",
+      "svgPathIds": {
+        "front": "tfl-front"
+      },
+      "noSvg": false,
+      "functions": [
+        {
+          "joint": "Hip",
+          "movement": "Flexion",
+          "role": "Synergist"
+        },
+        {
+          "joint": "Hip",
+          "movement": "Abduction",
+          "role": "Synergist"
+        },
+        {
+          "joint": "Hip",
+          "movement": "InternalRotation",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Knee",
+          "movement": "Extension",
+          "role": "Synergist"
+        }
+      ]
+    },
+    {
+      "id": "gluteus_maximus",
+      "latinName": "Gluteus maximus",
+      "nameSv": "Gluteus maximus",
+      "commonNameSv": "stora sätesmuskeln",
+      "region": "hip",
+      "regionSv": "Höft/lår",
+      "svgPathIds": {
+        "back": "glut-max-back"
+      },
+      "noSvg": false,
+      "functions": [
+        {
+          "joint": "Hip",
+          "movement": "Extension",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Hip",
+          "movement": "ExternalRotation",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Hip",
+          "movement": "Abduction",
+          "role": "Synergist"
+        }
+      ]
+    },
+    {
+      "id": "gluteus_medius",
+      "latinName": "Gluteus medius",
+      "nameSv": "Gluteus medius",
+      "commonNameSv": "medelstora sätesmuskeln",
+      "region": "hip",
+      "regionSv": "Höft/lår",
+      "svgPathIds": {
+        "back": "glut-med-back"
+      },
+      "noSvg": false,
+      "functions": [
+        {
+          "joint": "Hip",
+          "movement": "Abduction",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Hip",
+          "movement": "InternalRotation",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Hip",
+          "movement": "ExternalRotation",
+          "role": "Synergist"
+        }
+      ]
+    },
+    {
+      "id": "piriformis",
+      "latinName": "Piriformis",
+      "nameSv": "Piriformis",
+      "commonNameSv": "päronformade muskeln",
+      "region": "hip",
+      "regionSv": "Höft/lår",
+      "svgPathIds": {
+        "back": "piriformis-back"
+      },
+      "noSvg": false,
+      "functions": [
+        {
+          "joint": "Hip",
+          "movement": "ExternalRotation",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Hip",
+          "movement": "Abduction",
+          "role": "Synergist"
+        }
+      ]
+    },
+    {
+      "id": "rectus_femoris",
+      "latinName": "Rectus femoris",
+      "nameSv": "Rectus femoris",
+      "commonNameSv": "raka lårmuskeln",
+      "region": "knee",
+      "regionSv": "Lår/knä",
+      "svgPathIds": {
+        "front": "rectus-femoris-front"
+      },
+      "noSvg": false,
+      "functions": [
+        {
+          "joint": "Knee",
+          "movement": "Extension",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Hip",
+          "movement": "Flexion",
+          "role": "PrimeMover"
+        }
+      ]
+    },
+    {
+      "id": "hamstrings",
+      "latinName": "Mm. ischiocrurei (Hamstrings)",
+      "nameSv": "Mm. ischiocrurei (Hamstrings)",
+      "commonNameSv": "hasmusklerna",
+      "region": "knee",
+      "regionSv": "Lår/knä",
+      "svgPathIds": {
+        "back": "hamstrings-back"
+      },
+      "noSvg": false,
+      "functions": [
+        {
+          "joint": "Knee",
+          "movement": "Flexion",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Hip",
+          "movement": "Extension",
+          "role": "PrimeMover"
+        }
+      ]
+    },
+    {
+      "id": "gastrocnemius",
+      "latinName": "Gastrocnemius",
+      "nameSv": "Gastrocnemius",
+      "commonNameSv": "tvåhövdade vadmuskeln",
+      "region": "ankle",
+      "regionSv": "Underben/fot",
+      "svgPathIds": {
+        "back": "gastroc-back"
+      },
+      "noSvg": false,
+      "functions": [
+        {
+          "joint": "Ankle",
+          "movement": "Plantarflexion",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Knee",
+          "movement": "Flexion",
+          "role": "Synergist"
+        }
+      ]
+    },
+    {
+      "id": "soleus",
+      "latinName": "Soleus",
+      "nameSv": "Soleus",
+      "commonNameSv": "flundremuskeln",
+      "region": "ankle",
+      "regionSv": "Underben/fot",
+      "svgPathIds": {
+        "back": "soleus-back"
+      },
+      "noSvg": false,
+      "functions": [
+        {
+          "joint": "Ankle",
+          "movement": "Plantarflexion",
+          "role": "PrimeMover"
+        }
+      ]
+    },
+    {
+      "id": "tibialis_anterior",
+      "latinName": "Tibialis anterior",
+      "nameSv": "Tibialis anterior",
+      "commonNameSv": "främre skenbensmuskeln",
+      "region": "ankle",
+      "regionSv": "Underben/fot",
+      "svgPathIds": {
+        "front": "tib-ant-front"
+      },
+      "noSvg": false,
+      "functions": [
+        {
+          "joint": "Ankle",
+          "movement": "Dorsiflexion",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Foot",
+          "movement": "Inversion",
+          "role": "PrimeMover"
+        }
+      ]
+    },
+    {
+      "id": "adductor_longus",
+      "latinName": "Adductor longus",
+      "nameSv": "Adductor longus",
+      "commonNameSv": null,
+      "region": "hip",
+      "regionSv": "Höft/lår",
+      "svgPathIds": {
+        "front": "adductor-longus-front"
+      },
+      "noSvg": false,
+      "functions": [
+        {
+          "joint": "Hip",
+          "movement": "Adduction",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Hip",
+          "movement": "Flexion",
+          "role": "Synergist"
+        },
+        {
+          "joint": "Hip",
+          "movement": "InternalRotation",
+          "role": "Synergist"
+        }
+      ]
+    },
+    {
+      "id": "adductor_magnus",
+      "latinName": "Adductor magnus",
+      "nameSv": "Adductor magnus",
+      "commonNameSv": null,
+      "region": "hip",
+      "regionSv": "Höft/lår",
+      "svgPathIds": {
+        "front": "adductor-magnus-front",
+        "back": "adductor-magnus-back"
+      },
+      "noSvg": false,
+      "functions": [
+        {
+          "joint": "Hip",
+          "movement": "Adduction",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Hip",
+          "movement": "Extension",
+          "role": "Synergist"
+        },
+        {
+          "joint": "Hip",
+          "movement": "Flexion",
+          "role": "Synergist"
+        }
+      ]
+    },
+    {
+      "id": "gracilis",
+      "latinName": "Gracilis",
+      "nameSv": "Gracilis",
+      "commonNameSv": null,
+      "region": "hip",
+      "regionSv": "Höft/lår",
+      "svgPathIds": {
+        "front": "gracilis-front"
+      },
+      "noSvg": false,
+      "functions": [
+        {
+          "joint": "Hip",
+          "movement": "Adduction",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Knee",
+          "movement": "Flexion",
+          "role": "Synergist"
+        },
+        {
+          "joint": "Knee",
+          "movement": "InternalRotation",
+          "role": "Synergist"
+        }
+      ]
+    },
+    {
+      "id": "peroneus_longus",
+      "latinName": "Peroneus longus",
+      "nameSv": "Peroneus longus",
+      "commonNameSv": "långa vadbensmuskeln",
+      "region": "ankle",
+      "regionSv": "Underben/fot",
+      "svgPathIds": {
+        "front": "peroneus-front"
+      },
+      "noSvg": false,
+      "functions": [
+        {
+          "joint": "Foot",
+          "movement": "Eversion",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Ankle",
+          "movement": "Plantarflexion",
+          "role": "Synergist"
+        }
+      ]
+    },
+    {
+      "id": "peroneus_brevis",
+      "latinName": "Peroneus brevis",
+      "nameSv": "Peroneus brevis",
+      "commonNameSv": "korta vadbensmuskeln",
+      "region": "ankle",
+      "regionSv": "Underben/fot",
+      "svgPathIds": {
+        "front": "peroneus-brevis-front"
+      },
+      "noSvg": false,
+      "functions": [
+        {
+          "joint": "Foot",
+          "movement": "Eversion",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Ankle",
+          "movement": "Plantarflexion",
+          "role": "Synergist"
+        }
+      ]
+    },
+    {
+      "id": "latissimus_dorsi",
+      "latinName": "Latissimus dorsi",
+      "nameSv": "Latissimus dorsi",
+      "commonNameSv": "breda ryggmuskeln",
+      "region": "thoracic",
+      "regionSv": "Bröstrygg/skuldra",
+      "svgPathIds": {
+        "back": "lats-back"
+      },
+      "noSvg": false,
+      "functions": [
+        {
+          "joint": "Shoulder",
+          "movement": "Extension",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Shoulder",
+          "movement": "Adduction",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Shoulder",
+          "movement": "InternalRotation",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Scapula",
+          "movement": "Depression",
+          "role": "Synergist"
+        }
+      ]
+    },
+    {
+      "id": "teres_major",
+      "latinName": "Teres major",
+      "nameSv": "Teres major",
+      "commonNameSv": null,
+      "region": "shoulder",
+      "regionSv": "Axel/överarm",
+      "svgPathIds": {
+        "back": "teres-major-back"
+      },
+      "noSvg": false,
+      "functions": [
+        {
+          "joint": "Shoulder",
+          "movement": "Extension",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Shoulder",
+          "movement": "Adduction",
+          "role": "Synergist"
+        },
+        {
+          "joint": "Shoulder",
+          "movement": "InternalRotation",
+          "role": "Synergist"
+        }
+      ]
+    },
+    {
+      "id": "teres_minor",
+      "latinName": "Teres minor",
+      "nameSv": "Teres minor",
+      "commonNameSv": null,
+      "region": "shoulder",
+      "regionSv": "Axel/överarm",
+      "svgPathIds": {
+        "back": "teres-minor-back"
+      },
+      "noSvg": false,
+      "functions": [
+        {
+          "joint": "Shoulder",
+          "movement": "ExternalRotation",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Shoulder",
+          "movement": "Adduction",
+          "role": "Synergist"
+        },
+        {
+          "joint": "Shoulder",
+          "movement": "HorizontalAbduction",
+          "role": "Synergist"
+        }
+      ]
+    },
+    {
+      "id": "supraspinatus",
+      "latinName": "Supraspinatus",
+      "nameSv": "Supraspinatus",
+      "commonNameSv": null,
+      "region": "shoulder",
+      "regionSv": "Axel/överarm",
+      "svgPathIds": {
+        "back": "supraspinatus-back"
+      },
+      "noSvg": false,
+      "functions": [
+        {
+          "joint": "Shoulder",
+          "movement": "Abduction",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Shoulder",
+          "movement": "ExternalRotation",
+          "role": "Synergist"
+        }
+      ]
+    },
+    {
+      "id": "gluteus_minimus",
+      "latinName": "Gluteus minimus",
+      "nameSv": "Gluteus minimus",
+      "commonNameSv": "lilla sätesmuskeln",
+      "region": "hip",
+      "regionSv": "Höft/lår",
+      "svgPathIds": {
+        "back": "glute-min-back"
+      },
+      "noSvg": false,
+      "functions": [
+        {
+          "joint": "Hip",
+          "movement": "Abduction",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Hip",
+          "movement": "InternalRotation",
+          "role": "PrimeMover"
+        }
+      ]
+    },
+    {
+      "id": "rectus_abdominis",
+      "latinName": "Rectus abdominis",
+      "nameSv": "Rectus abdominis",
+      "commonNameSv": "raka bukmuskeln",
+      "region": "lumbar",
+      "regionSv": "Ländrygg/buk",
+      "svgPathIds": {
+        "front": "rectus-abdominis-front"
+      },
+      "noSvg": false,
+      "functions": [
+        {
+          "joint": "Lumbar",
+          "movement": "Flexion",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Thoracic",
+          "movement": "Flexion",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Lumbar",
+          "movement": "IpsilateralLateralFlexion",
+          "role": "Synergist"
+        }
+      ]
+    },
+    {
+      "id": "vastus_lateralis",
+      "latinName": "Vastus lateralis",
+      "nameSv": "Vastus lateralis",
+      "commonNameSv": "yttre vida lårmuskeln",
+      "region": "knee",
+      "regionSv": "Lår/knä",
+      "svgPathIds": {
+        "front": "vastus-lat-front"
+      },
+      "noSvg": false,
+      "functions": [
+        {
+          "joint": "Knee",
+          "movement": "Extension",
+          "role": "PrimeMover"
+        }
+      ]
+    },
+    {
+      "id": "vastus_medialis",
+      "latinName": "Vastus medialis",
+      "nameSv": "Vastus medialis",
+      "commonNameSv": "inre vida lårmuskeln",
+      "region": "knee",
+      "regionSv": "Lår/knä",
+      "svgPathIds": {
+        "front": "vastus-med-front"
+      },
+      "noSvg": false,
+      "functions": [
+        {
+          "joint": "Knee",
+          "movement": "Extension",
+          "role": "PrimeMover"
+        }
+      ]
+    },
+    {
+      "id": "biceps_brachii",
+      "latinName": "Biceps brachii",
+      "nameSv": "Biceps brachii",
+      "commonNameSv": "tvåhövdade armmuskeln",
+      "region": "shoulder",
+      "regionSv": "Axel/överarm",
+      "svgPathIds": {
+        "front": "biceps-front"
+      },
+      "noSvg": false,
+      "functions": [
+        {
+          "joint": "Elbow",
+          "movement": "Flexion",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Shoulder",
+          "movement": "Flexion",
+          "role": "Synergist"
+        },
+        {
+          "joint": "Shoulder",
+          "movement": "Abduction",
+          "role": "Synergist"
+        },
+        {
+          "joint": "Forearm",
+          "movement": "Supination",
+          "role": "PrimeMover"
+        }
+      ]
+    },
+    {
+      "id": "triceps_brachii",
+      "latinName": "Triceps brachii",
+      "nameSv": "Triceps brachii",
+      "commonNameSv": "trehövdade armmuskeln",
+      "region": "shoulder",
+      "regionSv": "Axel/överarm",
+      "svgPathIds": {
+        "back": "triceps-back"
+      },
+      "noSvg": false,
+      "functions": [
+        {
+          "joint": "Elbow",
+          "movement": "Extension",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Shoulder",
+          "movement": "Extension",
+          "role": "Synergist"
+        },
+        {
+          "joint": "Shoulder",
+          "movement": "Adduction",
+          "role": "Synergist"
+        }
+      ]
+    },
+    {
+      "id": "external_oblique",
+      "latinName": "Obliquus externus abdominis",
+      "nameSv": "Obliquus externus abdominis",
+      "commonNameSv": "yttre sneda bukmuskeln",
+      "region": "lumbar",
+      "regionSv": "Ländrygg/buk",
+      "svgPathIds": {
+        "front": "obliques-front"
+      },
+      "noSvg": false,
+      "functions": [
+        {
+          "joint": "Thoracic",
+          "movement": "ContralateralRotation",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Lumbar",
+          "movement": "ContralateralRotation",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Lumbar",
+          "movement": "IpsilateralLateralFlexion",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Thoracic",
+          "movement": "IpsilateralLateralFlexion",
+          "role": "Synergist"
+        },
+        {
+          "joint": "Lumbar",
+          "movement": "Flexion",
+          "role": "Synergist"
+        },
+        {
+          "joint": "Thoracic",
+          "movement": "Flexion",
+          "role": "Synergist"
+        }
+      ]
+    },
+    {
+      "id": "forearm_flexors",
+      "latinName": "Mm. flexores antebrachii",
+      "nameSv": "Mm. flexores antebrachii",
+      "commonNameSv": null,
+      "region": "forearm",
+      "regionSv": "Underarm/hand",
+      "svgPathIds": {
+        "front": "forearm-flexors-front"
+      },
+      "noSvg": false,
+      "functions": [
+        {
+          "joint": "Elbow",
+          "movement": "Flexion",
+          "role": "Synergist"
+        },
+        {
+          "joint": "Wrist",
+          "movement": "Flexion",
+          "role": "PrimeMover"
+        }
+      ]
+    },
+    {
+      "id": "forearm_extensors",
+      "latinName": "Mm. extensores antebrachii",
+      "nameSv": "Mm. extensores antebrachii",
+      "commonNameSv": null,
+      "region": "forearm",
+      "regionSv": "Underarm/hand",
+      "svgPathIds": {
+        "back": "forearm-extensors-back"
+      },
+      "noSvg": false,
+      "functions": [
+        {
+          "joint": "Wrist",
+          "movement": "Extension",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Elbow",
+          "movement": "Flexion",
+          "role": "Synergist"
+        }
+      ]
+    },
+    {
+      "id": "masseter",
+      "latinName": "Masseter",
+      "nameSv": "Masseter",
+      "commonNameSv": "tuggmuskeln",
+      "region": "face",
+      "regionSv": "Käke/ansikte",
+      "svgPathIds": {
+        "front": "masseter-front"
+      },
+      "noSvg": false,
+      "functions": [
+        {
+          "joint": "Mandible",
+          "movement": "Elevation",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Mandible",
+          "movement": "Protrusion",
+          "role": "Synergist"
+        },
+        {
+          "joint": "Mandible",
+          "movement": "LateralDeviation",
+          "role": "Synergist"
+        }
+      ]
+    },
+    {
+      "id": "temporalis",
+      "latinName": "Temporalis",
+      "nameSv": "Temporalis",
+      "commonNameSv": "tinningmuskeln",
+      "region": "face",
+      "regionSv": "Käke/ansikte",
+      "svgPathIds": {
+        "front": "temporalis-front"
+      },
+      "noSvg": false,
+      "functions": [
+        {
+          "joint": "Mandible",
+          "movement": "Elevation",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Mandible",
+          "movement": "Retraction",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Mandible",
+          "movement": "LateralDeviation",
+          "role": "Synergist"
+        }
+      ]
+    },
+    {
+      "id": "lateral_pterygoid",
+      "latinName": "Pterygoideus lateralis",
+      "nameSv": "Pterygoideus lateralis",
+      "commonNameSv": null,
+      "region": "face",
+      "regionSv": "Käke/ansikte",
+      "svgPathIds": null,
+      "noSvg": true,
+      "functions": [
+        {
+          "joint": "Mandible",
+          "movement": "Protrusion",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Mandible",
+          "movement": "LateralDeviation",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Mandible",
+          "movement": "Depression",
+          "role": "PrimeMover"
+        }
+      ]
+    },
+    {
+      "id": "medial_pterygoid",
+      "latinName": "Pterygoideus medialis",
+      "nameSv": "Pterygoideus medialis",
+      "commonNameSv": null,
+      "region": "face",
+      "regionSv": "Käke/ansikte",
+      "svgPathIds": null,
+      "noSvg": true,
+      "functions": [
+        {
+          "joint": "Mandible",
+          "movement": "Elevation",
+          "role": "Synergist"
+        },
+        {
+          "joint": "Mandible",
+          "movement": "Protrusion",
+          "role": "Synergist"
+        },
+        {
+          "joint": "Mandible",
+          "movement": "LateralDeviation",
+          "role": "Synergist"
+        }
+      ]
+    },
+    {
+      "id": "sartorius",
+      "latinName": "Sartorius",
+      "nameSv": "Sartorius",
+      "commonNameSv": "skräddarmuskeln",
+      "region": "hip",
+      "regionSv": "Höft/lår",
+      "svgPathIds": {
+        "front": "sartorius-front"
+      },
+      "noSvg": false,
+      "functions": [
+        {
+          "joint": "Hip",
+          "movement": "Flexion",
+          "role": "Synergist"
+        },
+        {
+          "joint": "Hip",
+          "movement": "Abduction",
+          "role": "Synergist"
+        },
+        {
+          "joint": "Hip",
+          "movement": "ExternalRotation",
+          "role": "Synergist"
+        },
+        {
+          "joint": "Knee",
+          "movement": "Flexion",
+          "role": "Synergist"
+        },
+        {
+          "joint": "Knee",
+          "movement": "InternalRotation",
+          "role": "Synergist"
+        }
+      ]
+    },
+    {
+      "id": "splenius_capitis",
+      "latinName": "Splenius capitis",
+      "nameSv": "Splenius capitis",
+      "commonNameSv": null,
+      "region": "cervical",
+      "regionSv": "Hals",
+      "svgPathIds": null,
+      "noSvg": true,
+      "functions": [
+        {
+          "joint": "Cervical",
+          "movement": "Extension",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Cervical",
+          "movement": "IpsilateralRotation",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Cervical",
+          "movement": "IpsilateralLateralFlexion",
+          "role": "Synergist"
+        }
+      ]
+    },
+    {
+      "id": "splenius_cervicis",
+      "latinName": "Splenius cervicis",
+      "nameSv": "Splenius cervicis",
+      "commonNameSv": null,
+      "region": "cervical",
+      "regionSv": "Hals",
+      "svgPathIds": null,
+      "noSvg": true,
+      "functions": [
+        {
+          "joint": "Cervical",
+          "movement": "Extension",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Cervical",
+          "movement": "IpsilateralRotation",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Cervical",
+          "movement": "IpsilateralLateralFlexion",
+          "role": "Synergist"
+        }
+      ]
+    },
+    {
+      "id": "semispinalis_capitis",
+      "latinName": "Semispinalis capitis",
+      "nameSv": "Semispinalis capitis",
+      "commonNameSv": null,
+      "region": "cervical",
+      "regionSv": "Hals",
+      "svgPathIds": null,
+      "noSvg": true,
+      "functions": [
+        {
+          "joint": "Cervical",
+          "movement": "Extension",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Cervical",
+          "movement": "IpsilateralLateralFlexion",
+          "role": "Synergist"
+        },
+        {
+          "joint": "Cervical",
+          "movement": "ContralateralRotation",
+          "role": "Synergist"
+        }
+      ]
+    },
+    {
+      "id": "semispinalis_cervicis",
+      "latinName": "Semispinalis cervicis",
+      "nameSv": "Semispinalis cervicis",
+      "commonNameSv": null,
+      "region": "cervical",
+      "regionSv": "Hals",
+      "svgPathIds": null,
+      "noSvg": true,
+      "functions": [
+        {
+          "joint": "Cervical",
+          "movement": "Extension",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Cervical",
+          "movement": "ContralateralRotation",
+          "role": "Synergist"
+        },
+        {
+          "joint": "Cervical",
+          "movement": "IpsilateralLateralFlexion",
+          "role": "Synergist"
+        }
+      ]
+    },
+    {
+      "id": "deep_neck_flexors",
+      "latinName": "Mm. longus colli et longus capitis",
+      "nameSv": "Mm. longus colli et longus capitis",
+      "commonNameSv": null,
+      "region": "cervical",
+      "regionSv": "Hals",
+      "svgPathIds": null,
+      "noSvg": true,
+      "functions": [
+        {
+          "joint": "Cervical",
+          "movement": "Flexion",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Cervical",
+          "movement": "IpsilateralLateralFlexion",
+          "role": "Synergist"
+        }
+      ]
+    },
+    {
+      "id": "coracobrachialis",
+      "latinName": "Coracobrachialis",
+      "nameSv": "Coracobrachialis",
+      "commonNameSv": null,
+      "region": "shoulder",
+      "regionSv": "Axel/överarm",
+      "svgPathIds": null,
+      "noSvg": true,
+      "functions": [
+        {
+          "joint": "Shoulder",
+          "movement": "Flexion",
+          "role": "Synergist"
+        },
+        {
+          "joint": "Shoulder",
+          "movement": "Adduction",
+          "role": "Synergist"
+        },
+        {
+          "joint": "Shoulder",
+          "movement": "HorizontalAdduction",
+          "role": "Synergist"
+        }
+      ]
+    },
+    {
+      "id": "brachialis",
+      "latinName": "Brachialis",
+      "nameSv": "Brachialis",
+      "commonNameSv": null,
+      "region": "shoulder",
+      "regionSv": "Axel/överarm",
+      "svgPathIds": null,
+      "noSvg": true,
+      "functions": [
+        {
+          "joint": "Elbow",
+          "movement": "Flexion",
+          "role": "PrimeMover"
+        }
+      ]
+    },
+    {
+      "id": "brachioradialis",
+      "latinName": "Brachioradialis",
+      "nameSv": "Brachioradialis",
+      "commonNameSv": null,
+      "region": "forearm",
+      "regionSv": "Underarm/hand",
+      "svgPathIds": null,
+      "noSvg": true,
+      "functions": [
+        {
+          "joint": "Elbow",
+          "movement": "Flexion",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Forearm",
+          "movement": "Pronation",
+          "role": "Synergist"
+        },
+        {
+          "joint": "Forearm",
+          "movement": "Supination",
+          "role": "Synergist"
+        }
+      ]
+    },
+    {
+      "id": "pronator_teres",
+      "latinName": "Pronator teres",
+      "nameSv": "Pronator teres",
+      "commonNameSv": null,
+      "region": "forearm",
+      "regionSv": "Underarm/hand",
+      "svgPathIds": null,
+      "noSvg": true,
+      "functions": [
+        {
+          "joint": "Forearm",
+          "movement": "Pronation",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Elbow",
+          "movement": "Flexion",
+          "role": "Synergist"
+        }
+      ]
+    },
+    {
+      "id": "pronator_quadratus",
+      "latinName": "Pronator quadratus",
+      "nameSv": "Pronator quadratus",
+      "commonNameSv": null,
+      "region": "forearm",
+      "regionSv": "Underarm/hand",
+      "svgPathIds": null,
+      "noSvg": true,
+      "functions": [
+        {
+          "joint": "Forearm",
+          "movement": "Pronation",
+          "role": "PrimeMover"
+        }
+      ]
+    },
+    {
+      "id": "supinator",
+      "latinName": "Supinator",
+      "nameSv": "Supinator",
+      "commonNameSv": null,
+      "region": "forearm",
+      "regionSv": "Underarm/hand",
+      "svgPathIds": null,
+      "noSvg": true,
+      "functions": [
+        {
+          "joint": "Forearm",
+          "movement": "Supination",
+          "role": "PrimeMover"
+        }
+      ]
+    },
+    {
+      "id": "flexor_carpi_radialis",
+      "latinName": "Flexor carpi radialis",
+      "nameSv": "Flexor carpi radialis",
+      "commonNameSv": null,
+      "region": "forearm",
+      "regionSv": "Underarm/hand",
+      "svgPathIds": null,
+      "noSvg": true,
+      "functions": [
+        {
+          "joint": "Wrist",
+          "movement": "Flexion",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Wrist",
+          "movement": "RadialDeviation",
+          "role": "Synergist"
+        }
+      ]
+    },
+    {
+      "id": "flexor_carpi_ulnaris",
+      "latinName": "Flexor carpi ulnaris",
+      "nameSv": "Flexor carpi ulnaris",
+      "commonNameSv": null,
+      "region": "forearm",
+      "regionSv": "Underarm/hand",
+      "svgPathIds": null,
+      "noSvg": true,
+      "functions": [
+        {
+          "joint": "Wrist",
+          "movement": "Flexion",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Wrist",
+          "movement": "UlnarDeviation",
+          "role": "PrimeMover"
+        }
+      ]
+    },
+    {
+      "id": "extensor_carpi_radialis_longus",
+      "latinName": "Extensor carpi radialis longus",
+      "nameSv": "Extensor carpi radialis longus",
+      "commonNameSv": null,
+      "region": "forearm",
+      "regionSv": "Underarm/hand",
+      "svgPathIds": null,
+      "noSvg": true,
+      "functions": [
+        {
+          "joint": "Wrist",
+          "movement": "Extension",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Wrist",
+          "movement": "RadialDeviation",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Elbow",
+          "movement": "Flexion",
+          "role": "Synergist"
+        }
+      ]
+    },
+    {
+      "id": "extensor_carpi_ulnaris",
+      "latinName": "Extensor carpi ulnaris",
+      "nameSv": "Extensor carpi ulnaris",
+      "commonNameSv": null,
+      "region": "forearm",
+      "regionSv": "Underarm/hand",
+      "svgPathIds": null,
+      "noSvg": true,
+      "functions": [
+        {
+          "joint": "Wrist",
+          "movement": "Extension",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Wrist",
+          "movement": "UlnarDeviation",
+          "role": "PrimeMover"
+        }
+      ]
+    },
+    {
+      "id": "internal_oblique",
+      "latinName": "Obliquus internus abdominis",
+      "nameSv": "Obliquus internus abdominis",
+      "commonNameSv": "inre sneda bukmuskeln",
+      "region": "lumbar",
+      "regionSv": "Ländrygg/buk",
+      "svgPathIds": null,
+      "noSvg": true,
+      "functions": [
+        {
+          "joint": "Thoracic",
+          "movement": "IpsilateralRotation",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Lumbar",
+          "movement": "IpsilateralRotation",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Lumbar",
+          "movement": "IpsilateralLateralFlexion",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Thoracic",
+          "movement": "IpsilateralLateralFlexion",
+          "role": "Synergist"
+        },
+        {
+          "joint": "Lumbar",
+          "movement": "Flexion",
+          "role": "Synergist"
+        },
+        {
+          "joint": "Thoracic",
+          "movement": "Flexion",
+          "role": "Synergist"
+        }
+      ]
+    },
+    {
+      "id": "transversus_abdominis",
+      "latinName": "Transversus abdominis",
+      "nameSv": "Transversus abdominis",
+      "commonNameSv": "tvärgående bukmuskeln",
+      "region": "lumbar",
+      "regionSv": "Ländrygg/buk",
+      "svgPathIds": null,
+      "noSvg": true,
+      "functions": []
+    },
+    {
+      "id": "tibialis_posterior",
+      "latinName": "Tibialis posterior",
+      "nameSv": "Tibialis posterior",
+      "commonNameSv": "bakre skenbensmuskeln",
+      "region": "ankle",
+      "regionSv": "Underben/fot",
+      "svgPathIds": null,
+      "noSvg": true,
+      "functions": [
+        {
+          "joint": "Foot",
+          "movement": "Inversion",
+          "role": "PrimeMover"
+        },
+        {
+          "joint": "Ankle",
+          "movement": "Plantarflexion",
+          "role": "Synergist"
+        }
+      ]
+    },
+    {
+      "id": "extensor_digitorum_longus",
+      "latinName": "Extensor digitorum longus",
+      "nameSv": "Extensor digitorum longus",
+      "commonNameSv": null,
+      "region": "ankle",
+      "regionSv": "Underben/fot",
+      "svgPathIds": null,
+      "noSvg": true,
+      "functions": [
+        {
+          "joint": "Ankle",
+          "movement": "Dorsiflexion",
+          "role": "Synergist"
+        },
+        {
+          "joint": "Foot",
+          "movement": "Eversion",
+          "role": "Synergist"
+        }
+      ]
+    },
+    {
+      "id": "extensor_hallucis_longus",
+      "latinName": "Extensor hallucis longus",
+      "nameSv": "Extensor hallucis longus",
+      "commonNameSv": null,
+      "region": "ankle",
+      "regionSv": "Underben/fot",
+      "svgPathIds": null,
+      "noSvg": true,
+      "functions": [
+        {
+          "joint": "Ankle",
+          "movement": "Dorsiflexion",
+          "role": "Synergist"
+        },
+        {
+          "joint": "Foot",
+          "movement": "Inversion",
+          "role": "Synergist"
+        }
+      ]
+    }
+  ],
+  "movements": {
+    "Cervical": {
+      "ContralateralRotation": {
+        "labelSv": "Halsrygg: Rotation åt motsatt sida",
+        "labelEn": "Cervical spine: Rotation to the opposite side",
+        "primeMovers": [
+          "sternocleidomastoideus"
+        ],
+        "synergists": [
+          "trapezius_desc",
+          "scaleni",
+          "semispinalis_capitis",
+          "semispinalis_cervicis"
+        ]
+      },
+      "Extension": {
+        "labelSv": "Halsrygg: Extension",
+        "labelEn": "Cervical spine: Extension",
+        "primeMovers": [
+          "suboccipitals",
+          "splenius_capitis",
+          "splenius_cervicis",
+          "semispinalis_capitis",
+          "semispinalis_cervicis"
+        ],
+        "synergists": [
+          "trapezius_desc",
+          "levator_scapulae",
+          "erector_spinae"
+        ]
+      },
+      "Flexion": {
+        "labelSv": "Halsrygg: Flexion",
+        "labelEn": "Cervical spine: Flexion",
+        "primeMovers": [
+          "sternocleidomastoideus",
+          "deep_neck_flexors"
+        ],
+        "synergists": [
+          "scaleni"
+        ]
+      },
+      "IpsilateralLateralFlexion": {
+        "labelSv": "Halsrygg: Lateralflexion åt samma sida",
+        "labelEn": "Cervical spine: Lateral flexion to the same side",
+        "primeMovers": [
+          "trapezius_desc",
+          "sternocleidomastoideus",
+          "scaleni"
+        ],
+        "synergists": [
+          "levator_scapulae",
+          "suboccipitals",
+          "splenius_capitis",
+          "splenius_cervicis",
+          "semispinalis_capitis",
+          "semispinalis_cervicis",
+          "deep_neck_flexors"
+        ]
+      },
+      "IpsilateralRotation": {
+        "labelSv": "Halsrygg: Rotation åt samma sida",
+        "labelEn": "Cervical spine: Rotation to the same side",
+        "primeMovers": [
+          "suboccipitals",
+          "splenius_capitis",
+          "splenius_cervicis"
+        ],
+        "synergists": [
+          "levator_scapulae"
+        ]
+      }
+    },
+    "Thoracic": {
+      "ContralateralRotation": {
+        "labelSv": "Bröstrygg: Rotation åt motsatt sida",
+        "labelEn": "Thoracic spine: Rotation to the opposite side",
+        "primeMovers": [
+          "external_oblique"
+        ],
+        "synergists": [
+          "multifidus"
+        ]
+      },
+      "Extension": {
+        "labelSv": "Bröstrygg: Extension",
+        "labelEn": "Thoracic spine: Extension",
+        "primeMovers": [
+          "erector_spinae"
+        ],
+        "synergists": [
+          "multifidus"
+        ]
+      },
+      "Flexion": {
+        "labelSv": "Bröstrygg: Flexion",
+        "labelEn": "Thoracic spine: Flexion",
+        "primeMovers": [
+          "rectus_abdominis"
+        ],
+        "synergists": [
+          "external_oblique",
+          "internal_oblique"
+        ]
+      },
+      "IpsilateralLateralFlexion": {
+        "labelSv": "Bröstrygg: Lateralflexion åt samma sida",
+        "labelEn": "Thoracic spine: Lateral flexion to the same side",
+        "primeMovers": [
+          "erector_spinae"
+        ],
+        "synergists": [
+          "multifidus",
+          "external_oblique",
+          "internal_oblique"
+        ]
+      },
+      "IpsilateralRotation": {
+        "labelSv": "Bröstrygg: Rotation åt samma sida",
+        "labelEn": "Thoracic spine: Rotation to the same side",
+        "primeMovers": [
+          "internal_oblique"
+        ],
+        "synergists": []
+      }
+    },
+    "Lumbar": {
+      "ContralateralRotation": {
+        "labelSv": "Ländrygg: Rotation åt motsatt sida",
+        "labelEn": "Lumbar spine: Rotation to the opposite side",
+        "primeMovers": [
+          "external_oblique"
+        ],
+        "synergists": [
+          "multifidus"
+        ]
+      },
+      "Extension": {
+        "labelSv": "Ländrygg: Extension",
+        "labelEn": "Lumbar spine: Extension",
+        "primeMovers": [
+          "erector_spinae",
+          "multifidus"
+        ],
+        "synergists": [
+          "quadratus_lumborum"
+        ]
+      },
+      "Flexion": {
+        "labelSv": "Ländrygg: Flexion",
+        "labelEn": "Lumbar spine: Flexion",
+        "primeMovers": [
+          "rectus_abdominis"
+        ],
+        "synergists": [
+          "iliopsoas",
+          "external_oblique",
+          "internal_oblique"
+        ]
+      },
+      "IpsilateralLateralFlexion": {
+        "labelSv": "Ländrygg: Lateralflexion åt samma sida",
+        "labelEn": "Lumbar spine: Lateral flexion to the same side",
+        "primeMovers": [
+          "erector_spinae",
+          "quadratus_lumborum",
+          "external_oblique",
+          "internal_oblique"
+        ],
+        "synergists": [
+          "multifidus",
+          "rectus_abdominis"
+        ]
+      },
+      "IpsilateralRotation": {
+        "labelSv": "Ländrygg: Rotation åt samma sida",
+        "labelEn": "Lumbar spine: Rotation to the same side",
+        "primeMovers": [
+          "internal_oblique"
+        ],
+        "synergists": []
+      }
+    },
+    "Scapula": {
+      "Depression": {
+        "labelSv": "Skulderblad: Depression",
+        "labelEn": "Scapula: Depression",
+        "primeMovers": [
+          "trapezius_asc",
+          "pectoralis_minor"
+        ],
+        "synergists": [
+          "latissimus_dorsi"
+        ]
+      },
+      "DownwardRotation": {
+        "labelSv": "Skulderblad: Nedåtrotation",
+        "labelEn": "Scapula: Downward rotation",
+        "primeMovers": [
+          "levator_scapulae",
+          "pectoralis_minor",
+          "rhomboids"
+        ],
+        "synergists": []
+      },
+      "Elevation": {
+        "labelSv": "Skulderblad: Elevation",
+        "labelEn": "Scapula: Elevation",
+        "primeMovers": [
+          "trapezius_desc",
+          "levator_scapulae"
+        ],
+        "synergists": [
+          "rhomboids"
+        ]
+      },
+      "Protraction": {
+        "labelSv": "Skulderblad: Protraktion",
+        "labelEn": "Scapula: Protraction",
+        "primeMovers": [
+          "pectoralis_minor",
+          "serratus_anterior"
+        ],
+        "synergists": []
+      },
+      "Retraction": {
+        "labelSv": "Skulderblad: Retraktion",
+        "labelEn": "Scapula: Retraction",
+        "primeMovers": [
+          "trapezius_trans",
+          "rhomboids"
+        ],
+        "synergists": [
+          "trapezius_desc",
+          "trapezius_asc"
+        ]
+      },
+      "UpwardRotation": {
+        "labelSv": "Skulderblad: Uppåtrotation",
+        "labelEn": "Scapula: Upward rotation",
+        "primeMovers": [
+          "trapezius_asc",
+          "serratus_anterior"
+        ],
+        "synergists": [
+          "trapezius_desc",
+          "trapezius_trans"
+        ]
+      }
+    },
+    "Shoulder": {
+      "Abduction": {
+        "labelSv": "Axelled: Abduktion",
+        "labelEn": "Shoulder: Abduction",
+        "primeMovers": [
+          "deltoideus",
+          "supraspinatus"
+        ],
+        "synergists": [
+          "serratus_anterior",
+          "infraspinatus",
+          "biceps_brachii"
+        ]
+      },
+      "Adduction": {
+        "labelSv": "Axelled: Adduktion",
+        "labelEn": "Shoulder: Adduction",
+        "primeMovers": [
+          "pectoralis_major",
+          "latissimus_dorsi"
+        ],
+        "synergists": [
+          "subscapularis",
+          "teres_major",
+          "teres_minor",
+          "triceps_brachii",
+          "coracobrachialis"
+        ]
+      },
+      "Extension": {
+        "labelSv": "Axelled: Extension",
+        "labelEn": "Shoulder: Extension",
+        "primeMovers": [
+          "deltoideus",
+          "latissimus_dorsi",
+          "teres_major"
+        ],
+        "synergists": [
+          "infraspinatus",
+          "subscapularis",
+          "triceps_brachii"
+        ]
+      },
+      "ExternalRotation": {
+        "labelSv": "Axelled: Utåtrotation",
+        "labelEn": "Shoulder: External rotation",
+        "primeMovers": [
+          "infraspinatus",
+          "teres_minor"
+        ],
+        "synergists": [
+          "deltoideus",
+          "supraspinatus"
+        ]
+      },
+      "Flexion": {
+        "labelSv": "Axelled: Flexion",
+        "labelEn": "Shoulder: Flexion",
+        "primeMovers": [
+          "pectoralis_major",
+          "deltoideus"
+        ],
+        "synergists": [
+          "serratus_anterior",
+          "biceps_brachii",
+          "coracobrachialis"
+        ]
+      },
+      "HorizontalAbduction": {
+        "labelSv": "Axelled: Horisontell abduktion",
+        "labelEn": "Shoulder: Horizontal abduction",
+        "primeMovers": [
+          "deltoideus"
+        ],
+        "synergists": [
+          "infraspinatus",
+          "teres_minor"
+        ]
+      },
+      "HorizontalAdduction": {
+        "labelSv": "Axelled: Horisontell adduktion",
+        "labelEn": "Shoulder: Horizontal adduction",
+        "primeMovers": [
+          "pectoralis_major"
+        ],
+        "synergists": [
+          "deltoideus",
+          "coracobrachialis"
+        ]
+      },
+      "InternalRotation": {
+        "labelSv": "Axelled: Inåtrotation",
+        "labelEn": "Shoulder: Internal rotation",
+        "primeMovers": [
+          "pectoralis_major",
+          "subscapularis",
+          "latissimus_dorsi"
+        ],
+        "synergists": [
+          "deltoideus",
+          "teres_major"
+        ]
+      }
+    },
+    "Elbow": {
+      "Extension": {
+        "labelSv": "Armbågsled: Extension",
+        "labelEn": "Elbow: Extension",
+        "primeMovers": [
+          "triceps_brachii"
+        ],
+        "synergists": []
+      },
+      "Flexion": {
+        "labelSv": "Armbågsled: Flexion",
+        "labelEn": "Elbow: Flexion",
+        "primeMovers": [
+          "biceps_brachii",
+          "brachialis",
+          "brachioradialis"
+        ],
+        "synergists": [
+          "forearm_flexors",
+          "forearm_extensors",
+          "pronator_teres",
+          "extensor_carpi_radialis_longus"
+        ]
+      }
+    },
+    "Forearm": {
+      "Pronation": {
+        "labelSv": "Underarm (radioulnarlederna): Pronation",
+        "labelEn": "Forearm (radioulnar joints): Pronation",
+        "primeMovers": [
+          "pronator_teres",
+          "pronator_quadratus"
+        ],
+        "synergists": [
+          "brachioradialis"
+        ]
+      },
+      "Supination": {
+        "labelSv": "Underarm (radioulnarlederna): Supination",
+        "labelEn": "Forearm (radioulnar joints): Supination",
+        "primeMovers": [
+          "biceps_brachii",
+          "supinator"
+        ],
+        "synergists": [
+          "brachioradialis"
+        ]
+      }
+    },
+    "Wrist": {
+      "Extension": {
+        "labelSv": "Handled: Extension",
+        "labelEn": "Wrist: Extension",
+        "primeMovers": [
+          "forearm_extensors",
+          "extensor_carpi_radialis_longus",
+          "extensor_carpi_ulnaris"
+        ],
+        "synergists": []
+      },
+      "Flexion": {
+        "labelSv": "Handled: Flexion",
+        "labelEn": "Wrist: Flexion",
+        "primeMovers": [
+          "forearm_flexors",
+          "flexor_carpi_radialis",
+          "flexor_carpi_ulnaris"
+        ],
+        "synergists": []
+      },
+      "RadialDeviation": {
+        "labelSv": "Handled: Radialdeviation",
+        "labelEn": "Wrist: Radial deviation",
+        "primeMovers": [
+          "extensor_carpi_radialis_longus"
+        ],
+        "synergists": [
+          "flexor_carpi_radialis"
+        ]
+      },
+      "UlnarDeviation": {
+        "labelSv": "Handled: Ulnardeviation",
+        "labelEn": "Wrist: Ulnar deviation",
+        "primeMovers": [
+          "flexor_carpi_ulnaris",
+          "extensor_carpi_ulnaris"
+        ],
+        "synergists": []
+      }
+    },
+    "Hip": {
+      "Abduction": {
+        "labelSv": "Höftled: Abduktion",
+        "labelEn": "Hip: Abduction",
+        "primeMovers": [
+          "gluteus_medius",
+          "gluteus_minimus"
+        ],
+        "synergists": [
+          "tensor_fasciae_latae",
+          "gluteus_maximus",
+          "piriformis",
+          "sartorius"
+        ]
+      },
+      "Adduction": {
+        "labelSv": "Höftled: Adduktion",
+        "labelEn": "Hip: Adduction",
+        "primeMovers": [
+          "adductor_longus",
+          "adductor_magnus",
+          "gracilis"
+        ],
+        "synergists": []
+      },
+      "Extension": {
+        "labelSv": "Höftled: Extension",
+        "labelEn": "Hip: Extension",
+        "primeMovers": [
+          "gluteus_maximus",
+          "hamstrings"
+        ],
+        "synergists": [
+          "adductor_magnus"
+        ]
+      },
+      "ExternalRotation": {
+        "labelSv": "Höftled: Utåtrotation",
+        "labelEn": "Hip: External rotation",
+        "primeMovers": [
+          "gluteus_maximus",
+          "piriformis"
+        ],
+        "synergists": [
+          "iliopsoas",
+          "gluteus_medius",
+          "sartorius"
+        ]
+      },
+      "Flexion": {
+        "labelSv": "Höftled: Flexion",
+        "labelEn": "Hip: Flexion",
+        "primeMovers": [
+          "iliopsoas",
+          "rectus_femoris"
+        ],
+        "synergists": [
+          "tensor_fasciae_latae",
+          "adductor_longus",
+          "adductor_magnus",
+          "sartorius"
+        ]
+      },
+      "InternalRotation": {
+        "labelSv": "Höftled: Inåtrotation",
+        "labelEn": "Hip: Internal rotation",
+        "primeMovers": [
+          "tensor_fasciae_latae",
+          "gluteus_medius",
+          "gluteus_minimus"
+        ],
+        "synergists": [
+          "adductor_longus"
+        ]
+      }
+    },
+    "Knee": {
+      "Extension": {
+        "labelSv": "Knäled: Extension",
+        "labelEn": "Knee: Extension",
+        "primeMovers": [
+          "rectus_femoris",
+          "vastus_lateralis",
+          "vastus_medialis"
+        ],
+        "synergists": [
+          "tensor_fasciae_latae"
+        ]
+      },
+      "Flexion": {
+        "labelSv": "Knäled: Flexion",
+        "labelEn": "Knee: Flexion",
+        "primeMovers": [
+          "hamstrings"
+        ],
+        "synergists": [
+          "gastrocnemius",
+          "gracilis",
+          "sartorius"
+        ]
+      },
+      "InternalRotation": {
+        "labelSv": "Knäled: Inåtrotation",
+        "labelEn": "Knee: Internal rotation",
+        "primeMovers": [],
+        "synergists": [
+          "gracilis",
+          "sartorius"
+        ]
+      }
+    },
+    "Ankle": {
+      "Dorsiflexion": {
+        "labelSv": "Fotled (övre språngbensleden): Dorsalflexion",
+        "labelEn": "Ankle (talocrural): Dorsiflexion",
+        "primeMovers": [
+          "tibialis_anterior"
+        ],
+        "synergists": [
+          "extensor_digitorum_longus",
+          "extensor_hallucis_longus"
+        ]
+      },
+      "Plantarflexion": {
+        "labelSv": "Fotled (övre språngbensleden): Plantarflexion",
+        "labelEn": "Ankle (talocrural): Plantarflexion",
+        "primeMovers": [
+          "gastrocnemius",
+          "soleus"
+        ],
+        "synergists": [
+          "peroneus_longus",
+          "peroneus_brevis",
+          "tibialis_posterior"
+        ]
+      }
+    },
+    "Foot": {
+      "Eversion": {
+        "labelSv": "Fot (nedre språngbensleden): Eversion",
+        "labelEn": "Foot (subtalar): Eversion",
+        "primeMovers": [
+          "peroneus_longus",
+          "peroneus_brevis"
+        ],
+        "synergists": [
+          "extensor_digitorum_longus"
+        ]
+      },
+      "Inversion": {
+        "labelSv": "Fot (nedre språngbensleden): Inversion",
+        "labelEn": "Foot (subtalar): Inversion",
+        "primeMovers": [
+          "tibialis_anterior",
+          "tibialis_posterior"
+        ],
+        "synergists": [
+          "extensor_hallucis_longus"
+        ]
+      }
+    },
+    "Mandible": {
+      "Depression": {
+        "labelSv": "Käkled: Depression (öppna munnen)",
+        "labelEn": "Jaw (TMJ): Depression",
+        "primeMovers": [
+          "lateral_pterygoid"
+        ],
+        "synergists": []
+      },
+      "Elevation": {
+        "labelSv": "Käkled: Elevation (stänga munnen)",
+        "labelEn": "Jaw (TMJ): Elevation",
+        "primeMovers": [
+          "masseter",
+          "temporalis"
+        ],
+        "synergists": [
+          "medial_pterygoid"
+        ]
+      },
+      "LateralDeviation": {
+        "labelSv": "Käkled: Sidoförskjutning (laterotrusion)",
+        "labelEn": "Jaw (TMJ): Lateral deviation",
+        "primeMovers": [
+          "lateral_pterygoid"
+        ],
+        "synergists": [
+          "masseter",
+          "temporalis",
+          "medial_pterygoid"
+        ]
+      },
+      "Protrusion": {
+        "labelSv": "Käkled: Protrusion",
+        "labelEn": "Jaw (TMJ): Protrusion",
+        "primeMovers": [
+          "lateral_pterygoid"
+        ],
+        "synergists": [
+          "masseter",
+          "medial_pterygoid"
+        ]
+      },
+      "Retraction": {
+        "labelSv": "Käkled: Retrusion",
+        "labelEn": "Jaw (TMJ): Retraction",
+        "primeMovers": [
+          "temporalis"
+        ],
+        "synergists": []
+      }
+    }
+  }
+}

@@ -13,9 +13,10 @@ interface Props {
     title: string;
     description: string;
     path?: string;
+    noindex?: boolean;
 }
 
-const { title, description, path = Astro.url.pathname } = Astro.props;
+const { title, description, path = Astro.url.pathname, noindex = false } = Astro.props;
 const site = 'https://bjornmassage.se';
 const canonical = new URL(path, site).href;
 const ogImage = `${site}/og.jpg`;
@@ -30,6 +31,7 @@ const ogImage = `${site}/og.jpg`;
         </script>
         <title>{title}</title>
         <meta name="description" content={description} />
+        {noindex && <meta name="robots" content="noindex" />}
         <meta name="viewport" content="width=device-width" />
         <link rel="canonical" href={canonical} />
         <meta property="og:type" content="website" />

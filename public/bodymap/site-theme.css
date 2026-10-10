@@ -66,3 +66,55 @@
 [data-bodymap].bm .bm-tag:hover {
     background: #f3e6e0;
 }
+
+[data-bodymap].bm .bm-seg {
+    flex-wrap: wrap;
+    max-width: 100%;
+}
+
+@media (max-width: 560px) {
+    [data-bodymap].bm .bm-seg-btn {
+        flex: 1 1 40%;
+        padding: 10px 12px;
+        white-space: normal;
+        line-height: 1.2;
+    }
+}
+
+[data-bodymap].bm[data-mode='movements'] .bm-pick,
+[data-bodymap].bm[data-mode='movements'] .bm-legend {
+    display: none;
+}
+
+[data-bodymap].bm[data-mode='movements'] .bm-zones {
+    pointer-events: none;
+}
+
+[data-bodymap].bm[data-mode='movements'] .bm-muscle {
+    cursor: pointer;
+}
+
+[data-bodymap].bm[data-mode='movements'] .bm-muscle:hover path {
+    fill: var(--bm-muscle-hover);
+    stroke: #b8977d;
+}
+
+[data-bodymap].bm[data-mode='movements'] .bm-muscle.bm-prime path,
+[data-bodymap].bm[data-mode='movements'] .bm-muscle.bm-prime:hover path {
+    fill: #7a3b2e;
+    stroke: #5c2418;
+    stroke-width: 2;
+    opacity: 1;
+}
+
+[data-bodymap].bm[data-mode='movements'] .bm-muscle.bm-syn path,
+[data-bodymap].bm[data-mode='movements'] .bm-muscle.bm-syn:hover path {
+    fill: #c9a197;
+    stroke: #7a3b2e;
+    stroke-width: 1.8;
+    opacity: 1;
+}
+
+[data-bodymap].bm.bm-has-move .bm-muscle:not(.bm-prime):not(.bm-syn) path {
+    opacity: 0.35;
+}

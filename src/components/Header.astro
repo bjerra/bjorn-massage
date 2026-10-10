@@ -1,11 +1,13 @@
 ---
 import { placeUrl } from '../data/site';
+import { SHOW_MOVEMENT_LOOKUP } from '../data/features';
 
 const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
 
 const navItems = [
     { linkText: 'Tjänster', href: '/#tjanster' },
     { linkText: 'Triggerpunkter', href: '/triggerpunkter' },
+    ...(SHOW_MOVEMENT_LOOKUP ? [{ linkText: 'Rörelser', href: '/rorelser' }] : []),
     { linkText: 'Om mig', href: '/#om-mig' },
     { linkText: 'Kontakt', href: '/#kontakt' }
 ];
