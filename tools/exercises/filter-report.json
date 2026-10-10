@@ -148,14 +148,1013 @@
   ],
   "strengthenKept": 252,
   "totalKept": 375,
-  "missingSwedishCues": [
-    "Side Jackknife",
-    "Side Bridge"
+  "titleChanges": [
+    {
+      "id": "3_4_Sit-Up",
+      "name": "3/4 Sit-Up",
+      "from": "3/4 sit-up",
+      "to": "Sit-up till tre fjärdedelar"
+    },
+    {
+      "id": "90_90_Hamstring",
+      "name": "90/90 Hamstring",
+      "from": "90/90 hamstring",
+      "to": "Hamstringsstretch 90/90"
+    },
+    {
+      "id": "Adductor",
+      "name": "Adductor",
+      "from": "Adduktorer (foamroller)",
+      "to": "Adduktorer – foamrolling"
+    },
+    {
+      "id": "Alternating_Deltoid_Raise",
+      "name": "Alternating Deltoid Raise",
+      "from": "Alternerande deltoidlyft",
+      "to": "Växlande axellyft framåt och åt sidan"
+    },
+    {
+      "id": "Alternate_Heel_Touchers",
+      "name": "Alternate Heel Touchers",
+      "from": "Alternerande hälnuddningar",
+      "to": "Alternerande crunch mot hälarna"
+    },
+    {
+      "id": "Alternate_Incline_Dumbbell_Curl",
+      "name": "Alternate Incline Dumbbell Curl",
+      "from": "Alternerande lutande hantelcurl",
+      "to": "Alternerande bicepscurl i lutande bänk"
+    },
+    {
+      "id": "Push-Ups_-_Close_Triceps_Position",
+      "name": "Push-Ups - Close Triceps Position",
+      "from": "Armhävning med smalt tricepsgrepp",
+      "to": "Armhävning med smalt grepp för triceps"
+    },
+    {
+      "id": "Incline_Push-Up",
+      "name": "Incline Push-Up",
+      "from": "Armhävning uppåtlutad",
+      "to": "Armhävning med händerna upphöjda"
+    },
+    {
+      "id": "Incline_Push-Up_Wide",
+      "name": "Incline Push-Up Wide",
+      "from": "Armhävning uppåtlutad med brett grepp",
+      "to": "Armhävning med händerna upphöjda, brett grepp"
+    },
+    {
+      "id": "Incline_Push-Up_Medium",
+      "name": "Incline Push-Up Medium",
+      "from": "Armhävning uppåtlutad med mellanbrett grepp",
+      "to": "Armhävning med händerna upphöjda, axelbrett grepp"
+    },
+    {
+      "id": "Incline_Push-Up_Reverse_Grip",
+      "name": "Incline Push-Up Reverse Grip",
+      "from": "Armhävning uppåtlutad med omvänt grepp",
+      "to": "Armhävning med händerna upphöjda, underhandsgrepp"
+    },
+    {
+      "id": "Incline_Push-Up_Close-Grip",
+      "name": "Incline Push-Up Close-Grip",
+      "from": "Armhävning uppåtlutad med smalt grepp",
+      "to": "Armhävning med händerna upphöjda, smalt grepp"
+    },
+    {
+      "id": "Pushups_Close_and_Wide_Hand_Positions",
+      "name": "Pushups (Close and Wide Hand Positions)",
+      "from": "Armhävningar (smal och bred handposition)",
+      "to": "Armhävningar med smalt och brett grepp"
+    },
+    {
+      "id": "Around_The_Worlds",
+      "name": "Around The Worlds",
+      "from": "Around the worlds",
+      "to": "Hantelcirklar liggande"
+    },
+    {
+      "id": "Advanced_Kettlebell_Windmill",
+      "name": "Advanced Kettlebell Windmill",
+      "from": "Avancerad kettlebell windmill",
+      "to": "Avancerad väderkvarn med kettlebell"
+    },
+    {
+      "id": "Glute_Kickback",
+      "name": "Glute Kickback",
+      "from": "Baklyft för gluteus",
+      "to": "Säteslyft bakåt på alla fyra"
+    },
+    {
+      "id": "Rear_Leg_Raises",
+      "name": "Rear Leg Raises",
+      "from": "Bakre benlyft på alla fyra",
+      "to": "Benlyft bakåt på alla fyra"
+    },
+    {
+      "id": "Band_Pull_Apart",
+      "name": "Band Pull Apart",
+      "from": "Band pull apart",
+      "to": "Isärdrag med band"
+    },
+    {
+      "id": "Leg_Lift",
+      "name": "Leg Lift",
+      "from": "Benlyft stående",
+      "to": "Stående lårcurl"
+    },
+    {
+      "id": "Chair_Leg_Extended_Stretch",
+      "name": "Chair Leg Extended Stretch",
+      "from": "Bensträcks-stretch i stol",
+      "to": "Benlyft utåt i stol"
+    },
+    {
+      "id": "Leg-Up_Hamstring_Stretch",
+      "name": "Leg-Up Hamstring Stretch",
+      "from": "Benupp hamstringsstretch",
+      "to": "Hamstringsstretch med benet rakt upp"
+    },
+    {
+      "id": "Looking_At_Ceiling",
+      "name": "Looking At Ceiling",
+      "from": "Blicka mot taket",
+      "to": "Knästående bakåtböj"
+    },
+    {
+      "id": "Body-Up",
+      "name": "Body-Up",
+      "from": "Body-up",
+      "to": "Uppress från underarmsplanka"
+    },
+    {
+      "id": "Push-Up_Wide",
+      "name": "Push-Up Wide",
+      "from": "Brett armhävning",
+      "to": "Armhävning med brett grepp"
+    },
+    {
+      "id": "Chest_And_Front_Of_Shoulder_Stretch",
+      "name": "Chest And Front Of Shoulder Stretch",
+      "from": "Bröst- och framsida axelstretch",
+      "to": "Stretch för bröst och axelns framsida"
+    },
+    {
+      "id": "Butt-Ups",
+      "name": "Butt-Ups",
+      "from": "Butt-ups",
+      "to": "Säteslyft från underarmsplanka"
+    },
+    {
+      "id": "Pelvic_Tilt_Into_Bridge",
+      "name": "Pelvic Tilt Into Bridge",
+      "from": "Bäckentilt till bro",
+      "to": "Bäckentippning till höftbrygga"
+    },
+    {
+      "id": "Chin-Up",
+      "name": "Chin-Up",
+      "from": "Chins",
+      "to": "Chins med underhandsgrepp"
+    },
+    {
+      "id": "Pullups",
+      "name": "Pullups",
+      "from": "Chins",
+      "to": "Chins med överhandsgrepp"
+    },
+    {
+      "id": "Wide-Grip_Rear_Pull-Up",
+      "name": "Wide-Grip Rear Pull-Up",
+      "from": "Chins bakom nacken brett grepp",
+      "to": "Chins bakom nacken med brett grepp"
+    },
+    {
+      "id": "Dancers_Stretch",
+      "name": "Dancer's Stretch",
+      "from": "Dansarstretch",
+      "to": "Dansarens vridstretch"
+    },
+    {
+      "id": "Dips_-_Triceps_Version",
+      "name": "Dips - Triceps Version",
+      "from": "Dips – tricepstyngdpunkt",
+      "to": "Dips med fokus på triceps"
+    },
+    {
+      "id": "Double_Leg_Butt_Kick",
+      "name": "Double Leg Butt Kick",
+      "from": "Dubbelt benhäv med sparkrörelse",
+      "to": "Hopp med båda hälarna mot sätet"
+    },
+    {
+      "id": "Dead_Bug",
+      "name": "Dead Bug",
+      "from": "Döda skalbaggen",
+      "to": "Död skalbagge"
+    },
+    {
+      "id": "One-Arm_Incline_Lateral_Raise",
+      "name": "One-Arm Incline Lateral Raise",
+      "from": "Enarmad sidolyft på lutande bänk",
+      "to": "Enarms sidolyft på lutande bänk"
+    },
+    {
+      "id": "One_Arm_Dumbbell_Preacher_Curl",
+      "name": "One Arm Dumbbell Preacher Curl",
+      "from": "Enarms hantel preacher curl",
+      "to": "Enarms bicepscurl i predikantbänk"
+    },
+    {
+      "id": "One_Arm_Dumbbell_Bench_Press",
+      "name": "One Arm Dumbbell Bench Press",
+      "from": "Enarms hantelpress",
+      "to": "Enarms hantelpress i bänk"
+    },
+    {
+      "id": "One-Arm_Kettlebell_Floor_Press",
+      "name": "One-Arm Kettlebell Floor Press",
+      "from": "Enarms kettlebell golvpress",
+      "to": "Enarms golvpress med kettlebell"
+    },
+    {
+      "id": "One-Arm_Kettlebell_Para_Press",
+      "name": "One-Arm Kettlebell Para Press",
+      "from": "Enarms kettlebell para press",
+      "to": "Enarms kettlebellpress utåt sidan"
+    },
+    {
+      "id": "One_Arm_Against_Wall",
+      "name": "One Arm Against Wall",
+      "from": "Enarms latissimus stretch mot vägg",
+      "to": "Enarms latissimusstretch mot vägg"
+    },
+    {
+      "id": "Dumbbell_One-Arm_Upright_Row",
+      "name": "Dumbbell One-Arm Upright Row",
+      "from": "Enarms rodd upprätt med hantel",
+      "to": "Enarms upprätt rodd med hantel"
+    },
+    {
+      "id": "Single_Leg_Glute_Bridge",
+      "name": "Single Leg Glute Bridge",
+      "from": "Enbensbro",
+      "to": "Enbens höftbrygga"
+    },
+    {
+      "id": "Single_Leg_Butt_Kick",
+      "name": "Single Leg Butt Kick",
+      "from": "Enbensspark mot baken",
+      "to": "Enbenshopp med häl mot sätet"
+    },
+    {
+      "id": "Flutter_Kicks",
+      "name": "Flutter Kicks",
+      "from": "Flutterkick",
+      "to": "Fladdrande benlyft på mage"
+    },
+    {
+      "id": "Ankle_On_The_Knee",
+      "name": "Ankle On The Knee",
+      "from": "Fotled på knäet (piriformis-stretch)",
+      "to": "Piriformisstretch i figur fyra"
+    },
+    {
+      "id": "Front_Leg_Raises",
+      "name": "Front Leg Raises",
+      "from": "Framåtbenlyft stående",
+      "to": "Stående bensving fram och bak"
+    },
+    {
+      "id": "Bent_Over_Dumbbell_Rear_Delt_Raise_With_Head_On_Bench",
+      "name": "Bent Over Dumbbell Rear Delt Raise With Head On Bench",
+      "from": "Framåtlutad bakre deltoidlyft med huvud på bänk",
+      "to": "Framåtlutad lyft för bakre deltoideus, huvudet mot bänk"
+    },
+    {
+      "id": "Front_Squats_With_Two_Kettlebells",
+      "name": "Front Squats With Two Kettlebells",
+      "from": "Frontsquat med två kettlebells",
+      "to": "Frontknäböj med två kettlebells"
+    },
+    {
+      "id": "Leg-Over_Floor_Press",
+      "name": "Leg-Over Floor Press",
+      "from": "Golvpress med benöverlapp",
+      "to": "Golvpress med kettlebell, benet korsat över"
+    },
+    {
+      "id": "Band_Good_Morning_Pull_Through",
+      "name": "Band Good Morning (Pull Through)",
+      "from": "Good morning med band (pull through)",
+      "to": "Good morning med band framifrån"
+    },
+    {
+      "id": "Gorilla_Chin_Crunch",
+      "name": "Gorilla Chin/Crunch",
+      "from": "Gorilla chin/crunch",
+      "to": "Chins med knälyft, underhand"
+    },
+    {
+      "id": "The_Straddle",
+      "name": "The Straddle",
+      "from": "Grensittningsstretch",
+      "to": "Framåtböj i grensitt"
+    },
+    {
+      "id": "Frog_Sit-Ups",
+      "name": "Frog Sit-Ups",
+      "from": "Grodsit-ups",
+      "to": "Sit-up i grodposition"
+    },
+    {
+      "id": "Groiners",
+      "name": "Groiners",
+      "from": "Groiners",
+      "to": "Ljumskstretch från armhävning"
+    },
+    {
+      "id": "Chin_To_Chest_Stretch",
+      "name": "Chin To Chest Stretch",
+      "from": "Haka mot bröst-stretch",
+      "to": "Nackstretch, haka mot bröstet"
+    },
+    {
+      "id": "Sit_Squats",
+      "name": "Sit Squats",
+      "from": "Halvliggande squat",
+      "to": "Kort knäböj"
+    },
+    {
+      "id": "Dumbbell_Incline_Shoulder_Raise",
+      "name": "Dumbbell Incline Shoulder Raise",
+      "from": "Hantel axellyft i lutad bänk",
+      "to": "Axelryckning med hantlar i lutande bänk"
+    },
+    {
+      "id": "Dumbbell_Floor_Press",
+      "name": "Dumbbell Floor Press",
+      "from": "Hantel golvpress",
+      "to": "Golvpress med hantlar"
+    },
+    {
+      "id": "Decline_Dumbbell_Triceps_Extension",
+      "name": "Decline Dumbbell Triceps Extension",
+      "from": "Hantel triceps extension i nedåtlutad bänk",
+      "to": "Tricepsextension med hantlar i nedåtlutad bänk"
+    },
+    {
+      "id": "Palms-Down_Dumbbell_Wrist_Curl_Over_A_Bench",
+      "name": "Palms-Down Dumbbell Wrist Curl Over A Bench",
+      "from": "Hantelhandledscurl pronerat grepp över bänk",
+      "to": "Handledscurl med hantlar över bänk, handflatan ned"
+    },
+    {
+      "id": "Palms-Up_Dumbbell_Wrist_Curl_Over_A_Bench",
+      "name": "Palms-Up Dumbbell Wrist Curl Over A Bench",
+      "from": "Hantelhandledscurl supinerat grepp över bänk",
+      "to": "Handledscurl med hantlar över bänk, handflatan upp"
+    },
+    {
+      "id": "Front_Dumbbell_Raise",
+      "name": "Front Dumbbell Raise",
+      "from": "Hantellyft framåt",
+      "to": "Framlyft med hantlar"
+    },
+    {
+      "id": "Front_Incline_Dumbbell_Raise",
+      "name": "Front Incline Dumbbell Raise",
+      "from": "Hantellyft framåt i lutad bänk",
+      "to": "Framlyft med hantlar i lutande bänk"
+    },
+    {
+      "id": "Front_Two-Dumbbell_Raise",
+      "name": "Front Two-Dumbbell Raise",
+      "from": "Hantellyft framåt med båda armarna",
+      "to": "Framlyft med båda hantlarna"
+    },
+    {
+      "id": "Single_Dumbbell_Raise",
+      "name": "Single Dumbbell Raise",
+      "from": "Hantellyft med brett grepp",
+      "to": "Framlyft med en hantel i båda händerna"
+    },
+    {
+      "id": "Band_Hip_Adductions",
+      "name": "Band Hip Adductions",
+      "from": "Höftadduktion med band",
+      "to": "Höftabduktion med band"
+    },
+    {
+      "id": "Intermediate_Hip_Flexor_and_Quad_Stretch",
+      "name": "Intermediate Hip Flexor and Quad Stretch",
+      "from": "Höftflexor- och quadstretch mellannivå",
+      "to": "Höftböjar- och quadricepsstretch, mellannivå"
+    },
+    {
+      "id": "Kneeling_Hip_Flexor",
+      "name": "Kneeling Hip Flexor",
+      "from": "Höftflexorstretch knästående",
+      "to": "Knästående höftböjarstretch"
+    },
+    {
+      "id": "Butt_Lift_Bridge",
+      "name": "Butt Lift (Bridge)",
+      "from": "Höftlyft (bridge)",
+      "to": "Höftbrygga"
+    },
+    {
+      "id": "Flexor_Incline_Dumbbell_Curls",
+      "name": "Flexor Incline Dumbbell Curls",
+      "from": "Incline bicepscurl med fokus på flexorerna",
+      "to": "Bicepscurl i lutande bänk med handleden bakåt"
+    },
+    {
+      "id": "Incline_Inner_Biceps_Curl",
+      "name": "Incline Inner Biceps Curl",
+      "from": "Incline-curl för inre biceps",
+      "to": "Bicepscurl i lutande bänk, inre delen"
+    },
+    {
+      "id": "Iron_Crosses_stretch",
+      "name": "Iron Crosses (stretch)",
+      "from": "Iron cross (stretch)",
+      "to": "Dynamisk rotationsstretch på mage"
+    },
+    {
+      "id": "Isometric_Chest_Squeezes",
+      "name": "Isometric Chest Squeezes",
+      "from": "Isometrisk bröstkomprimering",
+      "to": "Isometrisk bröstpress med handflatorna"
+    },
+    {
+      "id": "Isometric_Wipers",
+      "name": "Isometric Wipers",
+      "from": "Isometriska vindrutetorkare",
+      "to": "Armhävning med sidoförskjutning"
+    },
+    {
+      "id": "Cross_Over_-_With_Bands",
+      "name": "Cross Over - With Bands",
+      "from": "Kabelkorsning med band",
+      "to": "Korsdrag med band"
+    },
+    {
+      "id": "Kettlebell_One-Legged_Deadlift",
+      "name": "Kettlebell One-Legged Deadlift",
+      "from": "Kettlebell enbens-dödlyft",
+      "to": "Enbens marklyft med kettlebell"
+    },
+    {
+      "id": "Kettlebell_Seesaw_Press",
+      "name": "Kettlebell Seesaw Press",
+      "from": "Kettlebell gungbrädepress",
+      "to": "Gungbrädepress med kettlebellar"
+    },
+    {
+      "id": "Kettlebell_Seated_Press",
+      "name": "Kettlebell Seated Press",
+      "from": "Kettlebell sittande press",
+      "to": "Sittande press med kettlebell"
+    },
+    {
+      "id": "Kettlebell_Sumo_High_Pull",
+      "name": "Kettlebell Sumo High Pull",
+      "from": "Kettlebell sumo high pull",
+      "to": "Högt sumodrag med kettlebell"
+    },
+    {
+      "id": "Kettlebell_Turkish_Get-Up_Squat_style",
+      "name": "Kettlebell Turkish Get-Up (Squat style)",
+      "from": "Kettlebell Turkish get-up (squatstil)",
+      "to": "Turkish get-up med kettlebell, knäböjsstil"
+    },
+    {
+      "id": "Kettlebell_Turkish_Get-Up_Lunge_style",
+      "name": "Kettlebell Turkish Get-Up (Lunge style)",
+      "from": "Kettlebell Turkish get-up (utfallsstil)",
+      "to": "Turkish get-up med kettlebell, utfallsstil"
+    },
+    {
+      "id": "Kettlebell_Windmill",
+      "name": "Kettlebell Windmill",
+      "from": "Kettlebell väderkvarn",
+      "to": "Väderkvarn med kettlebell"
+    },
+    {
+      "id": "Kettlebell_Figure_8",
+      "name": "Kettlebell Figure 8",
+      "from": "Kettlebell åtta",
+      "to": "Åtta med kettlebell"
+    },
+    {
+      "id": "Clock_Push-Up",
+      "name": "Clock Push-Up",
+      "from": "Klockarmhävning",
+      "to": "Armhävning runt klockan"
+    },
+    {
+      "id": "Jackknife_Sit-Up",
+      "name": "Jackknife Sit-Up",
+      "from": "Knivbladssit-up",
+      "to": "Fällknivssit-up"
+    },
+    {
+      "id": "Squats_-_With_Bands",
+      "name": "Squats - With Bands",
+      "from": "Knäböj med motståndsband runt knäna",
+      "to": "Knäböj med band"
+    },
+    {
+      "id": "Dumbbell_Squat_To_A_Bench",
+      "name": "Dumbbell Squat To A Bench",
+      "from": "Knäböj mot bänk med hantlar",
+      "to": "Knäböj till bänk med hantlar"
+    },
+    {
+      "id": "Bent-Knee_Hip_Raise",
+      "name": "Bent-Knee Hip Raise",
+      "from": "Knäböjt höftlyft",
+      "to": "Höftlyft med knäna mot bröstet"
+    },
+    {
+      "id": "Knee_Tuck_Jump",
+      "name": "Knee Tuck Jump",
+      "from": "Knätugg-hopp",
+      "to": "Hopp med knäna mot bröstet"
+    },
+    {
+      "id": "Hug_A_Ball",
+      "name": "Hug A Ball",
+      "from": "Krama en boll",
+      "to": "Sittande höftstretch med boll"
+    },
+    {
+      "id": "Body_Tricep_Press",
+      "name": "Body Tricep Press",
+      "from": "Kroppsvikts-tricepspress",
+      "to": "Tricepspress med kroppsvikt"
+    },
+    {
+      "id": "Lying_Rear_Delt_Raise",
+      "name": "Lying Rear Delt Raise",
+      "from": "Liggande bakre deltalyft",
+      "to": "Liggande lyft för bakre deltoideus på plan bänk"
+    },
+    {
+      "id": "Dumbbell_Lying_Rear_Lateral_Raise",
+      "name": "Dumbbell Lying Rear Lateral Raise",
+      "from": "Liggande bakre sidolyft med hantlar",
+      "to": "Liggande lyft för bakre deltoideus med hantlar"
+    },
+    {
+      "id": "Dumbbell_Lying_One-Arm_Rear_Lateral_Raise",
+      "name": "Dumbbell Lying One-Arm Rear Lateral Raise",
+      "from": "Liggande enarms bakre sidolyft med hantel",
+      "to": "Liggande enarms lyft för bakre deltoideus"
+    },
+    {
+      "id": "Lying_One-Arm_Lateral_Raise",
+      "name": "Lying One-Arm Lateral Raise",
+      "from": "Liggande enarms sidolyft",
+      "to": "Liggande enarms lyft för bakre deltoideus på plan bänk"
+    },
+    {
+      "id": "Lying_Supine_Dumbbell_Curl",
+      "name": "Lying Supine Dumbbell Curl",
+      "from": "Liggande hantelcurl",
+      "to": "Liggande bicepscurl med hantlar"
+    },
+    {
+      "id": "Lying_Dumbbell_Tricep_Extension",
+      "name": "Lying Dumbbell Tricep Extension",
+      "from": "Liggande hantelstricepsextension",
+      "to": "Liggande tricepsextension med hantlar"
+    },
+    {
+      "id": "Dumbbell_Prone_Incline_Curl",
+      "name": "Dumbbell Prone Incline Curl",
+      "from": "Liggande incline bicepscurl med hantlar",
+      "to": "Bicepscurl med hantlar på lutande bänk, bröstet ned"
+    },
+    {
+      "id": "Lower_Back_Curl",
+      "name": "Lower Back Curl",
+      "from": "Ländryggsrullning",
+      "to": "Ryggresning på mage"
+    },
+    {
+      "id": "Monster_Walk",
+      "name": "Monster Walk",
+      "from": "Monster walk",
+      "to": "Monstergång med band"
+    },
+    {
+      "id": "Natural_Glute_Ham_Raise",
+      "name": "Natural Glute Ham Raise",
+      "from": "Naturlig glute-ham raise",
+      "to": "Naturlig sätes- och hamstringsresning"
+    },
+    {
+      "id": "Reverse_Flyes_With_External_Rotation",
+      "name": "Reverse Flyes With External Rotation",
+      "from": "Omvända flyes med extern rotation",
+      "to": "Omvända flyes med utåtrotation"
+    },
+    {
+      "id": "Overhead_Lat",
+      "name": "Overhead Lat",
+      "from": "Overhead latissimus stretch med partner",
+      "to": "Latissimusstretch över huvudet med partner"
+    },
+    {
+      "id": "Overhead_Stretch",
+      "name": "Overhead Stretch",
+      "from": "Overhead stretch",
+      "to": "Stående stretch över huvudet"
+    },
+    {
+      "id": "Plie_Dumbbell_Squat",
+      "name": "Plie Dumbbell Squat",
+      "from": "Plié squat med hantel",
+      "to": "Pliéknäböj med hantel"
+    },
+    {
+      "id": "Plyo_Push-up",
+      "name": "Plyo Push-up",
+      "from": "Plio armhävning",
+      "to": "Plyometrisk armhävning"
+    },
+    {
+      "id": "Preacher_Hammer_Dumbbell_Curl",
+      "name": "Preacher Hammer Dumbbell Curl",
+      "from": "Preacher hammercurl med hantlar",
+      "to": "Hammarcurl i predikantbänk med hantlar"
+    },
+    {
+      "id": "Pyramid",
+      "name": "Pyramid",
+      "from": "Pyramid på boll",
+      "to": "Höftstretch över träningsboll"
+    },
+    {
+      "id": "All_Fours_Quad_Stretch",
+      "name": "All Fours Quad Stretch",
+      "from": "Quadriceps-stretch på alla fyra",
+      "to": "Quadricepsstretch på alla fyra"
+    },
+    {
+      "id": "On_Your_Side_Quad_Stretch",
+      "name": "On Your Side Quad Stretch",
+      "from": "Quadriceps-stretch på sidan",
+      "to": "Quadricepsstretch på sidan"
+    },
+    {
+      "id": "Rocket_Jump",
+      "name": "Rocket Jump",
+      "from": "Rocket jump",
+      "to": "Rakethopp"
+    },
+    {
+      "id": "Rhomboids-SMR",
+      "name": "Rhomboids-SMR",
+      "from": "Romboid – foamrolling",
+      "to": "Romboider – foamrolling"
+    },
+    {
+      "id": "Round_The_World_Shoulder_Stretch",
+      "name": "Round The World Shoulder Stretch",
+      "from": "Round-the-world axelstretch",
+      "to": "Axelstretch med stav bakom ryggen"
+    },
+    {
+      "id": "Hyperextensions_With_No_Hyperextension_Bench",
+      "name": "Hyperextensions With No Hyperextension Bench",
+      "from": "Ryggextensioner utan ryggextensionsbänk",
+      "to": "Ryggresning på plan bänk"
+    },
+    {
+      "id": "Spinal_Stretch",
+      "name": "Spinal Stretch",
+      "from": "Ryggradsstretch",
+      "to": "Sittande vridstretch"
+    },
+    {
+      "id": "Scissor_Kick",
+      "name": "Scissor Kick",
+      "from": "Saxkick",
+      "to": "Saxande benlyft"
+    },
+    {
+      "id": "See-Saw_Press_Alternating_Side_Press",
+      "name": "See-Saw Press (Alternating Side Press)",
+      "from": "Se-saw press – alternerande sidopress",
+      "to": "Gungbrädepress med hantlar"
+    },
+    {
+      "id": "Side_Wrist_Pull",
+      "name": "Side Wrist Pull",
+      "from": "Sidohandledsdrag",
+      "to": "Korsande armdrag för ryggen"
+    },
+    {
+      "id": "Side_Jackknife",
+      "name": "Side Jackknife",
+      "from": "Sidoknivfällning",
+      "to": "Sidliggande fällkniv"
+    },
+    {
+      "id": "Side_Leg_Raises",
+      "name": "Side Leg Raises",
+      "from": "Sidopendellyft stående",
+      "to": "Stående bensving åt sidan"
+    },
+    {
+      "id": "Seated_Bent-Over_Rear_Delt_Raise",
+      "name": "Seated Bent-Over Rear Delt Raise",
+      "from": "Sittande bakre deltalyft förovrigt",
+      "to": "Sittande framåtlutad lyft för bakre deltoideus"
+    },
+    {
+      "id": "Seated_Leg_Tucks",
+      "name": "Seated Leg Tucks",
+      "from": "Sittande bentuck",
+      "to": "Sittande knäindrag"
+    },
+    {
+      "id": "Dumbbell_Seated_Box_Jump",
+      "name": "Dumbbell Seated Box Jump",
+      "from": "Sittande boxhoppp med hantel",
+      "to": "Sittande boxhopp med hantel"
+    },
+    {
+      "id": "Seated_One-Arm_Dumbbell_Palms-Up_Wrist_Curl",
+      "name": "Seated One-Arm Dumbbell Palms-Up Wrist Curl",
+      "from": "Sittande enarmad handledscurl med hantel, handflatan upp",
+      "to": "Sittande enarms handledscurl med hantel, handflatan upp"
+    },
+    {
+      "id": "Seated_One-Arm_Dumbbell_Palms-Down_Wrist_Curl",
+      "name": "Seated One-Arm Dumbbell Palms-Down Wrist Curl",
+      "from": "Sittande enarms hantelhandledscurl pronerat grepp",
+      "to": "Sittande enarms handledscurl med hantel, handflatan ned"
+    },
+    {
+      "id": "Seated_Bent-Over_One-Arm_Dumbbell_Triceps_Extension",
+      "name": "Seated Bent-Over One-Arm Dumbbell Triceps Extension",
+      "from": "Sittande enarms hantelstricepsextension förovrigt",
+      "to": "Sittande framåtlutad enarms tricepsextension med hantel"
+    },
+    {
+      "id": "Dumbbell_Seated_One-Leg_Calf_Raise",
+      "name": "Dumbbell Seated One-Leg Calf Raise",
+      "from": "Sittande enarms vadpress med hantel",
+      "to": "Sittande enbens vadlyft med hantel"
+    },
+    {
+      "id": "Seated_Front_Deltoid",
+      "name": "Seated Front Deltoid",
+      "from": "Sittande framdelta stretch med partner",
+      "to": "Sittande stretch för främre deltoideus med partner"
+    },
+    {
+      "id": "Seated_Floor_Hamstring_Stretch",
+      "name": "Seated Floor Hamstring Stretch",
+      "from": "Sittande hamstringstretch på golv",
+      "to": "Sittande hamstringsstretch på golvet"
+    },
+    {
+      "id": "Seated_Dumbbell_Curl",
+      "name": "Seated Dumbbell Curl",
+      "from": "Sittande hantelcurl",
+      "to": "Sittande bicepscurl med hantlar"
+    },
+    {
+      "id": "Seated_Dumbbell_Palms-Down_Wrist_Curl",
+      "name": "Seated Dumbbell Palms-Down Wrist Curl",
+      "from": "Sittande hantelhandledscurl pronerat grepp",
+      "to": "Sittande handledscurl med hantlar, handflatan ned"
+    },
+    {
+      "id": "Seated_Dumbbell_Palms-Up_Wrist_Curl",
+      "name": "Seated Dumbbell Palms-Up Wrist Curl",
+      "from": "Sittande hantelhandledscurl supinerat grepp",
+      "to": "Sittande handledscurl med hantlar, handflatan upp"
+    },
+    {
+      "id": "Seated_Dumbbell_Press",
+      "name": "Seated Dumbbell Press",
+      "from": "Sittande hantelpress",
+      "to": "Sittande axelpress med hantlar"
+    },
+    {
+      "id": "Seated_Dumbbell_Inner_Biceps_Curl",
+      "name": "Seated Dumbbell Inner Biceps Curl",
+      "from": "Sittande inner biceps curl med hantlar",
+      "to": "Sittande bicepscurl med hantlar, inre delen"
+    },
+    {
+      "id": "Seated_Overhead_Stretch",
+      "name": "Seated Overhead Stretch",
+      "from": "Sittande overhead stretch",
+      "to": "Sittande sidostretch"
+    },
+    {
+      "id": "Seated_Side_Lateral_Raise",
+      "name": "Seated Side Lateral Raise",
+      "from": "Sittande sidolyft",
+      "to": "Sittande sidolyft med hantlar"
+    },
+    {
+      "id": "Seated_Triceps_Press",
+      "name": "Seated Triceps Press",
+      "from": "Sittande tricepspress overhead med hantel",
+      "to": "Sittande tricepspress över huvudet med hantel"
+    },
+    {
+      "id": "Seated_Bent-Over_Two-Arm_Dumbbell_Triceps_Extension",
+      "name": "Seated Bent-Over Two-Arm Dumbbell Triceps Extension",
+      "from": "Sittande tvåarms hantelstricepsextension förovrigt",
+      "to": "Sittande framåtlutad tricepsextension med två hantlar"
+    },
+    {
+      "id": "Band_Skull_Crusher",
+      "name": "Band Skull Crusher",
+      "from": "Skull crusher med band",
+      "to": "Liggande tricepsextension med band"
+    },
+    {
+      "id": "Speed_Band_Overhead_Triceps",
+      "name": "Speed Band Overhead Triceps",
+      "from": "Snabb tricepsextension overhead med band",
+      "to": "Snabb tricepsextension över huvudet med band"
+    },
+    {
+      "id": "Spell_Caster",
+      "name": "Spell Caster",
+      "from": "Spell caster med skiva",
+      "to": "Sving med viktskiva"
+    },
+    {
+      "id": "Split_Squat_with_Dumbbells",
+      "name": "Split Squat with Dumbbells",
+      "from": "Split squat med hantlar",
+      "to": "Knäböj i utfallsställning med hantlar"
+    },
+    {
+      "id": "Split_Squats",
+      "name": "Split Squats",
+      "from": "Split squats (hopp)",
+      "to": "Hopputfall med benbyte"
+    },
+    {
+      "id": "Split_Jump",
+      "name": "Split Jump",
+      "from": "Splithopp",
+      "to": "Utfallshopp med benbyte"
+    },
+    {
+      "id": "Dumbbell_Step_Ups",
+      "name": "Dumbbell Step Ups",
+      "from": "Stepup med hantlar",
+      "to": "Step-up med hantlar"
+    },
+    {
+      "id": "Step-up_with_Knee_Raise",
+      "name": "Step-up with Knee Raise",
+      "from": "Stepup med knälyft",
+      "to": "Step-up med knälyft"
+    },
+    {
+      "id": "Stiff-Legged_Dumbbell_Deadlift",
+      "name": "Stiff-Legged Dumbbell Deadlift",
+      "from": "Stiff-legged marklyft med hantlar",
+      "to": "Marklyft med sträckta ben och hantlar"
+    },
+    {
+      "id": "Standing_Dumbbell_Calf_Raise",
+      "name": "Standing Dumbbell Calf Raise",
+      "from": "Stående calf raise med hantlar",
+      "to": "Stående vadlyft med hantlar"
+    },
+    {
+      "id": "Standing_One-Arm_Dumbbell_Triceps_Extension",
+      "name": "Standing One-Arm Dumbbell Triceps Extension",
+      "from": "Stående enarms tricepsextension overhead med hantel",
+      "to": "Stående enarms tricepsextension över huvudet med hantel"
+    },
+    {
+      "id": "Standing_Bent-Over_Two-Arm_Dumbbell_Triceps_Extension",
+      "name": "Standing Bent-Over Two-Arm Dumbbell Triceps Extension",
+      "from": "Stående framåtlutad triceps extension med två hantlar",
+      "to": "Stående framåtlutad tricepsextension med två hantlar"
+    },
+    {
+      "id": "Standing_Inner-Biceps_Curl",
+      "name": "Standing Inner-Biceps Curl",
+      "from": "Stående innercurl med hantlar",
+      "to": "Stående bicepscurl med hantlar, inre delen"
+    },
+    {
+      "id": "Standing_Dumbbell_Triceps_Extension",
+      "name": "Standing Dumbbell Triceps Extension",
+      "from": "Stående tricepsextension overhead med hantel",
+      "to": "Stående tricepsextension över huvudet med hantel"
+    },
+    {
+      "id": "Standing_Toe_Touches",
+      "name": "Standing Toe Touches",
+      "from": "Stående tårörelser",
+      "to": "Stående framåtböj mot tårna"
+    },
+    {
+      "id": "Tricep_Dumbbell_Kickback",
+      "name": "Tricep Dumbbell Kickback",
+      "from": "Triceps kickback med hantel",
+      "to": "Tricepskickback med hantel"
+    },
+    {
+      "id": "Tricep_Side_Stretch",
+      "name": "Tricep Side Stretch",
+      "from": "Tricepsstretch åt sidan",
+      "to": "Tricepsstretch över bröstet"
+    },
+    {
+      "id": "Tuck_Crunch",
+      "name": "Tuck Crunch",
+      "from": "Tuck crunch",
+      "to": "Crunch med indragna knän"
+    },
+    {
+      "id": "Toe_Touchers",
+      "name": "Toe Touchers",
+      "from": "Tårörelser liggande",
+      "to": "Crunch mot tårna"
+    },
+    {
+      "id": "Kneeling_Forearm_Stretch",
+      "name": "Kneeling Forearm Stretch",
+      "from": "Underarmsstretch knästående",
+      "to": "Knästående underarmsstretch"
+    },
+    {
+      "id": "Upward_Stretch",
+      "name": "Upward Stretch",
+      "from": "Uppåtstretch",
+      "to": "Stående stretch uppåt"
+    },
+    {
+      "id": "Dumbbell_Raise",
+      "name": "Dumbbell Raise",
+      "from": "Upright row med hantlar",
+      "to": "Upprätt rodd med hantlar"
+    },
+    {
+      "id": "Extended_Range_One-Arm_Kettlebell_Floor_Press",
+      "name": "Extended Range One-Arm Kettlebell Floor Press",
+      "from": "Utökat rörelseomfång enarms kettlebell golvpress",
+      "to": "Enarms golvpress med kettlebell, större rörelseomfång"
+    },
+    {
+      "id": "Calf_Raises_-_With_Bands",
+      "name": "Calf Raises - With Bands",
+      "from": "Vadpress med band",
+      "to": "Vadlyft med band"
+    },
+    {
+      "id": "Calf_Raise_On_A_Dumbbell",
+      "name": "Calf Raise On A Dumbbell",
+      "from": "Vadpress på hantel",
+      "to": "Vadlyft på en hantel"
+    },
+    {
+      "id": "Wind_Sprints",
+      "name": "Wind Sprints",
+      "from": "Vindsprint",
+      "to": "Korta sprinter"
+    },
+    {
+      "id": "Upper_Back-Leg_Grab",
+      "name": "Upper Back-Leg Grab",
+      "from": "Övre rygg- och benstretch liggande",
+      "to": "Gunga med knäna mot bröstet"
+    },
+    {
+      "id": "Middle_Back_Shrug",
+      "name": "Middle Back Shrug",
+      "from": "Övre ryggskulderdrag liggande",
+      "to": "Skulderbladskläm på lutande bänk"
+    }
   ],
+  "cueOverrides": [
+    "Side_Bridge",
+    "Side_Jackknife"
+  ],
+  "missingSwedishCues": [],
   "supraspinatus": [
     {
       "name": "Alternating Deltoid Raise",
-      "name_sv": "Alternerande deltoidlyft",
+      "name_sv": "Växlande axellyft framåt och åt sidan",
       "id": "Alternating_Deltoid_Raise",
       "type": "strengthen",
       "muscleIds": [
@@ -187,7 +1186,7 @@
     },
     {
       "name": "One-Arm Incline Lateral Raise",
-      "name_sv": "Enarmad sidolyft på lutande bänk",
+      "name_sv": "Enarms sidolyft på lutande bänk",
       "id": "One-Arm_Incline_Lateral_Raise",
       "type": "strengthen",
       "muscleIds": [
@@ -207,7 +1206,7 @@
     },
     {
       "name": "Seated Side Lateral Raise",
-      "name_sv": "Sittande sidolyft",
+      "name_sv": "Sittande sidolyft med hantlar",
       "id": "Seated_Side_Lateral_Raise",
       "type": "strengthen",
       "muscleIds": [
@@ -263,7 +1262,7 @@
     },
     {
       "name": "Reverse Flyes With External Rotation",
-      "name_sv": "Omvända flyes med extern rotation",
+      "name_sv": "Omvända flyes med utåtrotation",
       "id": "Reverse_Flyes_With_External_Rotation",
       "type": "strengthen",
       "muscleIds": [
@@ -274,7 +1273,7 @@
     },
     {
       "name": "Band Pull Apart",
-      "name_sv": "Band pull apart",
+      "name_sv": "Isärdrag med band",
       "id": "Band_Pull_Apart",
       "type": "strengthen",
       "muscleIds": [
@@ -336,7 +1335,7 @@
     },
     {
       "name": "Reverse Flyes With External Rotation",
-      "name_sv": "Omvända flyes med extern rotation",
+      "name_sv": "Omvända flyes med utåtrotation",
       "id": "Reverse_Flyes_With_External_Rotation",
       "type": "strengthen",
       "muscleIds": [
@@ -347,7 +1346,7 @@
     },
     {
       "name": "Band Pull Apart",
-      "name_sv": "Band pull apart",
+      "name_sv": "Isärdrag med band",
       "id": "Band_Pull_Apart",
       "type": "strengthen",
       "muscleIds": [

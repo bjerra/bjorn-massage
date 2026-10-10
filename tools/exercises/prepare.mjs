@@ -76,6 +76,15 @@
  * https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/<id>/<n>.jpg
  * scaled to 640px wide and encoded as WebP. The licence does not require
  * attribution. A one-line source note is still shown next to the photos.
+ *
+ * Swedish overrides
+ * -----------------
+ * data/exercise-overrides.sv.json is applied after the filter, keyed by
+ * exercise id. Each entry may set name_sv and cue_sv. The source export
+ * is not edited, so a fresh export can be dropped in and these corrections
+ * still apply. An override for an id that is not kept, an unknown field,
+ * or an entry that changes nothing is an error. Swedish titles must be
+ * unique after the overrides are applied.
  */
 
 import { spawn } from 'node:child_process';
@@ -89,6 +98,7 @@ const outDir = join(root, 'public/exercises');
 const detailDir = join(outDir, 'd');
 const imgDir = join(outDir, 'img');
 const reportPath = join(root, 'tools/exercises/filter-report.json');
+const overridePath = join(root, 'data/exercise-overrides.sv.json');
 const skipImages = process.argv.includes('--skip-images');
 
 const EQUIPMENT = new Set(['body only', 'bands', 'dumbbell', 'kettlebells']);
@@ -207,6 +217,65 @@ async function main() {
         };
     });
 
+    const overrides = JSON.parse(await readFile(overridePath, 'utf8'));
+    if (overrides == null || typeof overrides !== 'object' || Array.isArray(overrides)) {
+        throw new Error('data/exercise-overrides.sv.json must be an object keyed by exercise id');
+    }
+    const keptById = new Map(kept.map((exercise) => [exercise.id, exercise]));
+    const titleChanges = [];
+    const cueOverrides = [];
+    for (const [id, over] of Object.entries(overrides)) {
+        const exercise = keptById.get(id);
+        if (!exercise) throw new Error('Override for an exercise that is not kept: ' + id);
+        if (over == null || typeof over !== 'object' || Array.isArray(over)) {
+            throw new Error('Override for ' + id + ' must be an object');
+        }
+        for (const key of Object.keys(over)) {
+            if (key !== 'name_sv' && key !== 'cue_sv') {
+                throw new Error('Unknown override field ' + key + ' on ' + id);
+            }
+        }
+        let changed = false;
+        if (over.name_sv != null) {
+            if (typeof over.name_sv !== 'string') throw new Error('name_sv override must be a string for ' + id);
+            const next = over.name_sv.trim();
+            if (!next) throw new Error('Empty name_sv override for ' + id);
+            if (next !== exercise.name_sv) {
+                titleChanges.push({ id, name: exercise.name, from: exercise.name_sv, to: next });
+                exercise.name_sv = next;
+                changed = true;
+            }
+        }
+        if (over.cue_sv != null) {
+            if (
+                !Array.isArray(over.cue_sv) ||
+                over.cue_sv.some((line) => typeof line !== 'string' || !line.trim())
+            ) {
+                throw new Error('cue_sv override must be non-empty strings for ' + id);
+            }
+            const nextCue = over.cue_sv.map((line) => line.trim());
+            if (JSON.stringify(nextCue) !== JSON.stringify(exercise.cue_sv)) {
+                exercise.cue_sv = nextCue;
+                cueOverrides.push(id);
+                changed = true;
+            }
+        }
+        if (!changed) throw new Error('Override changes nothing for ' + id);
+    }
+    titleChanges.sort((a, b) => a.from.localeCompare(b.from, 'sv') || a.id.localeCompare(b.id, 'en'));
+    cueOverrides.sort((a, b) => a.localeCompare(b, 'en'));
+
+    const svNames = new Map();
+    for (const exercise of kept) {
+        const previous = svNames.get(exercise.name_sv);
+        if (previous) {
+            throw new Error(
+                'Duplicate Swedish title "' + exercise.name_sv + '" on ' + previous + ' and ' + exercise.id
+            );
+        }
+        svNames.set(exercise.name_sv, exercise.id);
+    }
+
     kept.sort((a, b) => {
         const typeRank = a.type === 'stretching' ? 0 : 1;
         const typeRankB = b.type === 'stretching' ? 0 : 1;
@@ -286,6 +355,8 @@ async function main() {
         dropped: dropped,
         strengthenKept: strength.length,
         totalKept: kept.length,
+        titleChanges,
+        cueOverrides,
         missingSwedishCues: kept.filter((exercise) => !exercise.cue_sv.length).map((exercise) => exercise.name),
         supraspinatus: assign(SUPRASPINATUS),
         infraspinatus: assign(POSTERIOR_CUFF),
@@ -321,6 +392,9 @@ async function main() {
             '.'
     );
     for (const item of dropped) console.log('  drop [' + item.reasons.join(', ') + '] ' + item.name);
+    console.log('Swedish title overrides: ' + titleChanges.length);
+    for (const change of titleChanges) console.log('  ' + change.from + ' → ' + change.to);
+    if (cueOverrides.length) console.log('Swedish step overrides: ' + cueOverrides.join(', '));
     console.log('Report: tools/exercises/filter-report.json');
 }
 
