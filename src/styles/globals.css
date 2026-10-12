@@ -338,6 +338,7 @@
 
     .band-stone {
         background: var(--color-stone);
+        --color-rule: #b7a78a;
     }
 
     .section.band,
@@ -487,9 +488,9 @@
     .review-card {
         margin-top: 1.35rem;
         max-width: 40rem;
-        border-top: 0;
-        background: var(--color-paper);
-        --color-rule: #ddd8cf;
+        border: 0;
+        background: transparent;
+        box-shadow: none;
         padding: 1.6rem 1.25rem 1.2rem;
     }
 
