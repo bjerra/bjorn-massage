@@ -1,0 +1,41 @@
+---
+import reviewsData from '../data/reviews.json';
+import { placeUrl } from '../data/site';
+import { ratingSummary, visibleReviews, type GuestReview } from '../data/reviews';
+import Stars from './Stars.astro';
+
+const reviews = (Array.isArray(reviewsData.reviews) ? reviewsData.reviews : []) as GuestReview[];
+const summary = ratingSummary(reviews);
+const quotes = visibleReviews(reviews);
+---
+
+{
+    summary && (
+        <section id="omdomen" class="section reviews">
+            <h2>Omdömen</h2>
+            <p class="reviews-summary">
+                <Stars score={summary.average} label={summary.label} decorative />
+                <span>{summary.label}</span>
+            </p>
+            {quotes.length > 0 && (
+                <ol class="review-list">
+                    {quotes.map((quote) => (
+                        <li class="review-row">
+                            <blockquote class="review-quote">
+                                <p>{quote.text}</p>
+                            </blockquote>
+                            <p class="review-meta">
+                                <Stars score={quote.score} label={quote.scoreText} />
+                                <span class="review-name">{quote.authorName}</span>
+                                <time datetime={quote.createdAt}>{quote.dateLabel}</time>
+                            </p>
+                        </li>
+                    ))}
+                </ol>
+            )}
+            <p class="reviews-more">
+                <a href={placeUrl}>Läs alla omdömen på Bokadirekt</a>
+            </p>
+        </section>
+    )
+}

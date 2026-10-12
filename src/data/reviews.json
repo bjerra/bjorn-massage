@@ -1,0 +1,118 @@
+{
+  "source": "https://www.bokadirekt.se/api/reviews/v2/list?placeId=39252&employeeId=315850&page=1&limit=100",
+  "fetchedAt": "2026-10-12T07:17:14.876Z",
+  "placeId": 39252,
+  "employeeId": 315850,
+  "reviews": [
+    {
+      "review": {
+        "score": 5,
+        "text": ""
+      },
+      "createdAt": "2026-10-11T06:01:34.000Z",
+      "author": {
+        "name": "Daniel A."
+      }
+    },
+    {
+      "review": {
+        "score": 5,
+        "text": "Very professional and friendly."
+      },
+      "createdAt": "2026-10-07T20:36:00.000Z",
+      "author": {
+        "name": "Johnvianney O."
+      }
+    },
+    {
+      "review": {
+        "score": 5,
+        "text": "Är jättenöjd! Björn har verkligen fingertoppskänsla."
+      },
+      "createdAt": "2026-10-02T17:56:23.000Z",
+      "author": {
+        "name": "Sara R."
+      }
+    },
+    {
+      "review": {
+        "score": 5,
+        "text": ""
+      },
+      "createdAt": "2026-09-25T20:20:30.000Z",
+      "author": {
+        "name": "Lena S."
+      }
+    },
+    {
+      "review": {
+        "score": 5,
+        "text": "Alltid nöjd!"
+      },
+      "createdAt": "2026-09-10T15:42:35.000Z",
+      "author": {
+        "name": "Fruzsina H."
+      }
+    },
+    {
+      "review": {
+        "score": 5,
+        "text": "Mycket trevlig upplevelse. Uppskattade att det fanns tider en söndag."
+      },
+      "createdAt": "2026-09-06T17:43:43.000Z",
+      "author": {
+        "name": "Mattias K."
+      }
+    },
+    {
+      "review": {
+        "score": 5,
+        "text": "Bästa rygg massagen jag någonsin gjort"
+      },
+      "createdAt": "2026-08-04T14:44:15.000Z",
+      "author": {
+        "name": "Marie R."
+      }
+    },
+    {
+      "review": {
+        "score": 5,
+        "text": "Supernöjd med massagen hos Björn! \nKommer att boka fler gånger :)"
+      },
+      "createdAt": "2026-07-24T21:48:44.000Z",
+      "author": {
+        "name": "Fruzsina H."
+      }
+    },
+    {
+      "review": {
+        "score": 5,
+        "text": "Jättebra avslappnande massage. Släpper på spänningar i rygg och nacke. Bra massagesäng för nacken. Trevlig utövare och lugn fridfull miljö."
+      },
+      "createdAt": "2026-07-21T07:45:02.000Z",
+      "author": {
+        "name": "Victoria G."
+      }
+    },
+    {
+      "review": {
+        "score": 5,
+        "text": ""
+      },
+      "createdAt": "2026-06-27T09:23:45.000Z",
+      "author": {
+        "name": "Anaïs S."
+      }
+    },
+    {
+      "review": {
+        "score": 5,
+        "text": "Så supernöjd med massagen av björn. Bästa massagen jag fått, och jag har gått många grr på massage. Trevligt bemötande, mysig atmosfär. Perfekt balans mellan professionellt intryck och avslappnande stämning med lugn musik. Inte för kliniskt och inte för flummigt helt enkelt. Jag kommer tillbaka!"
+      },
+      "createdAt": "2026-02-27T18:16:39.000Z",
+      "author": {
+        "name": "malin L."
+      }
+    }
+  ]
+}

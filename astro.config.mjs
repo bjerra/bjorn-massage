@@ -3,6 +3,7 @@ import netlify from '@astrojs/netlify';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 import { refreshServices } from './tools/bokadirekt/fetch-services.mjs';
+import { refreshReviews } from './tools/bokadirekt/fetch-reviews.mjs';
 
 export default defineConfig({
     site: 'https://bjornmassage.se',
@@ -23,6 +24,7 @@ export default defineConfig({
             hooks: {
                 'astro:build:start': async () => {
                     await refreshServices();
+                    await refreshReviews();
                 }
             }
         }

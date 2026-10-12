@@ -427,6 +427,72 @@
         font-size: 15px;
     }
 
+    .reviews-summary {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.65rem 0.9rem;
+        margin: 0;
+        font-size: 1.05rem;
+    }
+
+    .review-list {
+        margin: 0.85rem 0 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .review-row {
+        padding: 1.45rem 0;
+        border-top: 1px solid var(--color-rule);
+    }
+
+    .review-quote {
+        margin: 0;
+        max-width: 38rem;
+    }
+
+    .review-quote p {
+        margin: 0;
+        font-family: var(--font-serif);
+        font-size: clamp(1.45rem, 2.5vw, 1.85rem);
+        font-weight: 400;
+        line-height: 1.28;
+        letter-spacing: -0.02em;
+        white-space: pre-line;
+    }
+
+    .review-meta {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.35rem 0.85rem;
+        margin: 0.85rem 0 0;
+        color: var(--color-muted);
+        font-size: 14px;
+    }
+
+    .review-name {
+        color: var(--color-ink);
+        font-weight: 500;
+    }
+
+    .reviews-more {
+        margin: 1.15rem 0 0;
+    }
+
+    .stars {
+        display: inline-flex;
+        gap: 2px;
+        color: var(--color-accent);
+    }
+
+    .star {
+        display: block;
+        width: 15px;
+        height: 15px;
+    }
+
     .contact-grid {
         display: grid;
         gap: 1.75rem;

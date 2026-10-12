@@ -1,0 +1,37 @@
+---
+interface Props {
+    score: number;
+    label: string;
+    decorative?: boolean;
+}
+
+const { score, label, decorative = false } = Astro.props;
+const STAR = 'M8 1.15l1.62 3.7 4.03.37-3.05 2.64.92 3.95L8 9.9l-3.52 1.91.92-3.95L2.35 5.22l4.03-.37L8 1.15z';
+const clamped = Math.max(0, Math.min(5, Number(score) || 0));
+const halves = Math.round(clamped * 2);
+const fills = Array.from({ length: 5 }, (_, index) => {
+    const value = halves - index * 2;
+    if (value >= 2) return 'full';
+    if (value === 1) return 'half';
+    return 'empty';
+});
+const clipId = `star-${Math.random().toString(36).slice(2, 9)}`;
+---
+
+<span class="stars" role={decorative ? undefined : 'img'} aria-label={decorative ? undefined : label} aria-hidden={decorative ? 'true' : undefined}>
+    {
+        fills.map((fill, index) => (
+            <svg class="star" viewBox="0 0 16 16" aria-hidden="true">
+                {fill === 'half' && (
+                    <defs>
+                        <clipPath id={`${clipId}-${index}`}>
+                            <rect width="8" height="16" />
+                        </clipPath>
+                    </defs>
+                )}
+                <path d={STAR} fill={fill === 'full' ? 'currentColor' : 'var(--color-rule)'} />
+                {fill === 'half' && <path d={STAR} fill="currentColor" clip-path={`url(#${clipId}-${index})`} />}
+            </svg>
+        ))
+    }
+</span>

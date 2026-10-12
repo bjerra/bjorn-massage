@@ -6,6 +6,7 @@ import { placeUrl } from '../data/site';
 import hero from '../assets/hero.jpg';
 import neoLogo from '../assets/neo.png';
 import ServiceList from '../components/ServiceList.astro';
+import Reviews from '../components/Reviews.astro';
 
 const title = 'BjörnMassage – Massage i Jönköping';
 const description =
@@ -89,6 +90,7 @@ const jsonLd = {
         <h2>Behandlingar</h2>
         <ServiceList />
     </section>
+    <Reviews />
     <section id="om-mig" class="section">
         <h2>Om mig</h2>
         <div class="prose">
