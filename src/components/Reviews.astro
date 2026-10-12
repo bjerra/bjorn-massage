@@ -7,6 +7,7 @@ import Stars from './Stars.astro';
 const reviews = (Array.isArray(reviewsData.reviews) ? reviewsData.reviews : []) as GuestReview[];
 const summary = ratingSummary(reviews);
 const quotes = visibleReviews(reviews);
+const total = quotes.length;
 ---
 
 {
@@ -17,21 +18,63 @@ const quotes = visibleReviews(reviews);
                 <Stars score={summary.average} label={summary.label} decorative />
                 <span>{summary.label}</span>
             </p>
-            {quotes.length > 0 && (
-                <ol class="review-list">
-                    {quotes.map((quote) => (
-                        <li class="review-row">
-                            <blockquote class="review-quote">
-                                <p>{quote.text}</p>
-                            </blockquote>
-                            <p class="review-meta">
-                                <Stars score={quote.score} label={quote.scoreText} />
-                                <span class="review-name">{quote.authorName}</span>
-                                <time datetime={quote.createdAt}>{quote.dateLabel}</time>
-                            </p>
-                        </li>
-                    ))}
-                </ol>
+            {total > 0 && (
+                <div class="review-card" data-review-carousel data-review-count={total}>
+                    <p class="sr-only" data-review-status aria-live="polite" />
+                    <div class="review-viewport" data-review-viewport>
+                        {quotes.map((quote, index) => {
+                            const active = index === 0;
+                            const label = `Omdöme ${index + 1} av ${total}, ${quote.authorName}, ${quote.dateLabel}`;
+                            return (
+                                <article
+                                    class:list={['review-slide', { 'is-active': active }]}
+                                    id={`omdome-${index + 1}`}
+                                    data-review-slide
+                                    data-review-label={label}
+                                    aria-hidden={active ? 'false' : 'true'}
+                                >
+                                    <blockquote class="review-quote">
+                                        <p>{quote.text}</p>
+                                    </blockquote>
+                                    <p class="review-meta">
+                                        <Stars score={quote.score} label={quote.scoreText} />
+                                        <span class="review-name">{quote.authorName}</span>
+                                        <time datetime={quote.createdAt}>{quote.dateLabel}</time>
+                                    </p>
+                                </article>
+                            );
+                        })}
+                    </div>
+                    {total > 1 && (
+                        <div class="review-controls">
+                            <button type="button" class="review-nav" data-review-prev aria-label="Föregående omdöme">
+                                <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+                                    <path d="M10 3L5 8l5 5" fill="none" stroke="currentColor" stroke-width="1.5" />
+                                </svg>
+                            </button>
+                            <div class="review-dots" role="tablist" aria-label="Välj omdöme" data-review-dots>
+                                {quotes.map((quote, index) => (
+                                    <button
+                                        type="button"
+                                        class="review-dot"
+                                        role="tab"
+                                        id={`omdome-tab-${index + 1}`}
+                                        aria-controls={`omdome-${index + 1}`}
+                                        aria-selected={index === 0 ? 'true' : 'false'}
+                                        aria-label={`Omdöme ${index + 1} av ${total}, ${quote.authorName}`}
+                                        tabindex={index === 0 ? 0 : -1}
+                                        data-review-dot
+                                    />
+                                ))}
+                            </div>
+                            <button type="button" class="review-nav" data-review-next aria-label="Nästa omdöme">
+                                <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+                                    <path d="M6 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.5" />
+                                </svg>
+                            </button>
+                        </div>
+                    )}
+                </div>
             )}
             <p class="reviews-more">
                 <a href={placeUrl}>Läs alla omdömen på Bokadirekt</a>
@@ -39,3 +82,147 @@ const quotes = visibleReviews(reviews);
         </section>
     )
 }
+
+<script>
+    import { REVIEW_ADVANCE_MS, nextIndex, shouldAutoAdvance, swipeDirection } from '../data/review-carousel';
+
+    const root = document.querySelector<HTMLElement>('[data-review-carousel]');
+    if (root) {
+        const slides = [...root.querySelectorAll<HTMLElement>('[data-review-slide]')];
+        const dots = [...root.querySelectorAll<HTMLButtonElement>('[data-review-dot]')];
+        const status = root.querySelector<HTMLElement>('[data-review-status]');
+        const viewport = root.querySelector<HTMLElement>('[data-review-viewport]');
+        if (slides.length > 1) {
+            let index = Math.max(
+                0,
+                slides.findIndex((slide) => slide.classList.contains('is-active'))
+            );
+            let hovered = false;
+            let focused = false;
+            let touching = false;
+            let timer = 0;
+            let startX = 0;
+            let startY = 0;
+            const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+            const state = () => ({
+                count: slides.length,
+                reducedMotion: motion.matches,
+                hovered,
+                focused,
+                hidden: document.hidden,
+                touching
+            });
+
+            const render = (announce: boolean) => {
+                slides.forEach((slide, slideIndex) => {
+                    const active = slideIndex === index;
+                    slide.classList.toggle('is-active', active);
+                    slide.setAttribute('aria-hidden', active ? 'false' : 'true');
+                });
+                dots.forEach((dot, dotIndex) => {
+                    const active = dotIndex === index;
+                    dot.setAttribute('aria-selected', active ? 'true' : 'false');
+                    dot.tabIndex = active ? 0 : -1;
+                });
+                if (announce && status) status.textContent = slides[index]?.dataset.reviewLabel || '';
+            };
+
+            const schedule = () => {
+                window.clearInterval(timer);
+                if (!shouldAutoAdvance(state())) return;
+                timer = window.setInterval(() => {
+                    if (!shouldAutoAdvance(state())) {
+                        window.clearInterval(timer);
+                        return;
+                    }
+                    index = nextIndex(index, slides.length, 1);
+                    render(false);
+                }, REVIEW_ADVANCE_MS);
+            };
+
+            const go = (step: number, announce: boolean) => {
+                index = nextIndex(index, slides.length, step);
+                render(announce);
+                schedule();
+            };
+
+            root.addEventListener('mouseenter', () => {
+                hovered = true;
+                schedule();
+            });
+            root.addEventListener('mouseleave', () => {
+                hovered = false;
+                schedule();
+            });
+            root.addEventListener('focusin', () => {
+                focused = true;
+                schedule();
+            });
+            root.addEventListener('focusout', (event) => {
+                const next = event.relatedTarget;
+                if (next instanceof Node && root.contains(next)) return;
+                focused = false;
+                schedule();
+            });
+            document.addEventListener('visibilitychange', schedule);
+            motion.addEventListener('change', schedule);
+
+            root.querySelector('[data-review-prev]')?.addEventListener('click', () => go(-1, true));
+            root.querySelector('[data-review-next]')?.addEventListener('click', () => go(1, true));
+            dots.forEach((dot, dotIndex) => {
+                dot.addEventListener('click', () => {
+                    index = dotIndex;
+                    render(true);
+                    schedule();
+                });
+            });
+            root.querySelector('[data-review-dots]')?.addEventListener('keydown', (event) => {
+                if (!(event instanceof KeyboardEvent)) return;
+                if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') return;
+                event.preventDefault();
+                go(event.key === 'ArrowRight' ? 1 : -1, true);
+                dots[index]?.focus();
+            });
+
+            viewport?.addEventListener(
+                'touchstart',
+                (event) => {
+                    const touch = event.changedTouches[0];
+                    if (!touch) return;
+                    touching = true;
+                    startX = touch.clientX;
+                    startY = touch.clientY;
+                    schedule();
+                },
+                { passive: true }
+            );
+            viewport?.addEventListener(
+                'touchend',
+                (event) => {
+                    const touch = event.changedTouches[0];
+                    touching = false;
+                    if (!touch) {
+                        schedule();
+                        return;
+                    }
+                    const direction = swipeDirection(touch.clientX - startX, touch.clientY - startY);
+                    if (direction === 0) schedule();
+                    else go(direction, true);
+                },
+                { passive: true }
+            );
+            viewport?.addEventListener(
+                'touchcancel',
+                () => {
+                    touching = false;
+                    schedule();
+                },
+                { passive: true }
+            );
+
+            render(false);
+            schedule();
+        }
+    }
+</script>
