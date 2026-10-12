@@ -14,9 +14,10 @@ interface Props {
     description: string;
     path?: string;
     noindex?: boolean;
+    bleed?: boolean;
 }
 
-const { title, description, path = Astro.url.pathname, noindex = false } = Astro.props;
+const { title, description, path = Astro.url.pathname, noindex = false, bleed = false } = Astro.props;
 const site = 'https://bjornmassage.se';
 const canonical = new URL(path, site).href;
 const ogImage = `${site}/og.jpg`;
@@ -60,12 +61,29 @@ const ogImage = `${site}/og.jpg`;
     </head>
     <body class="bg-paper text-ink antialiased">
         <a class="skip-link" href="#innehall">Hoppa till innehållet</a>
-        <div class="mx-auto flex min-h-screen w-full max-w-[1280px] flex-col px-5 md:px-10 lg:px-14">
-            <Header />
+        <div
+            class:list={[
+                'flex min-h-screen w-full flex-col',
+                bleed ? 'home-shell' : 'mx-auto max-w-[1280px] px-5 md:px-10 lg:px-14'
+            ]}
+        >
+            {bleed ? (
+                <div class="site-column">
+                    <Header />
+                </div>
+            ) : (
+                <Header />
+            )}
             <main id="innehall" class="grow">
                 <slot />
             </main>
-            <Footer />
+            {bleed ? (
+                <div class="site-column site-end">
+                    <Footer />
+                </div>
+            ) : (
+                <Footer />
+            )}
         </div>
     </body>
 </html>

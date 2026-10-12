@@ -12,7 +12,8 @@ const total = quotes.length;
 
 {
     summary && (
-        <section id="omdomen" class="section reviews">
+        <section id="omdomen" class="section reviews band band-stone">
+            <div class="site-column">
             <h2>Omdömen</h2>
             <p class="reviews-summary">
                 <Stars score={summary.average} label={summary.label} decorative />
@@ -79,6 +80,7 @@ const total = quotes.length;
             <p class="reviews-more">
                 <a href={placeUrl}>Läs alla omdömen på Bokadirekt</a>
             </p>
+            </div>
         </section>
     )
 }
