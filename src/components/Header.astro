@@ -6,6 +6,7 @@ const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
 
 const navItems = [
     { linkText: 'Tjänster', href: '/#tjanster' },
+    { linkText: 'Omdömen', href: '/#omdomen' },
     { linkText: 'Triggerpunkter', href: '/triggerpunkter' },
     ...(SHOW_MOVEMENT_LOOKUP ? [{ linkText: 'Rörelser', href: '/rorelser' }] : []),
     { linkText: 'Om mig', href: '/#om-mig' },

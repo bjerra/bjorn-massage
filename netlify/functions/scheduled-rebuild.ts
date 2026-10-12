@@ -1,7 +1,9 @@
 import type { Config } from '@netlify/functions';
 
 /**
- * Daily production rebuild so massage prices are fetched from Bokadirekt again.
+ * Daily production rebuild so massage prices and Björn's reviews are fetched
+ * from Bokadirekt again. The build hook runs the site build, which refreshes
+ * src/data/services.json and src/data/reviews.json.
  * Set BUILD_HOOK_URL to a Netlify build hook. The URL is a secret; do not commit it.
  * Schedule is midnight UTC (`@daily`).
  */

@@ -6,6 +6,7 @@ import { placeUrl } from '../data/site';
 import hero from '../assets/hero.jpg';
 import neoLogo from '../assets/neo.png';
 import ServiceList from '../components/ServiceList.astro';
+import Reviews from '../components/Reviews.astro';
 
 const title = 'BjörnMassage – Massage i Jönköping';
 const description =
@@ -62,8 +63,9 @@ const jsonLd = {
 };
 ---
 
-<Layout title={title} description={description}>
+<Layout bleed title={title} description={description}>
     <script is:inline slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <div class="site-column">
     <section class="hero">
         <h1 class="display">Massage med <em>lugn</em> hand och fast tryck.</h1>
         <div>
@@ -85,11 +87,16 @@ const jsonLd = {
             <a class="btn" href={placeUrl}>Boka tid på Bokadirekt</a>
         </div>
     </section>
-    <section id="tjanster" class="services">
-        <h2>Behandlingar</h2>
-        <ServiceList />
+    </div>
+    <section id="tjanster" class="services band band-sand">
+        <div class="site-column">
+            <h2>Behandlingar</h2>
+            <ServiceList />
+        </div>
     </section>
-    <section id="om-mig" class="section">
+    <Reviews />
+    <section id="om-mig" class="section band">
+        <div class="site-column">
         <h2>Om mig</h2>
         <div class="prose">
             <p>
@@ -99,8 +106,10 @@ const jsonLd = {
             <p>Jag jobbar lugnt men tungt, som en björn fast utan klor.</p>
             <p>Välkommen att boka tid.</p>
         </div>
+        </div>
     </section>
-    <section id="kontakt" class="section">
+    <section id="kontakt" class="section band band-sand">
+        <div class="site-column">
         <h2>Kontakt</h2>
         <p class="lede">Jag tar emot på Neoskin. Tid bokas hos mig via Bokadirekt.</p>
         <a class="btn" href={placeUrl}>Boka tid</a>
@@ -137,6 +146,7 @@ const jsonLd = {
                     <a href={mapsUrl}>Öppna adressen i Google Maps</a>
                 </p>
             </div>
+        </div>
         </div>
     </section>
 </Layout>
