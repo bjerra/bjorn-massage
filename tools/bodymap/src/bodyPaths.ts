@@ -322,11 +322,11 @@ export const TRIGGER_POINTS: Record<string, Array<{id:string; x:number; y:number
   "adductor_magnus": [
     { id: "add_mag_tp1", x: 380, y: 778 },       // TP1 proximal belly
     { id: "add_mag_tp2", x: 414, y: 892 },       // TP2 distal belly, medial knee
-    { id: "add_mag_tp3", x: 392, y: 835 },       // mid belly
+    { id: "add_mag_tp3", x: 395.5, y: 835 },     // mid belly
   ],
   "biceps_brachii": [
-    { id: "biceps_tp1", x: 517.9288, y: 452.2351 },
-    { id: "biceps_tp2", x: 535.7482, y: 446.4303 },
+    { id: "biceps_tp1", x: 518, y: 467 },
+    { id: "biceps_tp2", x: 536, y: 461 },
   ],
   "deltoideus": [
     { id: "delt_tp1", x: 510.0207, y: 339.7815 },
@@ -348,7 +348,7 @@ export const TRIGGER_POINTS: Record<string, Array<{id:string; x:number; y:number
   ],
   "forearm_flexors": [
     { id: "forearm_flex_tp1", x: 527, y: 540 },  // TP1 proximal belly, medial forearm
-    { id: "forearm_flex_tp2", x: 560, y: 650 },  // TP2 distal belly, toward wrist
+    { id: "forearm_flex_tp2", x: 564, y: 650 },  // TP2 distal belly, toward wrist
   ],
   "gastrocnemius": [
     { id: "gastroc_tp1", x: 1147.9163, y: 1016.5027 },
@@ -359,7 +359,7 @@ export const TRIGGER_POINTS: Record<string, Array<{id:string; x:number; y:number
     { id: "glut_max_tp2", x: 1113.9779, y: 740.6429 },
   ],
   "gluteus_medius": [
-    { id: "glut_med_tp1", x: 1127.0773, y: 635.4319 },
+    { id: "glut_med_tp1", x: 1127, y: 630.5 },
     { id: "glut_med_tp2", x: 1145.9633, y: 628.2233 },
     { id: "glut_med_tp3", x: 1165.4945, y: 624.6748 },
   ],
@@ -386,7 +386,7 @@ export const TRIGGER_POINTS: Record<string, Array<{id:string; x:number; y:number
     { id: "infra_tp3", x: 1174, y: 343 },        // upper-mid fossa
   ],
   "lateral_pterygoid": [
-    { id: "lat_pteryg_tp1", x: 394, y: 207 },    // TP1 inferior head, infratemporal fossa (anterior to TMJ)
+    { id: "lat_pteryg_tp1", x: 400.3, y: 209.2 }, // TP1 inferior head, infratemporal fossa (anterior to TMJ)
   ],
   "latissimus_dorsi": [
     { id: "lat_tp1", x: 1190, y: 428 },          // TP1 posterior axillary fold (upper-lateral)
@@ -394,18 +394,18 @@ export const TRIGGER_POINTS: Record<string, Array<{id:string; x:number; y:number
   ],
   "levator_scapulae": [
     { id: "lev_scap_tp1", x: 1157, y: 308 },     // TP1 superior scapular angle (lower)
-    { id: "lev_scap_tp2", x: 1132, y: 262 },     // TP2 cervical belly (upper, angle of neck)
+    { id: "lev_scap_tp2", x: 1118.6, y: 267.5 }, // TP2 cervical belly (upper, angle of neck)
   ],
   "masseter": [
     { id: "masseter_tp1", x: 396, y: 222 },      // TP1 superficial belly, cheek
-    { id: "masseter_tp2", x: 402, y: 205 },      // TP2 deep belly, near ear
+    { id: "masseter_tp2", x: 405, y: 205.4 },    // TP2 deep belly, near ear
     { id: "masseter_tp3", x: 398, y: 235 },      // superficial lower
   ],
   "medial_pterygoid": [
-    { id: "med_pteryg_tp1", x: 400, y: 240 },    // TP1 belly, angle of mandible (medial surface)
+    { id: "med_pteryg_tp1", x: 396.3, y: 235.5 }, // TP1 belly, angle of mandible (medial surface)
   ],
   "multifidus": [
-    { id: "multifidus_tp1", x: 1093, y: 600 },   // TP1 spinous process L4–L5 (lumbar)
+    { id: "multifidus_tp1", x: 1094, y: 622 },   // TP1 spinous process L4–L5 (lumbar)
     { id: "multifidus_tp2", x: 1096, y: 510 },   // thoracolumbar
   ],
   "pectoralis_major": [
@@ -475,7 +475,7 @@ export const TRIGGER_POINTS: Record<string, Array<{id:string; x:number; y:number
     { id: "subocc_tp2", x: 1094.9779, y: 224.8932 },
   ],
   "subscapularis": [
-    { id: "subscap_tp1", x: 1183.9337, y: 350.0012 },
+    { id: "subscap_tp1", x: 1198, y: 365 },
     { id: "subscap_tp2", x: 1178.8319, y: 384.8785 },
   ],
   "supraspinatus": [
@@ -489,7 +489,7 @@ export const TRIGGER_POINTS: Record<string, Array<{id:string; x:number; y:number
   ],
   "tensor_fasciae_latae": [
     { id: "tfl_tp1", x: 466, y: 662 },           // TP1 mid-belly, lateral thigh
-    { id: "tfl_tp2", x: 470, y: 690 },           // lower belly
+    { id: "tfl_tp2", x: 473.7, y: 688.5 },      // lower belly
   ],
   "teres_major": [
     { id: "teres_major_tp1", x: 1178.1606, y: 402.1067 },
@@ -503,13 +503,13 @@ export const TRIGGER_POINTS: Record<string, Array<{id:string; x:number; y:number
     { id: "tib_ant_tp2", x: 453.1898, y: 1097.429 },
   ],
   "trapezius_asc": [
-    { id: "trap_asc_tp1", x: 1132, y: 408 },     // TP1 inferior scapular angle (lower fibres)
+    { id: "trap_asc_tp1", x: 1123.4, y: 405.4 }, // TP1 inferior scapular angle (lower fibres)
     { id: "trap_asc_tp2", x: 1142, y: 348 },     // upper portion
   ],
   "trapezius_desc": [
-    { id: "trap_desc_tp1", x: 1130, y: 275 },    // TP1 upper fibres, mid-belly (over shoulder)
+    { id: "trap_desc_tp1", x: 1127.5, y: 283.1 }, // TP1 upper fibres, mid-belly (over shoulder)
     { id: "trap_desc_tp2", x: 1100, y: 232 },    // TP2 cervical attachment (medial, near neck)
-    { id: "trap_desc_tp3", x: 1138, y: 285 },    // lateral, toward acromion
+    { id: "trap_desc_tp3", x: 1137.7, y: 288 },  // lateral, toward acromion
   ],
   "trapezius_trans": [
     { id: "trap_trans_tp1", x: 1118.1558, y: 304.5804 },
@@ -517,7 +517,7 @@ export const TRIGGER_POINTS: Record<string, Array<{id:string; x:number; y:number
   ],
   "triceps_brachii": [
     { id: "triceps_tp1", x: 1223, y: 425 },      // TP1 long head, mid-belly (proximal)
-    { id: "triceps_tp2", x: 1248, y: 500 },      // distal, near olecranon
+    { id: "triceps_tp2", x: 1243.8, y: 501.7 },  // distal, near olecranon
   ],
   "vastus_lateralis": [
     { id: "vast_lat_tp1", x: 479, y: 800 },      // TP1 lateral mid-belly

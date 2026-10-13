@@ -1,6 +1,6 @@
 # Body-map data report
 
-Generated 2026-10-13T08:16:02.938Z by build-data.mjs
+Generated 2026-10-13T08:21:33.662Z by build-data.mjs
 
 ## Missing muscle ids (0)
 
