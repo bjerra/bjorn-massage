@@ -1,5 +1,6 @@
 /**
- * Exercise lookup for /triggerpunkter.
+ * Exercise lookup for /ovningar.
+ * /rorelser still uses the panel list when a muscle is chosen there.
  * Loads a small index, then one detail file when an exercise is opened.
  * The body-map widget still owns muscle and zone selection.
  */
@@ -80,6 +81,17 @@ function readHash() {
     };
 }
 
+function readDeepLink() {
+    const hash = readHash();
+    if (!window.EXERCISE_PAGE) return hash;
+    const params = new URLSearchParams(location.search);
+    return {
+        muscle: params.get('muskel') || hash.muscle,
+        zone: hash.zone,
+        ex: params.get('ovning') || hash.ex
+    };
+}
+
 let restoreOnClose = true;
 
 function writeHash(map) {
@@ -89,12 +101,21 @@ function writeHash(map) {
     if (sel && sel.type === 'muscle') parts.push('muscle=' + encodeURIComponent(sel.id));
     else if (sel && sel.type === 'zone') parts.push('zone=' + encodeURIComponent(sel.id));
     if (state.openId) parts.push('ex=' + encodeURIComponent(state.openId));
-    const next = parts.join('&');
-    if (next) {
-        if (location.hash !== '#' + next) history.replaceState(null, '', '#' + next);
-    } else if (location.hash && !/^#movement=/.test(location.hash)) {
-        history.replaceState(null, '', location.pathname + location.search);
+    const hash = parts.length ? '#' + parts.join('&') : '';
+    let search = location.search;
+    if (window.EXERCISE_PAGE) {
+        const params = new URLSearchParams(location.search);
+        if (sel && sel.type === 'muscle') params.set('muskel', sel.id);
+        else params.delete('muskel');
+        if (state.openId) params.set('ovning', state.openId);
+        else params.delete('ovning');
+        const query = params.toString();
+        search = query ? '?' + query : '';
     }
+    if (!hash && location.hash && /^#movement=/.test(location.hash)) return;
+    const next = location.pathname + search + (hash || (/^#movement=/.test(location.hash) ? location.hash : ''));
+    const current = location.pathname + location.search + location.hash;
+    if (next !== current) history.replaceState(null, '', next);
 }
 
 function el(tag, attrs, parent) {
@@ -401,7 +422,7 @@ function contextMuscle(map, exercise) {
         const hit = exercise.muscleIds.find((id) => ids.indexOf(id) !== -1);
         if (hit) return hit;
     }
-    const hash = readHash();
+    const hash = readDeepLink();
     if (hash.muscle && exercise.muscleIds.indexOf(hash.muscle) !== -1) return hash.muscle;
     return exercise.muscleIds[0] || null;
 }
@@ -627,7 +648,7 @@ async function start() {
     renderSearch();
     const current = getMap();
     if (current) paintPanel(current);
-    const hash = readHash();
+    const hash = readDeepLink();
     const moved =
         hash.muscle &&
         current &&
@@ -638,7 +659,7 @@ async function start() {
     state.hashReady = true;
     writeHash(current);
     window.addEventListener('hashchange', () => {
-        const next = readHash();
+        const next = readDeepLink();
         const live = getMap();
         if (!live) return;
         if (next.zone) {

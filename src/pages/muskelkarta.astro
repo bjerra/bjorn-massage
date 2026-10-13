@@ -1,0 +1,59 @@
+---
+import Layout from '../layouts/Layout.astro';
+import MovementLookup from '../components/MovementLookup.astro';
+import { placeUrl } from '../data/site';
+import { SHOW_MOVEMENT_LOOKUP } from '../data/features';
+import '../styles/movements.css';
+
+const description =
+    'Muskelkarta med triggerpunkter hos BjörnMassage i Jönköping. Typiska utstrålningsmönster från litteraturen. Smärta kan ha andra orsaker.';
+---
+
+<Layout title="Muskelkarta – BjörnMassage" description={description}>
+    <link slot="head" rel="stylesheet" href="/bodymap/bodymap.css" />
+    <link slot="head" rel="stylesheet" href="/bodymap/site-theme.css" />
+
+    <section class="section trigger-intro" lang="sv">
+        <h1>Muskelkarta</h1>
+        <div class="prose">
+            <p>
+                En triggerpunkt är ett ömt ställe i en muskel. Det kan göra ont just där, och ibland känns smärtan också
+                någon annanstans. Kartan visar typiska utstrålningsmönster från triggerpunktslitteraturen (Travell &amp;
+                Simons).
+            </p>
+            <p>
+                Smärta kan ha många andra orsaker. Kartan är ingen undersökning och säger inte vad just din smärta beror
+                på. Vid svår, ihållande eller oförklarad smärta, kontakta vården.
+            </p>
+            <p>
+                Tryck på området där det gör ont, eller välj en muskel. Områdena är på svenska. Musklerna visas med
+                latinskt namn. Den korta texten om var på muskeln punkten sitter är på engelska. Till en vald muskel
+                finns en länk till stretch- och styrkeövningar.
+            </p>
+        </div>
+        <p class="mt-8">
+            <a class="btn" href={placeUrl}>Boka tid</a>
+        </p>
+    </section>
+
+    {SHOW_MOVEMENT_LOOKUP && <MovementLookup toggleWithMode />}
+
+    <div class="trigger-map">
+        <div data-bodymap></div>
+    </div>
+    {SHOW_MOVEMENT_LOOKUP && <script is:inline>window.BODYMAP_MOVEMENT_MODE = true;</script>}
+    <script is:inline src="/bodymap/strings-sv.js"></script>
+    <script is:inline src="/bodymap/bodymap-data.js" defer></script>
+    <script is:inline src="/bodymap/bodymap-zones.js" defer></script>
+    <script is:inline src="/bodymap/bodymap.js" defer></script>
+    <script>
+        import '../scripts/muscle-exercise-link.js';
+    </script>
+    {
+        SHOW_MOVEMENT_LOOKUP && (
+            <script>
+                import '../scripts/movements.js';
+            </script>
+        )
+    }
+</Layout>
