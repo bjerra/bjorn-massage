@@ -147,3 +147,178 @@
 .bm-panel .mv-offmap {
     color: var(--bm-muted, #55504a);
 }
+
+/* Joint rail beside the body on /rorelser. Positions come from the drawing. */
+
+.bm.mv-host .bm-main {
+    position: relative;
+    grid-template-columns: minmax(22rem, 26rem) minmax(20rem, 1fr) minmax(13rem, 14rem);
+    align-items: start;
+}
+
+.bm.mv-host .bm-figs {
+    grid-template-columns: 1fr;
+}
+
+.mv-leaders {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    overflow: visible;
+    pointer-events: none;
+}
+
+.mv-leader {
+    stroke: var(--color-accent);
+    stroke-width: 1;
+}
+
+.mv-leader-dot {
+    fill: var(--color-accent);
+}
+
+.bm.mv-host .mv-rail {
+    position: relative;
+    z-index: 3;
+    min-width: 0;
+    container-type: inline-size;
+}
+
+.mv-joints {
+    position: relative;
+    width: 14.75rem;
+    height: 100%;
+}
+
+.mv-joint-btn,
+.mv-move {
+    width: 100%;
+    min-height: 44px;
+    padding: 0.4rem 0.55rem;
+    font-size: 0.84rem;
+    line-height: 1.25;
+    border: 1px solid var(--color-ink);
+    border-radius: 2px;
+    background: #fff;
+    color: var(--color-ink);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.mv-joint-btn[aria-expanded='true'] {
+    background: var(--color-ink);
+    color: #fff;
+}
+
+.mv-joint.is-current .mv-joint-btn[aria-expanded='false'] {
+    box-shadow: inset 3px 0 0 var(--color-accent);
+}
+
+.mv-joint.is-open {
+    z-index: 5;
+}
+
+.mv-moves {
+    display: grid;
+    gap: 0.3rem;
+    position: absolute;
+    top: 0;
+    left: calc(100% + 0.5rem);
+    width: calc(100cqi - 14.75rem - 0.5rem);
+    z-index: 5;
+    padding: 0.35rem;
+    border: 1px solid var(--color-ink);
+    background: #fff;
+    box-shadow: 0 10px 24px rgba(23, 21, 19, 0.12);
+    overflow-y: auto;
+}
+
+.mv-move[aria-pressed='true'] {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: #fff;
+}
+
+.mv-joint-btn:hover,
+.mv-move:hover {
+    background: #f4f0ea;
+}
+
+.mv-joint-btn[aria-expanded='true']:hover {
+    background: var(--color-ink);
+    color: #fff;
+}
+
+.mv-move[aria-pressed='true']:hover {
+    background: var(--color-accent);
+    color: #fff;
+}
+
+.mv-joint-btn:focus-visible,
+.mv-move:focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 2px;
+}
+
+.bm-fig.mv-view-on .bm-cap {
+    color: var(--color-accent);
+}
+
+.mv-actions {
+    margin: 0.4rem 0 0;
+}
+
+@media (max-width: 1100px) {
+    .bm.mv-host .bm-main {
+        grid-template-columns: 1fr;
+    }
+
+    .bm.mv-host .bm-figs {
+        max-width: 640px;
+        margin: 0 auto;
+        width: 100%;
+    }
+
+    .mv-leaders {
+        display: none;
+    }
+
+    .bm.mv-host .mv-rail {
+        height: auto !important;
+        margin-top: 0.75rem;
+    }
+
+    .mv-joints {
+        display: grid;
+        gap: 0.45rem;
+        position: static;
+        width: auto;
+        height: auto;
+    }
+
+    .mv-joint {
+        position: static !important;
+        top: auto !important;
+        z-index: auto;
+    }
+
+    .mv-moves {
+        position: static;
+        left: auto;
+        top: auto;
+        width: auto;
+        margin-top: 0.3rem;
+        padding: 0;
+        border: 0;
+        box-shadow: none;
+        max-height: none !important;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .mv-joint-btn,
+    .mv-move {
+        transition: none;
+    }
+}

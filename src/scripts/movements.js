@@ -33,6 +33,27 @@ const MOVE_EXTRA = {
 const SIDE =
     'Sidorna gäller muskeln, inte en vald kroppshalva. Rotation av huvudet åt vänster använder vänstersidans muskler för ”åt samma sida” och högersidans muskler för ”åt motsatt sida”. Kartan ritar vänster och höger som en spegling av samma form, så markeringen gäller hela muskeln.';
 
+// Joint height on the body drawing, in the shared viewBox (y starts at 80).
+// front/back are the point the leader line aims at on that view.
+const ANCHOR = {
+    Mandible: { y: 219, front: [400, 219], back: [1130, 240] },
+    Cervical: { y: 286, front: [395, 286], back: [1132, 270] },
+    Shoulder: { y: 350, front: [510, 350], back: [1232, 354] },
+    Scapula: { y: 368, front: [470, 360], back: [1170, 368] },
+    Thoracic: { y: 470, front: [410, 470], back: [1128, 460] },
+    Elbow: { y: 512, front: [530, 508], back: [1248, 520] },
+    Forearm: { y: 595, front: [570, 592], back: [1285, 603] },
+    Lumbar: { y: 640, front: [400, 650], back: [1122, 620] },
+    Wrist: { y: 700, front: [560, 690], back: [1275, 700] },
+    Hip: { y: 735, front: [450, 730], back: [1175, 710] },
+    Knee: { y: 980, front: [455, 970], back: [1185, 990] },
+    Ankle: { y: 1235, front: [455, 1225], back: [1165, 1245] },
+    Foot: { y: 1325, front: [445, 1320], back: [1150, 1330] }
+};
+
+const SVG_NS = 'http://www.w3.org/2000/svg';
+const STACK_MQ = '(max-width: 1100px)';
+
 const state = {
     data: null,
     byId: new Map(),
@@ -294,8 +315,10 @@ function paintMovement(map) {
     const status = document.getElementById('mv-status');
     if (!state.joint || !state.movement || !state.data.movements[state.joint]) {
         map.setMovementHighlight(null);
+        document.querySelectorAll('.bm-fig').forEach((fig) => fig.classList.remove('mv-view-on'));
         if (status) status.textContent = '';
         writeMovementHash();
+        scheduleLayout();
         return;
     }
     const entry = state.data.movements[state.joint][state.movement];
@@ -325,6 +348,7 @@ function paintMovement(map) {
     if (isLateral(state.movement)) el('p', { class: 'mv-side', text: SIDE }, body);
     renderRole(body, 'Primära', parts.listPrime);
     renderRole(body, 'Synergister', parts.listSyn);
+    const where = viewSentence(map, parts);
     if (status) {
         status.textContent =
             title +
@@ -332,9 +356,11 @@ function paintMovement(map) {
             countLabel(parts.listPrime.length, 'primär', 'primära') +
             ', ' +
             countLabel(parts.listSyn.length, 'synergist', 'synergister') +
-            '.';
+            '. ' +
+            where;
     }
     writeMovementHash();
+    scheduleLayout();
 }
 
 function hook(map) {
@@ -371,7 +397,9 @@ function choose(joint, movement) {
         input.value = '';
         input.setAttribute('aria-expanded', 'false');
     }
+    syncRail();
     refresh();
+    requestAnimationFrame(() => revealPrimary());
 }
 
 function clearSelection() {
@@ -383,6 +411,7 @@ function clearSelection() {
     hideSuggest();
     const input = document.getElementById('mv-q');
     if (input) input.value = '';
+    syncRail();
     refresh();
 }
 
@@ -526,8 +555,305 @@ function wire() {
     if (clear) clear.addEventListener('click', () => clearSelection());
 }
 
+function jointOrder() {
+    return Object.keys(state.data.labels.joints).sort((a, b) => {
+        const ay = ANCHOR[a] ? ANCHOR[a].y : 9999;
+        const by = ANCHOR[b] ? ANCHOR[b].y : 9999;
+        return ay - by || a.localeCompare(b);
+    });
+}
+
+function syncClear() {
+    const clear = document.getElementById('mv-clear');
+    if (!clear || clear.closest('#mv-form')) return;
+    clear.disabled = !(state.joint && state.movement);
+}
+
+function setOpenJoint(id) {
+    document.querySelectorAll('.mv-joint').forEach((item) => {
+        const jid = item.getAttribute('data-joint');
+        const btn = item.querySelector('.mv-joint-btn');
+        const panel = item.querySelector('.mv-moves');
+        const on = !!id && jid === id;
+        if (btn) btn.setAttribute('aria-expanded', on ? 'true' : 'false');
+        if (panel) panel.hidden = !on;
+        item.classList.toggle('is-open', on);
+    });
+    scheduleLayout();
+}
+
+function syncRail() {
+    if (!document.getElementById('mv-rail')) {
+        syncClear();
+        return;
+    }
+    document.querySelectorAll('.mv-joint').forEach((item) => {
+        const jid = item.getAttribute('data-joint');
+        item.classList.toggle('is-current', jid === state.joint);
+        item.querySelectorAll('.mv-move').forEach((btn) => {
+            const on = jid === state.joint && btn.getAttribute('data-movement') === state.movement;
+            btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+        });
+    });
+    setOpenJoint(state.joint || '');
+    syncClear();
+}
+
+function onJointKey(event) {
+    const buttons = [...document.querySelectorAll('.mv-joint-btn')];
+    const index = buttons.indexOf(event.currentTarget);
+    if (index < 0) return;
+    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+        event.preventDefault();
+        const dir = event.key === 'ArrowDown' ? 1 : -1;
+        buttons[(index + dir + buttons.length) % buttons.length].focus();
+    } else if (event.key === 'Home') {
+        event.preventDefault();
+        buttons[0].focus();
+    } else if (event.key === 'End') {
+        event.preventDefault();
+        buttons[buttons.length - 1].focus();
+    } else if (event.key === 'Escape' && event.currentTarget.getAttribute('aria-expanded') === 'true') {
+        event.preventDefault();
+        setOpenJoint('');
+        event.currentTarget.focus();
+    }
+}
+
+function buildRail() {
+    const rail = document.getElementById('mv-rail');
+    if (!rail) return;
+    rail.replaceChildren();
+    rail.setAttribute('aria-labelledby', 'mv-title');
+    const list = el('div', { class: 'mv-joints' }, rail);
+    jointOrder().forEach((id) => {
+        const label = state.data.labels.joints[id].sv;
+        const item = el('div', { class: 'mv-joint', 'data-joint': id }, list);
+        const btn = el('button', {
+            type: 'button',
+            class: 'mv-joint-btn',
+            id: 'mv-joint-' + id,
+            'aria-expanded': 'false',
+            'aria-controls': 'mv-moves-' + id,
+            text: label
+        }, item);
+        const panel = el('div', {
+            class: 'mv-moves',
+            id: 'mv-moves-' + id,
+            role: 'group',
+            'aria-labelledby': 'mv-joint-' + id
+        }, item);
+        panel.hidden = true;
+        Object.keys(state.data.movements[id] || {}).forEach((movement) => {
+            const option = el('button', {
+                type: 'button',
+                class: 'mv-move',
+                'data-movement': movement,
+                'aria-pressed': 'false',
+                text: movementName(id, movement)
+            }, panel);
+            option.addEventListener('click', () => choose(id, movement));
+        });
+        btn.addEventListener('click', () => {
+            const open = btn.getAttribute('aria-expanded') === 'true';
+            setOpenJoint(open ? '' : id);
+        });
+        btn.addEventListener('keydown', onJointKey);
+    });
+}
+
+function placeRail(map) {
+    const rail = document.getElementById('mv-rail');
+    const main = map.root.querySelector('.bm-main');
+    if (!rail || !main) return;
+    map.root.classList.add('mv-host');
+    if (rail.parentElement !== main) main.insertBefore(rail, map.panel);
+    rail.hidden = false;
+    if (!main.querySelector('.mv-leaders')) {
+        const svg = document.createElementNS(SVG_NS, 'svg');
+        svg.setAttribute('class', 'mv-leaders');
+        svg.setAttribute('aria-hidden', 'true');
+        main.insertBefore(svg, main.firstChild);
+    }
+    if (!map.__mvLayout) {
+        map.__mvLayout = true;
+        const observer = new ResizeObserver(() => layoutRail());
+        observer.observe(map.figs);
+        window.addEventListener('resize', () => layoutRail());
+    }
+}
+
+function primaryFigure(map) {
+    return map.root.querySelector('.bm-fig');
+}
+
+function scheduleLayout() {
+    requestAnimationFrame(() => layoutRail());
+}
+
+function placeForViewport(map, rail) {
+    const main = map.root.querySelector('.bm-main');
+    const mobile = window.matchMedia(STACK_MQ).matches;
+    if (!main) return mobile;
+    if (mobile) {
+        const fig = primaryFigure(map);
+        if (fig && rail.previousElementSibling !== fig) fig.after(rail);
+    } else if (rail.parentElement !== main || rail.nextElementSibling !== map.panel) {
+        main.insertBefore(rail, map.panel);
+    }
+    return mobile;
+}
+
+function layoutRail() {
+    const rail = document.getElementById('mv-rail');
+    const map = getMap();
+    if (!rail || !map || !map.root.classList.contains('mv-host')) return;
+    const leaders = map.root.querySelector('.mv-leaders');
+    const mobile = placeForViewport(map, rail);
+    if (mobile) {
+        rail.style.height = '';
+        rail.querySelectorAll('.mv-joint').forEach((item) => {
+            item.style.position = '';
+            item.style.top = '';
+            item.style.left = '';
+            item.style.right = '';
+        });
+        if (leaders) leaders.replaceChildren();
+        rail.querySelectorAll('.mv-moves').forEach((panel) => {
+            panel.style.maxHeight = '';
+        });
+        return;
+    }
+    const fig = primaryFigure(map);
+    const svg = fig && fig.querySelector('svg');
+    if (!svg || !svg.viewBox || !svg.viewBox.baseVal) return;
+    const vb = svg.viewBox.baseVal;
+    const svgRect = svg.getBoundingClientRect();
+    if (svgRect.height < 40) return;
+    rail.style.height = Math.round(svgRect.height) + 'px';
+    const placedSvg = svg.getBoundingClientRect();
+    const railRect = rail.getBoundingClientRect();
+    const scale = placedSvg.height / vb.height;
+    const offset = placedSvg.top - railRect.top;
+    const view = fig.classList.contains('bm-fig-back') ? 'back' : 'front';
+    const items = [...rail.querySelectorAll('.mv-joint')];
+    const gap = 4;
+    let cursor = 0;
+    const railHeight = placedSvg.height;
+    items.forEach((item) => {
+        const id = item.getAttribute('data-joint');
+        const anchor = ANCHOR[id];
+        const y = anchor ? anchor.y : vb.y + vb.height / 2;
+        const header = item.querySelector('.mv-joint-btn');
+        const headerH = header ? header.offsetHeight : 44;
+        const ideal = offset + (y - vb.y) * scale - headerH / 2;
+        const top = Math.max(0, Math.max(ideal, cursor));
+        item.style.position = 'absolute';
+        item.style.left = '0';
+        item.style.right = '0';
+        item.style.top = Math.round(top) + 'px';
+        cursor = top + headerH + gap;
+    });
+    const used = Math.max(railHeight, cursor);
+    rail.style.height = Math.round(used) + 'px';
+    items.forEach((item) => placeMoves(item, parseFloat(item.style.top) || 0, used));
+    drawLeaders(map, svg, view, leaders);
+}
+
+function placeMoves(item, top, railHeight) {
+    const panel = item.querySelector('.mv-moves');
+    if (!panel) return;
+    panel.style.maxHeight = '';
+    if (panel.hidden) return;
+    const space = railHeight - top - 8;
+    if (panel.scrollHeight > space) panel.style.maxHeight = Math.max(160, space) + 'px';
+}
+
+function drawLeaders(map, svg, view, leaders) {
+    if (!leaders) return;
+    const main = map.root.querySelector('.bm-main');
+    const ctm = svg.getScreenCTM();
+    leaders.replaceChildren();
+    if (!main || !ctm) return;
+    const mainRect = main.getBoundingClientRect();
+    const width = Math.max(1, mainRect.width);
+    const height = Math.max(1, mainRect.height);
+    leaders.setAttribute('viewBox', '0 0 ' + width + ' ' + height);
+    leaders.setAttribute('width', String(width));
+    leaders.setAttribute('height', String(height));
+    railJoints().forEach((item) => {
+        const id = item.getAttribute('data-joint');
+        const anchor = ANCHOR[id];
+        const point = anchor && (anchor[view] || [anchor.front[0], anchor.y]);
+        const header = item.querySelector('.mv-joint-btn');
+        if (!point || !header) return;
+        const pt = svg.createSVGPoint();
+        pt.x = point[0];
+        pt.y = point[1];
+        const screen = pt.matrixTransform(ctm);
+        const box = header.getBoundingClientRect();
+        const x1 = screen.x - mainRect.left;
+        const y1 = screen.y - mainRect.top;
+        const x2 = box.left - mainRect.left;
+        const y2 = box.top + box.height / 2 - mainRect.top;
+        const line = document.createElementNS(SVG_NS, 'line');
+        line.setAttribute('x1', String(x1));
+        line.setAttribute('y1', String(y1));
+        line.setAttribute('x2', String(x2));
+        line.setAttribute('y2', String(y2));
+        line.setAttribute('class', 'mv-leader');
+        const dot = document.createElementNS(SVG_NS, 'circle');
+        dot.setAttribute('cx', String(x1));
+        dot.setAttribute('cy', String(y1));
+        dot.setAttribute('r', '3');
+        dot.setAttribute('class', 'mv-leader-dot');
+        leaders.append(line, dot);
+    });
+}
+
+function railJoints() {
+    return [...document.querySelectorAll('#mv-rail .mv-joint')];
+}
+
+function viewSentence(map, parts) {
+    const scores = { front: 0, back: 0 };
+    function add(ids, weight) {
+        ids.forEach((id) => {
+            const group = map.groupOf[id] || id;
+            if (map.muscleEls.front[group]) scores.front += weight;
+            if (map.muscleEls.back[group]) scores.back += weight;
+        });
+    }
+    add(parts.primePaint, 2);
+    add(parts.synPaint, 1);
+    document.querySelectorAll('.bm-fig').forEach((fig) => fig.classList.remove('mv-view-on'));
+    if (scores.front + scores.back === 0) return '';
+    if (scores.back > scores.front) {
+        const fig = document.querySelector('.bm-fig-back');
+        if (fig) fig.classList.add('mv-view-on');
+        return 'Musklerna är markerade på baksidan.';
+    }
+    if (scores.front > scores.back) {
+        const fig = document.querySelector('.bm-fig-front');
+        if (fig) fig.classList.add('mv-view-on');
+        return 'Musklerna är markerade på framsidan.';
+    }
+    document.querySelectorAll('.bm-fig').forEach((fig) => fig.classList.add('mv-view-on'));
+    return 'Musklerna är markerade på fram- och baksidan.';
+}
+
+function revealPrimary() {
+    if (!window.matchMedia(STACK_MQ).matches) return;
+    const fig = document.querySelector('.bm-fig.mv-view-on') || document.querySelector('.bm-fig');
+    if (!fig) return;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    fig.scrollIntoView({ block: 'nearest', behavior: reduce ? 'auto' : 'smooth' });
+}
+
 async function start() {
-    if (!document.getElementById('mv-form')) return;
+    const rail = document.getElementById('mv-rail');
+    const form = document.getElementById('mv-form');
+    if (!rail && !form) return;
     const mapPromise = waitForMap();
     let data;
     try {
@@ -542,16 +868,30 @@ async function start() {
     state.data = data;
     state.byId = new Map(data.muscles.map((muscle) => [muscle.id, muscle]));
     buildIndex();
-    fillJoints();
-    fillMovements();
-    wire();
+    if (rail) {
+        buildRail();
+        const clear = document.getElementById('mv-clear');
+        if (clear) clear.addEventListener('click', () => clearSelection());
+    } else {
+        fillJoints();
+        fillMovements();
+        wire();
+    }
     const map = await mapPromise;
-    if (!map) return;
+    if (!map) {
+        if (rail) rail.hidden = false;
+        return;
+    }
     applyNames(map);
     hook(map);
+    if (rail) placeRail(map);
     const fromHash = movementFromHash();
     if (fromHash) choose(fromHash.joint, fromHash.movement);
-    else syncForm(map);
+    else {
+        syncForm(map);
+        syncClear();
+        scheduleLayout();
+    }
     window.addEventListener('hashchange', () => {
         const next = movementFromHash();
         const live = getMap();
