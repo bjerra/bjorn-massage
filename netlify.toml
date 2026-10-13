@@ -12,6 +12,19 @@
   status = 301
   force = true
 
+# The trigger-point map moved to /muskelkarta.
+[[redirects]]
+  from = "/triggerpunkter"
+  to = "/muskelkarta"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/triggerpunkter/"
+  to = "/muskelkarta"
+  status = 301
+  force = true
+
 # Retired Netlify starter pages.
 [[redirects]]
   from = "/blobs"

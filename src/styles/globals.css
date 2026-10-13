@@ -713,4 +713,8 @@
     .trigger-map {
         padding-top: 2rem;
     }
+
+    .ex-map-link {
+        margin: 1.1rem 0 0;
+    }
 }

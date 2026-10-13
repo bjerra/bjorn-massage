@@ -1,12 +1,12 @@
 window.BODYMAP_STRINGS = {
-                title: 'Karta över triggerpunkter',
+                title: 'Muskelkarta',
                 modeLabel: 'Välj hur du vill använda kartan',
                 modeZones: 'Var gör det ont?',
                 modeMuscles: 'Utforska muskler',
                 hintZones:
                     'Tryck på området där du känner smärta. Kartan visar vilka muskler som ofta strålar dit.',
                 hintMuscles:
-                    'Tryck på en muskel för att se dess triggerpunkter, utstrålning och övningar.',
+                    'Tryck på en muskel för att se dess triggerpunkter och utstrålning. Övningar finns på sidan Övningar.',
                 front: 'Framsida',
                 back: 'Baksida',
                 frontAria: 'Kroppen sedd framifrån',

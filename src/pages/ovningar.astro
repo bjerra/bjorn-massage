@@ -1,0 +1,107 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { placeUrl } from '../data/site';
+import '../styles/exercises.css';
+
+const description =
+    'Stretch- och styrkeövningar att slå upp efter muskel. Latinska muskelnamn. Allmänna förslag, inte en behandlingsplan.';
+---
+
+<Layout title="Övningar – BjörnMassage" description={description}>
+    <link slot="head" rel="stylesheet" href="/bodymap/bodymap.css" />
+    <link slot="head" rel="stylesheet" href="/bodymap/site-theme.css" />
+
+    <section class="section trigger-intro" lang="sv">
+        <h1>Övningar</h1>
+        <div class="prose">
+            <p>
+                Välj en muskel på kartan, eller sök på övningens namn. Musklerna visas med latinskt namn. Övningarna är
+                stretch eller styrka, och de är allmänna förslag, inte en behandlingsplan.
+            </p>
+            <p>Avbryt om något gör ont, och fråga Björn vid besöket.</p>
+        </div>
+        <p class="mt-8">
+            <a class="btn" href={placeUrl}>Boka tid</a>
+        </p>
+    </section>
+
+    <section class="ex-search" aria-labelledby="ex-search-title">
+        <h2 id="ex-search-title">Sök övning</h2>
+        <p class="lede">
+            Sökningen kan ta ett latinskt muskelnamn, till exempel trapezius, eller ord i övningens namn.
+        </p>
+        <form id="ex-search-form" class="ex-form" role="search">
+            <div class="ex-field">
+                <label for="ex-q">Namn</label>
+                <input
+                    id="ex-q"
+                    type="search"
+                    name="q"
+                    autocomplete="off"
+                    enterkeyhint="search"
+                    placeholder="Till exempel trapezius eller hamstring"
+                />
+            </div>
+            <div class="ex-filters">
+                <div id="ex-search-types" class="ex-chips" role="group" aria-label="Typ av övning">
+                    <button type="button" class="ex-chip" data-value="all" aria-pressed="true">Alla</button>
+                    <button type="button" class="ex-chip" data-value="stretching" aria-pressed="false">Stretch</button>
+                    <button type="button" class="ex-chip" data-value="strengthen" aria-pressed="false">Styrka</button>
+                </div>
+                <label class="ex-level">
+                    Nivå
+                    <select id="ex-search-level">
+                        <option value="all">Alla</option>
+                        <option value="beginner">Nybörjare</option>
+                        <option value="intermediate">Medel</option>
+                        <option value="expert">Avancerad</option>
+                    </select>
+                </label>
+            </div>
+        </form>
+        <p id="ex-search-status" class="ex-status" aria-live="polite"></p>
+        <ul id="ex-search-list" class="ex-list"></ul>
+        <button type="button" id="ex-search-more" class="ex-more" hidden>Visa fler</button>
+    </section>
+
+    <div class="trigger-map">
+        <div data-bodymap data-mode="muscles"></div>
+    </div>
+
+    <script is:inline>
+        (function () {
+            var params = new URLSearchParams(location.search);
+            var muscle = params.get('muskel');
+            var ovning = params.get('ovning');
+            if (!muscle && !ovning) return;
+            if (/(?:^#|&)(?:muscle|zone|ex)=/.test(location.hash)) return;
+            var bits = [];
+            if (muscle) bits.push('muscle=' + encodeURIComponent(muscle));
+            if (ovning) bits.push('ex=' + encodeURIComponent(ovning));
+            var hash = '#' + bits.join('&');
+            history.replaceState(null, '', location.pathname + location.search + hash);
+        })();
+        window.EXERCISE_PAGE = true;
+    </script>
+    <script is:inline src="/bodymap/strings-sv.js"></script>
+    <script is:inline>
+        window.BODYMAP_STRINGS.hintMuscles =
+            'Tryck på en muskel. Övningarna visas här bredvid. Namnen är latinska.';
+        window.BODYMAP_STRINGS.emptyMusclesTitle = 'Välj en muskel';
+        window.BODYMAP_STRINGS.emptyMusclesText =
+            'Välj en muskel på kroppen för att se stretch- och styrkeövningar som är kopplade till den.';
+    </script>
+    <script is:inline src="/bodymap/bodymap-data.js" defer></script>
+    <script is:inline src="/bodymap/bodymap-zones.js" defer></script>
+    <script is:inline src="/bodymap/bodymap.js" defer></script>
+
+    <dialog id="ex-dialog" class="ex-dialog" aria-labelledby="ex-dialog-title">
+        <div class="ex-dialog-top">
+            <button type="button" class="ex-close">Stäng</button>
+        </div>
+        <div id="ex-dialog-body" class="ex-dialog-body"></div>
+    </dialog>
+    <script>
+        import '../scripts/trigger-exercises.js';
+    </script>
+</Layout>
