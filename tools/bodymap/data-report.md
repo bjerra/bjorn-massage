@@ -1,6 +1,6 @@
 # Body-map data report
 
-Generated 2026-10-09T08:14:10.623Z by build-data.mjs
+Generated 2026-10-13T08:16:02.938Z by build-data.mjs
 
 ## Missing muscle ids (0)
 
@@ -14,33 +14,26 @@ Generated 2026-10-09T08:14:10.623Z by build-data.mjs
 
 - head_temporal: duplicate entry trapezius_desc TP1 ("Upper fibres, mid-belly") — removed.
 
-## Conflicting TP location texts (11)
+## Conflicting TP location texts (6)
 
 - trapezius_desc TP1: location text differs between zones ("Upper fibres, mid-belly" vs "Upper fibres" in head_eye). First one is used as the TP name.
-- deltoideus TP1: location text differs between zones ("Anterior deltoid" vs "Posterior deltoid" in shoulder_posterior). First one is used as the TP name.
-- deltoideus TP1: location text differs between zones ("Anterior deltoid" vs "Posterior deltoid" in arm_posterior). First one is used as the TP name.
 - quadratus_lumborum TP1: location text differs between zones ("Lateral border, iliac crest" vs "Lateral border" in hip_lateral). First one is used as the TP name.
 - tensor_fasciae_latae TP1: location text differs between zones ("Mid-belly, lateral thigh" vs "Mid-belly" in thigh_anterior). First one is used as the TP name.
-- hamstrings TP1: location text differs between zones ("Mid-belly, biceps femoris" vs "Distal belly, popliteal fossa" in knee_posterior). First one is used as the TP name.
 - gastrocnemius TP1: location text differs between zones ("Proximal medial belly" vs "Medial belly" in lower_leg_posterior). First one is used as the TP name.
 - tibialis_anterior TP1: location text differs between zones ("Mid-belly, anterior shin" vs "Distal belly" in foot_ankle_anterior). First one is used as the TP name.
 - gastrocnemius TP1: location text differs between zones ("Proximal medial belly" vs "Medial belly" in foot_ankle_posterior). First one is used as the TP name.
-- soleus TP1: location text differs between zones ("Proximal soleus belly" vs "Proximal belly" in foot_ankle_posterior). First one is used as the TP name.
-- external_oblique TP1: location text differs between zones ("Lateral belly" vs "Inguinal region" in groin_inner_thigh). First one is used as the TP name.
 
 ## Trigger-point problems (0)
 
 - none
 
-## Not referenced by any zone (47)
+## Not referenced by any zone (43)
 
 - add_long_tp2 (adductor_longus TP2) is not referenced by any referral zone.
 - add_mag_tp3 (adductor_magnus TP3) is not referenced by any referral zone (source comment: "mid belly").
 - biceps_tp2 (biceps_brachii TP2) is not referenced by any referral zone.
 - delt_tp2 (deltoideus TP2) is not referenced by any referral zone.
-- delt_tp3 (deltoideus TP3) is not referenced by any referral zone.
 - erector_tp3 (erector_spinae TP3) is not referenced by any referral zone (source comment: "lower lumbar").
-- ext_obl_tp2 (external_oblique TP2) is not referenced by any referral zone.
 - gastroc_tp2 (gastrocnemius TP2) is not referenced by any referral zone.
 - glut_max_tp2 (gluteus_maximus TP2) is not referenced by any referral zone.
 - glut_med_tp2 (gluteus_medius TP2) is not referenced by any referral zone.
@@ -48,7 +41,6 @@ Generated 2026-10-09T08:14:10.623Z by build-data.mjs
 - glut_min_tp2 (gluteus_minimus TP2) is not referenced by any referral zone.
 - gracilis_tp2 (gracilis TP2) is not referenced by any referral zone (source comment: "distal").
 - hams_tp2 (hamstrings TP2) is not referenced by any referral zone (source comment: "semitendinosus/-membranosus (medial)").
-- hams_tp3 (hamstrings TP3) is not referenced by any referral zone (source comment: "distal, toward popliteal fossa").
 - iliopsoas_tp2 (iliopsoas TP2) is not referenced by any referral zone (source comment: "lower belly toward groin").
 - infra_tp3 (infraspinatus TP3) is not referenced by any referral zone (source comment: "upper-mid fossa").
 - lat_tp2 (latissimus_dorsi TP2) is not referenced by any referral zone (source comment: "lower mid-belly").
@@ -64,7 +56,6 @@ Generated 2026-10-09T08:14:10.623Z by build-data.mjs
 - sartorius_tp2 (sartorius TP2) is not referenced by any referral zone.
 - scaleni_tp3 (scaleni TP3) is not referenced by any referral zone.
 - serratus_tp2 (serratus_anterior TP2) is not referenced by any referral zone.
-- soleus_tp2 (soleus TP2) is not referenced by any referral zone (source comment: "distal (heel-referral TP)").
 - scm_tp3 (sternocleidomastoideus TP3) is not referenced by any referral zone.
 - scm_tp4 (sternocleidomastoideus TP4) is not referenced by any referral zone.
 - subocc_tp2 (suboccipitals TP2) is not referenced by any referral zone.

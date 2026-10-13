@@ -340,7 +340,7 @@ export const TRIGGER_POINTS: Record<string, Array<{id:string; x:number; y:number
   ],
   "external_oblique": [
     { id: "ext_obl_tp1", x: 441.5079, y: 495.917 },
-    { id: "ext_obl_tp2", x: 441.2191, y: 619.826 },
+    { id: "ext_obl_tp2", x: 441.2191, y: 619.826 }, // TP2 inguinal region
   ],
   "forearm_extensors": [
     { id: "forearm_ext_tp1", x: 1285, y: 545 },  // TP1 proximal extensor mass (lateral epicondyle)
@@ -461,8 +461,8 @@ export const TRIGGER_POINTS: Record<string, Array<{id:string; x:number; y:number
     { id: "serratus_tp2", x: 463.3558, y: 470.4801 },
   ],
   "soleus": [
-    { id: "soleus_tp1", x: 1180, y: 1035 },      // TP1 proximal soleus belly
-    { id: "soleus_tp2", x: 1170, y: 1180 },      // distal (heel-referral TP)
+    { id: "soleus_tp1", x: 1170, y: 1180 },      // TP1 distal belly, near the heel
+    { id: "soleus_tp2", x: 1180, y: 1035 },      // TP2 proximal soleus belly
   ],
   "sternocleidomastoideus": [
     { id: "scm_tp1", x: 394.2928, y: 253.2643 },
