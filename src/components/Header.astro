@@ -1,6 +1,8 @@
 ---
+import { Image } from 'astro:assets';
 import { placeUrl } from '../data/site';
 import { SHOW_MOVEMENT_LOOKUP } from '../data/features';
+import paw from '../assets/bjorn-paw-icon-512.png';
 
 const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
 
@@ -17,7 +19,21 @@ const navItems = [
 
 <header class="site-header">
     <div class="header-bar">
-        <a class="wordmark" href="/">Björn Massage</a>
+        <a class="wordmark" href="/">
+            <Image
+                src={paw}
+                alt=""
+                aria-hidden="true"
+                width={80}
+                height={80}
+                format="webp"
+                quality={90}
+                class="wordmark-mark"
+                loading="eager"
+                decoding="async"
+            />
+            Björn Massage
+        </a>
         <button
             type="button"
             class="menu-button"
