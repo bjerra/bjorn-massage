@@ -1,0 +1,138 @@
+---
+import { readFileSync, existsSync } from 'node:fs';
+import { join } from 'node:path';
+import { getEntry } from 'astro:content';
+import { createMarkdownProcessor } from '@astrojs/markdown-remark';
+import Layout from '../layouts/Layout.astro';
+import { placeUrl } from '../data/site';
+import groups from '../data/client-exercises.json';
+
+interface Props {
+    id: 'nacksmarta' | 'landryggssmarta';
+}
+
+const { id } = Astro.props;
+const entry = await getEntry('rad', id);
+if (!entry) throw new Error('Missing advice article ' + id);
+if (entry.data.slug !== id) throw new Error('Slug does not match the page for ' + id);
+
+const group = groups[id];
+if (!group || group.page !== '/' + id) throw new Error('Exercise group does not match ' + id);
+
+type Card = {
+    exerciseId: string;
+    titleSv: string;
+    muscleId: string;
+    deepLink: string;
+    why: string;
+    image: string;
+};
+
+const strings = readFileSync(join(process.cwd(), 'public/bodymap/strings-sv.js'), 'utf8');
+const cards: Card[] = group.exercises.map((item) => {
+    const expected = `/ovningar?muskel=${item.muscleId}&ovning=${item.exerciseId}`;
+    if (item.deepLink !== expected) {
+        throw new Error(item.exerciseId + ' deep link is ' + item.deepLink);
+    }
+    const detailPath = join(process.cwd(), 'public/exercises/d', item.exerciseId + '.json');
+    if (!existsSync(detailPath)) throw new Error('Missing exercise file for ' + item.exerciseId);
+    const detail = JSON.parse(readFileSync(detailPath, 'utf8'));
+    if (detail.name_sv !== item.titleSv) {
+        throw new Error(item.exerciseId + ' title is ' + detail.name_sv + ', expected ' + item.titleSv);
+    }
+    if (!Array.isArray(detail.muscleIds) || !detail.muscleIds.includes(item.muscleId)) {
+        throw new Error(item.exerciseId + ' is not linked to muscle ' + item.muscleId);
+    }
+    if (!strings.includes(item.muscleId + ':')) {
+        throw new Error('Muscle ' + item.muscleId + ' is not on the body map');
+    }
+    const image = detail.images && detail.images[0];
+    if (!image || !existsSync(join(process.cwd(), 'public', image))) {
+        throw new Error('Missing image for ' + item.exerciseId);
+    }
+    return { ...item, image };
+});
+
+const CARE = '\n## När ska du söka vård?\n';
+const raw = entry.body;
+if (!raw || !raw.includes(CARE)) throw new Error('Article is missing the care heading: ' + id);
+const [opening, rest] = raw.split(CARE);
+if (rest == null) throw new Error('Article is missing the care section: ' + id);
+const bookAt = rest.indexOf('Vill du boka en behandling?');
+const noteAt = rest.indexOf('*Informationen på sidan är allmän');
+if (bookAt < 0 || noteAt < bookAt) throw new Error('Article is missing the booking line: ' + id);
+const care = CARE.slice(1) + rest.slice(0, bookAt);
+const booking = rest.slice(bookAt, noteAt);
+const tail = rest.slice(noteAt);
+
+const processor = await createMarkdownProcessor({ gfm: true, smartypants: false, syntaxHighlight: false });
+async function html(markdown: string) {
+    // "1. 1177. …" would otherwise become a nested list starting at 1177.
+    const readable = markdown.replace(/^(\d+\.\s+)(\d+)\. /gm, '$1$2\\. ');
+    const rendered = await processor.render(readable.trim() + '\n');
+    return rendered.code;
+}
+
+const openingHtml = await html(opening);
+const careHtml = await html(care);
+const bookingHtml = await html(booking);
+const tailHtml = await html(tail);
+
+const canonical = 'https://bjornmassage.se/' + id + '/';
+const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: entry.data.title,
+    description: entry.data.description,
+    inLanguage: 'sv-SE',
+    mainEntityOfPage: canonical,
+    url: canonical,
+    datePublished: '2026-10-16',
+    dateModified: '2026-10-16',
+    image: 'https://bjornmassage.se/og.jpg',
+    author: {
+        '@type': 'Person',
+        name: 'Björn Eriksson'
+    },
+    publisher: {
+        '@type': 'Organization',
+        name: 'BjörnMassage',
+        url: 'https://bjornmassage.se/'
+    }
+};
+
+---
+
+<Layout title={entry.data.title} description={entry.data.description} path={'/' + id + '/'}>
+    <script is:inline slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <article class="advice section" lang="sv">
+        <div class="advice-body" set:html={openingHtml} />
+        <section class="advice-practice" aria-labelledby="hemmabruk">
+            <h2 id="hemmabruk">Övningar för hemmabruk</h2>
+            <ul class="advice-cards">
+                {
+                    cards.map((card) => (
+                        <li class="advice-card">
+                            <a href={card.deepLink}>
+                                <img src={card.image} alt="" width="640" height="426" loading="lazy" decoding="async" />
+                                <span>
+                                    <h3>{card.titleSv}</h3>
+                                    <p>{card.why}</p>
+                                </span>
+                            </a>
+                        </li>
+                    ))
+                }
+            </ul>
+            <p class="advice-stop">
+                <strong>{group.safety}</strong>
+            </p>
+        </section>
+        <div class="advice-body" set:html={careHtml} />
+        <div class="advice-body" set:html={bookingHtml} />
+        <p class="advice-book">
+            <a class="btn" href={placeUrl}>Boka tid</a>
+        </p>
+        <div class="advice-body advice-sources" set:html={tailHtml} />
+    </article>
+</Layout>
