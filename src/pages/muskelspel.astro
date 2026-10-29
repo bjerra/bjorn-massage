@@ -1,0 +1,95 @@
+---
+import Layout from '../layouts/Layout.astro';
+import {
+    DISCLAIMER_BODY,
+    DISCLAIMER_LEAD,
+    EVIDENCE_LEGEND,
+    INTRO,
+    MUSCLE_CARDS,
+    evidenceLabel
+} from '../data/muskelspel';
+import '../styles/muskelspel.css';
+
+const description =
+    'Öva områden och stretchsignaler som ofta associeras med muskler vid skrivbordsarbete. Latinska muskelnamn. Inte medicinsk rådgivning.';
+---
+
+<Layout title="Muskelspel – BjörnMassage" description={description}>
+    <section class="section play-intro">
+        <h1>Muskelspel</h1>
+        <div class="prose">
+            <p>{INTRO}</p>
+            <p>
+                Kartan över områdena finns på <a href="/muskelkarta">muskelkartan</a>. Förslag på stretch och styrka
+                finns bland <a href="/ovningar">övningarna</a>.
+            </p>
+        </div>
+        <aside class="play-note" role="note">
+            <p><strong>{DISCLAIMER_LEAD}</strong> {DISCLAIMER_BODY}</p>
+        </aside>
+        <dl class="play-legend">
+            {
+                EVIDENCE_LEGEND.map((item) => (
+                    <div>
+                        <dt>{item.term}</dt>
+                        <dd>{item.text}</dd>
+                    </div>
+                ))
+            }
+        </dl>
+    </section>
+
+    <section class="section play play-app" aria-labelledby="play-heading">
+        <div class="play-wrap">
+            <h2 id="play-heading">Snabbquiz</h2>
+            <div class="play-modes" role="group" aria-label="Spelläge">
+                <button type="button" class="play-mode" data-mode="quiz" aria-pressed="true">Snabbquiz</button>
+                <button type="button" class="play-mode" data-mode="cards" aria-pressed="false">Övningsläge</button>
+            </div>
+            <p class="play-help" data-help>Åtta frågor. Ett område eller en stretchsignal, sedan muskel.</p>
+            <div id="play-stage"></div>
+            <p id="play-live" class="sr-only" aria-live="polite"></p>
+        </div>
+    </section>
+
+    <section class="section play-static" id="play-static">
+        <h2>Alla kort</h2>
+        <p class="lede">Korten i läsordning. Poäng och vändning kräver JavaScript.</p>
+        {
+            MUSCLE_CARDS.map((card) => (
+                <article class="play-sheet">
+                    <h3 translate="no">{card.latin}</h3>
+                    {card.latinDetail && (
+                        <p class="play-detail" translate="no">
+                            {card.latinDetail}
+                        </p>
+                    )}
+                    <p class="play-chip">{evidenceLabel(card.evidence)}</p>
+                    <h4 class="play-label">Utstrålning</h4>
+                    <p>{card.referral}</p>
+                    <h4 class="play-label">Stretch</h4>
+                    <p class="play-cue">{card.stretchPrompt}</p>
+                    <p>{card.stretch}</p>
+                    <h4 class="play-label">Var triggerpunkten brukar beskrivas</h4>
+                    <p>{card.where}</p>
+                    <h4 class="play-label">Lätt att blanda ihop</h4>
+                    <p>{card.confuse}</p>
+                    <h4 class="play-label">På kortet</h4>
+                    <p>{card.training}</p>
+                </article>
+            ))
+        }
+    </section>
+</Layout>
+
+<script>
+    import { mountMuskelspel } from '../scripts/muskelspel';
+
+    const fallback = document.getElementById('play-static');
+    try {
+        mountMuskelspel(document);
+    } catch (error) {
+        console.error(error);
+        fallback?.classList.add('is-visible');
+    }
+</script>

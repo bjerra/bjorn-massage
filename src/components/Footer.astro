@@ -1,7 +1,9 @@
 ---
 const year = new Date().getFullYear();
+const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
 ---
 
 <footer class="site-footer">
+    <a href="/muskelspel" aria-current={pathname === '/muskelspel' ? 'page' : undefined}>Muskelspel</a>
     <p>© {year} Björn Massage</p>
 </footer>
