@@ -1,0 +1,174 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { placeUrl } from '../data/site';
+
+const title = 'Skrivbordsprogrammet – BjörnMassage';
+const description =
+    'Skrivbordsprogrammet hos BjörnMassage: 4 massagebesök på 60 minuter under 6 veckor, plus korta övningar hemma. För nacke, axlar och rygg vid skrivbordsjobb.';
+
+const visits = [
+    {
+        n: 'Besök 1',
+        when: 'Vecka 0',
+        text: 'Jag går igenom dina besvär, din arbetsdag och hur du rör dig. Jag noterar hur det känns och hur rörlig du är, så att jag kan följa förändringen. Massage där det spänner mest, till exempel nacke, axlar, övre rygg, framsidan av bröstet, underarmar eller ländrygg. Du får de första övningarna.'
+    },
+    {
+        n: 'Besök 2',
+        when: 'Vecka 1',
+        text: 'Jag tittar på hur övningarna har känts och justerar dem. Massage.'
+    },
+    {
+        n: 'Besök 3',
+        when: 'Vecka 3',
+        text: 'Jag följer upp och anpassar övningarna. Massage mot det som fortfarande känns spänt.'
+    },
+    {
+        n: 'Besök 4',
+        when: 'Vecka 6',
+        text: 'Jag jämför med starten och gör en plan för hur du kan fortsätta på egen hand. Massage.'
+    }
+];
+
+// Ids checked against public/exercises/index.json. Hakindrag (chin tuck) is not in that library.
+const examples = [
+    {
+        id: 'Lateral_Raise_-_With_Bands',
+        name: 'Sidolyft med band',
+        note: 'Styrka för axlarna, med gummiband.'
+    },
+    {
+        id: 'Bent_Over_Two-Dumbbell_Row',
+        name: 'Framåtlutad rodd med två hantlar',
+        note: 'Styrka mellan skulderbladen.'
+    },
+    {
+        id: 'Middle_Back_Stretch',
+        name: 'Mellanryggstretch',
+        note: 'Rörlighet i mellanryggen.'
+    }
+];
+---
+
+<Layout title={title} description={description}>
+    <article>
+        <section class="section">
+            <h1>Skrivbordsprogrammet</h1>
+            <div class="prose">
+                <p>
+                    Stel nacke, spända axlar eller ont i underarmen efter en lång dag vid skärmen? Skrivbordsprogrammet
+                    är för dig som sitter vid datorn och känner av nacke, axlar, övre rygg, underarmar eller ländrygg.
+                </p>
+                <p>
+                    Det är massage tillsammans med ett fåtal enkla övningar som du gör hemma eller på jobbet. Övningarna
+                    anpassas efter hur det känns för dig.
+                </p>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Så fungerar det</h2>
+            <p class="lede">4 besök på 60 minuter under 6 veckor, plus hemträning mellan besöken.</p>
+            <ol class="visit-list">
+                {
+                    visits.map((visit) => (
+                        <li>
+                            <div>
+                                <p class="visit-kicker">{visit.n}</p>
+                                <h3>{visit.when}</h3>
+                            </div>
+                            <p>{visit.text}</p>
+                        </li>
+                    ))
+                }
+            </ol>
+        </section>
+
+        <section class="section">
+            <h2>Hemträningen</h2>
+            <div class="prose">
+                <p>
+                    Mellan besöken gör du ett fåtal enkla övningar, ungefär 10–15 minuter några dagar i veckan. Jag
+                    justerar dem vid varje besök. Du får också tips om att resa dig och byta ställning vid skärmen. Det
+                    finns ingen enda rätt hållning. Att variera ställning ofta brukar kännas bättre.
+                </p>
+                <p>
+                    Övningarna väljs vid besöket. Några liknande finns att titta på här. De är allmänna förslag, inte en
+                    färdig plan för dig.
+                </p>
+            </div>
+            <ul class="example-list">
+                {
+                    examples.map((item) => (
+                        <li>
+                            <a href={`/ovningar?ovning=${item.id}`}>{item.name}</a>
+                            <span>{item.note}</span>
+                        </li>
+                    ))
+                }
+            </ul>
+            <div class="prose">
+                <p>
+                    Hakindrag, en liten nick som förlänger nacken, ingår i programmet. Den visas vid besöket och finns
+                    inte bland övningarna på sajten.
+                </p>
+                <p>
+                    Lite obehag under övningen (högst 3 av 10) som har gått över till nästa morgon är okej. Är det värre
+                    dagen efter, gör du hälften så mycket. Sluta med övningen och ta upp det vid besöket om det strålar
+                    ut i armen, eller om du får domningar, yrsel eller ny kraftig huvudvärk. Vid akuta symtom, kontakta
+                    vården.
+                </p>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Ärligt om vad du kan förvänta dig</h2>
+            <div class="prose">
+                <p>
+                    Massage kan ge skön lindring och göra det lättare att röra sig, oftast på kort sikt. Enligt
+                    forskningen är det regelbunden träning, särskilt styrkeövningar för nacke och axlar, som gör mest
+                    skillnad på längre sikt. Därför är övningarna en viktig del av programmet.
+                </p>
+                <p>
+                    Jag lovar inte att besvären försvinner. Målet är att du ska ha mindre besvär och veta vad du kan
+                    göra själv.
+                </p>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Pris</h2>
+            <div class="prose">
+                <p>
+                    <strong>3&nbsp;596&nbsp;kr</strong> för ett klippkort med 4 × 60 minuter (899&nbsp;kr per besök),
+                    eller 949&nbsp;kr per besök.
+                </p>
+                <p>
+                    Kan betalas med friskvårdsbidrag – varje behandling kostar under 1&nbsp;000&nbsp;kr (kontrollera med
+                    din arbetsgivare).
+                </p>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>När programmet inte passar</h2>
+            <div class="prose">
+                <p>
+                    Programmet passar inte om du har plötslig svår huvud- eller nackvärk, yrsel eller synstörningar,
+                    domningar eller svaghet i armar eller händer som blir värre, feber, eller om du nyligen har skadat
+                    dig, till exempel vid en olycka.
+                </p>
+                <p>
+                    Kontakta då vården: <a href="https://www.1177.se/">1177</a>, vårdcentralen, eller 112 vid akuta
+                    symtom.
+                </p>
+            </div>
+            <p class="disclaimer">
+                Detta är friskvård, inte medicinsk rådgivning, och det ersätter inte en bedömning hos fysioterapeut
+                eller läkare.
+            </p>
+            <p class="mt-8">
+                <a class="btn" href={placeUrl}>Boka tid</a>
+            </p>
+        </section>
+    </article>
+</Layout>
