@@ -1147,8 +1147,12 @@
     }
   ],
   "cueOverrides": [
+    "Butt_Lift_Bridge",
+    "Chin_To_Chest_Stretch",
+    "Dead_Bug",
     "Side_Bridge",
-    "Side_Jackknife"
+    "Side_Jackknife",
+    "Side_Neck_Stretch"
   ],
   "missingSwedishCues": [],
   "supraspinatus": [
