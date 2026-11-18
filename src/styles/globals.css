@@ -714,24 +714,97 @@
     }
 
     .site-footer {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: baseline;
-        justify-content: space-between;
-        gap: 0.5rem 1.5rem;
+        display: grid;
+        gap: 1.75rem;
         margin-top: 4rem;
         border-top: 1px solid var(--color-ink);
-        padding: 1.5rem 0 2.25rem;
+        padding: 2rem 0 2.5rem;
         color: var(--color-ink);
         font-size: 14px;
     }
 
-    .site-footer p {
+    .footer-grid {
+        display: grid;
+        gap: 1.75rem;
+    }
+
+    .footer-kicker {
+        margin: 0 0 0.45rem;
+        color: var(--color-muted);
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+    }
+
+    .footer-address,
+    .footer-hours,
+    .footer-copy {
         margin: 0;
+    }
+
+    .footer-hours {
+        margin-top: 0.75rem;
+    }
+
+    .footer-nav ul {
+        display: grid;
+        gap: 0.35rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .footer-copy {
+        color: var(--color-muted);
     }
 
     .site-footer a[aria-current='page'] {
         font-weight: 600;
+    }
+
+    .guide-list {
+        display: grid;
+        gap: 1.5rem 3rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .guide-link {
+        font-family: var(--font-serif);
+        font-size: clamp(1.75rem, 3vw, 2.25rem);
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+        text-decoration: none;
+    }
+
+    .guide-link:hover {
+        text-decoration: underline;
+        text-underline-offset: 4px;
+    }
+
+    .guide-list p {
+        max-width: 28rem;
+        margin: 0.4rem 0 0;
+        color: var(--color-muted);
+    }
+
+    @media (min-width: 700px) {
+        .footer-grid {
+            grid-template-columns: minmax(0, 18rem) minmax(0, 1fr);
+            gap: 2rem 4rem;
+            align-items: start;
+        }
+
+        .footer-nav ul {
+            grid-template-columns: repeat(2, minmax(0, 12rem));
+            gap: 0.5rem 2rem;
+        }
+
+        .guide-list {
+            grid-template-columns: 1fr 1fr;
+        }
     }
 
     .trigger-intro {

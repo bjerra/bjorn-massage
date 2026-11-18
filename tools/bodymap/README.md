@@ -1,6 +1,6 @@
 # Body map data
 
-Source data for the trigger-point map on `/muskelkarta`. It comes from Björn's iOS app (`src/bodyPaths.ts`, `src/referralZones.ts`). `src/musclePathsOld.ts` is the previous path set and is not read by the build.
+Source data for the trigger-point map on `/muskelkarta`. It comes from Björn's iOS app (`src/bodyPaths.ts`, `src/referralZones.ts`).
 
 The widget itself is dependency-free and is served as static files from `public/bodymap/` (`bodymap.js`, `bodymap.css`, `bodymap-zones.js`, plus the generated data). Astro does not bundle them.
 

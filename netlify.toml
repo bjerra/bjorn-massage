@@ -38,6 +38,19 @@
   status = 301
   force = true
 
+# The movement page now opens the Rörelser tab on the map.
+[[redirects]]
+  from = "/rorelser"
+  to = "/muskelkarta?lage=rorelser"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/rorelser/"
+  to = "/muskelkarta?lage=rorelser"
+  status = 301
+  force = true
+
 # Retired Netlify starter pages.
 [[redirects]]
   from = "/blobs"

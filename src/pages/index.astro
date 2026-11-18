@@ -108,6 +108,20 @@ const jsonLd = {
         </div>
         </div>
     </section>
+    <section class="section band guide" aria-label="Kartor och övningar">
+        <div class="site-column">
+            <ul class="guide-list">
+                <li>
+                    <a class="guide-link" href="/muskelkarta">Muskelkarta</a>
+                    <p>Områden och muskler. Namnen är latinska.</p>
+                </li>
+                <li>
+                    <a class="guide-link" href="/ovningar">Övningar</a>
+                    <p>Stretch och styrka att slå upp efter muskel.</p>
+                </li>
+            </ul>
+        </div>
+    </section>
     <section id="kontakt" class="section band band-sand">
         <div class="site-column">
         <h2>Kontakt</h2>
@@ -122,7 +136,7 @@ const jsonLd = {
                     Lantmätargränd 16<br />
                     553 20 Jönköping
                 </p>
-                <h3>Öppettider på Neoskin</h3>
+                <h3 id="oppettider">Öppettider på Neoskin</h3>
                 <ul class="hours">
                     {
                         hours.map(([day, time]) => (
