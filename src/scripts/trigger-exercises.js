@@ -1,6 +1,5 @@
 /**
  * Exercise lookup for /ovningar.
- * /rorelser still uses the panel list when a muscle is chosen there.
  * Loads a small index, then one detail file when an exercise is opened.
  * The body-map widget still owns muscle and zone selection.
  */

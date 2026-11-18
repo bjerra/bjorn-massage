@@ -206,8 +206,10 @@ window.BODYMAP_STRINGS = {
             };
 
 if (window.BODYMAP_MOVEMENT_MODE) {
-    window.BODYMAP_STRINGS.modeMovements = 'Sök rörelse';
-    window.BODYMAP_STRINGS.hintMovements = 'Sök en rörelse ovanför, eller välj led och rörelse. Primära muskler markeras mörkare och synergister ljusare. Tryck på en muskel för triggerpunkter och övningar.';
-    window.BODYMAP_STRINGS.emptyMovementsTitle = 'Sök rörelse';
-    window.BODYMAP_STRINGS.emptyMovementsText = 'Välj en led och en rörelse för att se vilka muskler som vanligtvis arbetar.';
+    window.BODYMAP_STRINGS.modeMovements = 'Rörelser';
+    window.BODYMAP_STRINGS.hintMovements =
+        'Välj en led och en rörelse ovanför kartan. Primära muskler markeras mörkare och synergister ljusare. Tryck på en muskel för triggerpunkter.';
+    window.BODYMAP_STRINGS.emptyMovementsTitle = 'Rörelser';
+    window.BODYMAP_STRINGS.emptyMovementsText =
+        'Välj en led och en rörelse för att se vilka muskler som vanligtvis arbetar. Namnen är latinska.';
 }

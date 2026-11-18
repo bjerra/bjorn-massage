@@ -1,7 +1,48 @@
 ---
+import { placeUrl } from '../data/site';
+
 const year = new Date().getFullYear();
+const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
+
+const links = [
+    { text: 'Behandlingar', href: '/#tjanster' },
+    { text: 'Muskelkarta', href: '/muskelkarta' },
+    { text: 'Övningar', href: '/ovningar' },
+    { text: 'Om mig', href: '/#om-mig' },
+    { text: 'Kontakt', href: '/#kontakt' },
+    { text: 'Boka tid', href: placeUrl }
+];
 ---
 
 <footer class="site-footer">
-    <p>© {year} Björn Massage</p>
+    <div class="footer-grid">
+        <div>
+            <p class="footer-kicker">Besök</p>
+            <p class="footer-address">
+                Neoskin<br />
+                Lantmätargränd 16<br />
+                553 20 Jönköping
+            </p>
+            <p class="footer-hours">
+                <a href="/#oppettider">Öppettider</a>
+            </p>
+        </div>
+        <nav class="footer-nav" aria-label="Sidfot">
+            <ul>
+                {
+                    links.map((item) => (
+                        <li>
+                            <a
+                                href={item.href}
+                                aria-current={!item.href.includes('#') && !item.href.startsWith('http') && item.href === pathname ? 'page' : undefined}
+                            >
+                                {item.text}
+                            </a>
+                        </li>
+                    ))
+                }
+            </ul>
+        </nav>
+    </div>
+    <p class="footer-copy">© {year} Björn Massage</p>
 </footer>

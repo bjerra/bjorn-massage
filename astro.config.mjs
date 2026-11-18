@@ -16,8 +16,7 @@ export default defineConfig({
                 !page.endsWith('/404') &&
                 !page.endsWith('/410') &&
                 !page.includes('/404/') &&
-                !page.includes('/410/') &&
-                !page.includes('/rorelser')
+                !page.includes('/410/')
         }),
         {
             name: 'bokadirekt-services',
