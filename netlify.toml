@@ -25,6 +25,19 @@
   status = 301
   force = true
 
+# The muscle quiz was removed. Old links go to the map.
+[[redirects]]
+  from = "/muskelspel"
+  to = "/muskelkarta"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/muskelspel/"
+  to = "/muskelkarta"
+  status = 301
+  force = true
+
 # Retired Netlify starter pages.
 [[redirects]]
   from = "/blobs"
