@@ -75,10 +75,12 @@ const description =
         (function () {
             var params = new URLSearchParams(location.search);
             var muscle = params.get('muskel');
+            var zone = params.get('zon');
             var ovning = params.get('ovning');
-            if (!muscle && !ovning) return;
+            if (!muscle && !zone && !ovning) return;
             if (/(?:^#|&)(?:muscle|zone|ex)=/.test(location.hash)) return;
             var bits = [];
+            if (zone) bits.push('zone=' + encodeURIComponent(zone));
             if (muscle) bits.push('muscle=' + encodeURIComponent(muscle));
             if (ovning) bits.push('ex=' + encodeURIComponent(ovning));
             var hash = '#' + bits.join('&');

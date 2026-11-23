@@ -38,18 +38,25 @@
   status = 301
   force = true
 
-# The movement page now opens the Rörelser tab on the map.
+# The movement page is ROM. Old addresses, including the map tab, go there.
 [[redirects]]
   from = "/rorelser"
-  to = "/muskelkarta?lage=rorelser"
+  to = "/rom"
   status = 301
   force = true
 
 [[redirects]]
   from = "/rorelser/"
-  to = "/muskelkarta?lage=rorelser"
+  to = "/rom"
   status = 301
   force = true
+
+[[redirects]]
+  from = "/muskelkarta"
+  to = "/rom"
+  status = 301
+  force = true
+  conditions = {Query = ["lage=rorelser"]}
 
 # Retired Netlify starter pages.
 [[redirects]]

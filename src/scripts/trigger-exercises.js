@@ -634,9 +634,18 @@ function waitForMap() {
     });
 }
 
+function revealExercises() {
+    const block = document.querySelector('.ex-block');
+    if (!block) return;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    block.scrollIntoView({ block: 'center', behavior: reduce ? 'auto' : 'smooth' });
+}
+
 async function start() {
     wireSearch();
     wireDialog();
+    const early = readDeepLink();
+    if (early.zone) state.zoneOpenFor = early.zone;
     const map = await waitForMap();
     if (map) hookMap(map);
     try {
@@ -648,6 +657,7 @@ async function start() {
     const current = getMap();
     if (current) paintPanel(current);
     const hash = readDeepLink();
+    if (hash.zone || hash.muscle) revealExercises();
     const moved =
         hash.muscle &&
         current &&

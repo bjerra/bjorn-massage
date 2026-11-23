@@ -61,7 +61,32 @@
 .bm-fig { margin: 0; text-align: center; min-width: 0; }
 .bm-svg { display: block; width: 100%; height: auto; max-height: 78vh; margin: 0 auto; overflow: visible; touch-action: manipulation; }
 .bm-cap { font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; color: var(--bm-muted); margin-top: 4px; font-weight: 600; }
-.bm-legend { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 18px; font-size: .8rem; color: var(--bm-muted); margin-top: 6px; }
+.bm-legend { grid-column: 1 / -1; grid-row: 1; display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 6px 16px; font-size: .85rem; color: var(--bm-muted); margin: 0 0 10px; }
+.bm-fig { grid-row: 2; }
+.bm-views { display: none; }
+.bm-view-btn {
+  border: 0; background: transparent; border-radius: 999px; min-height: 44px; padding: 8px 14px;
+  font-weight: 600; cursor: pointer; color: var(--bm-muted);
+}
+.bm-view-btn[aria-checked="true"] { background: var(--bm-surface); color: var(--bm-text); }
+.bm.bm-single .bm-views { display: inline-flex; padding: 4px; background: #efe8e0; border-radius: 999px; gap: 2px; }
+.bm.bm-single .bm-figs { grid-template-columns: 1fr; }
+.bm.bm-single .bm-fig { display: none; }
+.bm.bm-single .bm-fig.bm-view-on { display: block; }
+.bm.bm-single .bm-cap { display: none; }
+.bm-zone-hits { pointer-events: none; }
+.bm[data-mode="zones"] .bm-zone-hits { pointer-events: auto; }
+.bm-hit { fill: transparent !important; stroke: transparent !important; fill-opacity: 0 !important; stroke-opacity: 0 !important; }
+.bm-common { display: block; margin: 0; color: var(--bm-muted); font-size: .92rem; font-weight: 450; }
+.bm-clear {
+  flex: none; min-height: 44px; padding: 0.35rem 0.8rem; border-radius: 999px;
+  border: 1px solid var(--bm-line); background: var(--bm-bg); cursor: pointer; color: var(--bm-text);
+}
+.bm-clear:hover { background: #f1ebe4; }
+.bm-caution {
+  margin: 0 0 12px; padding: 8px 10px; border-left: 3px solid var(--bm-tp);
+  color: var(--bm-text); font-size: .92rem;
+}
 .bm-leg { display: inline-flex; align-items: center; gap: 6px; }
 .bm-leg i { display: inline-block; width: 12px; height: 12px; border-radius: 50%; }
 .bm-leg-zone i { background: var(--bm-zone); opacity: .7; }

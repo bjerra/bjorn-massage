@@ -1,0 +1,351 @@
+.rom-lede {
+    max-width: 40rem;
+    margin: 0.4rem 0 0;
+    color: var(--color-muted);
+}
+
+.rom-search {
+    position: relative;
+    max-width: 36rem;
+    margin-top: 1.25rem;
+    display: grid;
+    gap: 0.35rem;
+}
+
+.rom-search input {
+    width: 100%;
+    min-height: 44px;
+    padding: 0.55rem 0.7rem;
+    border: 1px solid var(--color-ink);
+    border-radius: 2px;
+    background: #fff;
+    color: inherit;
+    font: inherit;
+}
+
+.rom-search input:focus-visible,
+.rom-suggest button:focus-visible,
+.rom-joint:focus-visible,
+.rom-move:focus-visible,
+.rom-muscle:focus-visible,
+.rom-back:focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 2px;
+}
+
+.rom-suggest {
+    list-style: none;
+    position: absolute;
+    z-index: 4;
+    left: 0;
+    right: 0;
+    top: calc(100% + 0.35rem);
+    margin: 0;
+    padding: 0;
+    border: 1px solid var(--color-ink);
+    background: #fff;
+    max-height: 16rem;
+    overflow: auto;
+}
+
+.rom-suggest button {
+    display: block;
+    width: 100%;
+    min-height: 44px;
+    padding: 0.55rem 0.7rem;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.rom-suggest button[aria-selected='true'],
+.rom-suggest button:hover {
+    background: #f4f0ea;
+}
+
+.rom-status {
+    min-height: 1.4em;
+    margin: 0.6rem 0 0;
+    color: var(--color-muted);
+    font-size: 0.92rem;
+}
+
+.rom-stage {
+    display: grid;
+    grid-template-columns: minmax(16rem, 26rem) minmax(18rem, 1fr);
+    gap: 1rem 1.5rem;
+    align-items: start;
+    margin-top: 1rem;
+}
+
+.rom-figure {
+    position: relative;
+}
+
+.rom-rail {
+    position: absolute;
+    left: calc(100% + 0.4rem);
+    width: 7.6rem;
+    z-index: 2;
+}
+
+.rom-joint {
+    position: absolute;
+    left: 0;
+    right: 0;
+    min-height: 44px;
+    transform: translateY(-50%);
+    border: 1px solid var(--color-ink);
+    border-radius: 2px;
+    background: #fff;
+    color: inherit;
+    font: inherit;
+    font-size: 0.95rem;
+    cursor: pointer;
+}
+
+.rom-joint.is-on,
+.rom-move.is-on,
+.rom-muscle.is-on {
+    background: var(--color-ink);
+    color: #fff;
+    border-color: var(--color-ink);
+}
+
+.rom-detail {
+    padding-left: 8.4rem;
+}
+
+.rom-detail h2,
+.rom-detail h3,
+.rom-result h3 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+}
+
+.rom-detail h2 {
+    margin: 0 0 0.8rem;
+    font-size: 2rem;
+}
+
+.rom-moves,
+.rom-muscles {
+    list-style: none;
+    margin: 0 0 1.25rem;
+    padding: 0;
+    display: grid;
+    gap: 0.45rem;
+}
+
+.rom-move,
+.rom-muscle,
+.rom-back {
+    width: 100%;
+    min-height: 44px;
+    padding: 0.55rem 0.75rem;
+    border: 1px solid var(--color-ink);
+    border-radius: 2px;
+    background: #fff;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.rom-move {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.1rem;
+}
+
+.rom-move-term {
+    font-weight: 600;
+}
+
+.rom-move-gloss,
+.rom-muscle-sv,
+.rom-offmap,
+.rom-muted {
+    color: var(--color-muted);
+    font-size: 0.92rem;
+}
+
+.rom-move.is-on .rom-move-gloss,
+.rom-muscle.is-on .rom-muscle-sv,
+.rom-muscle.is-on .rom-offmap {
+    color: #f3ece8;
+}
+
+.rom-result {
+    margin-top: 0.4rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-rule);
+}
+
+.rom-result h3 {
+    margin: 0.15rem 0 0.7rem;
+    font-size: 1.7rem;
+}
+
+.rom-kicker {
+    margin: 0;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+}
+
+.rom-caution {
+    margin: 0 0 0.9rem;
+    padding: 0.55rem 0.7rem;
+    border-left: 3px solid var(--color-accent);
+    background: #f8f1ee;
+}
+
+.rom-key {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.2rem;
+    margin: 0 0 1rem;
+    font-size: 0.92rem;
+}
+
+.rom-swatch {
+    display: inline-block;
+    width: 0.85rem;
+    height: 0.85rem;
+    margin-right: 0.35rem;
+    border-radius: 2px;
+    vertical-align: -0.1rem;
+}
+
+.rom-swatch-prime {
+    background: #7a3b2e;
+}
+
+.rom-swatch-syn {
+    background: #c9a197;
+}
+
+.rom-result h4 {
+    margin: 0.8rem 0 0.4rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+}
+
+.rom-muscle {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.1rem;
+}
+
+.rom-muscle-name,
+.rom-picked-name {
+    font-weight: 600;
+}
+
+.rom-picked {
+    margin-top: 0.8rem;
+    padding: 0.8rem 0.85rem;
+    border: 1px solid var(--color-rule);
+    background: #fff;
+}
+
+.rom-picked-name {
+    margin: 0.2rem 0 0;
+}
+
+.rom-picked .rom-muscle-sv,
+.rom-picked .rom-offmap {
+    margin: 0.15rem 0 0;
+}
+
+.rom-picked a {
+    display: inline-block;
+    margin-top: 0.55rem;
+}
+
+.rom-back {
+    margin-top: 0.7rem;
+    width: auto;
+    background: transparent;
+}
+
+.rom-empty {
+    margin: 0;
+    max-width: 28rem;
+    color: var(--color-muted);
+}
+
+.bm[data-chrome='rom'] {
+    background: transparent;
+    border: 0;
+    padding: 0;
+    border-radius: 0;
+}
+
+.bm[data-chrome='rom'] .bm-seg,
+.bm[data-chrome='rom'] .bm-pick,
+.bm[data-chrome='rom'] .bm-hint,
+.bm[data-chrome='rom'] .bm-legend,
+.bm[data-chrome='rom'] .bm-panel,
+.bm[data-chrome='rom'] .bm-peekbar {
+    display: none;
+}
+
+.bm[data-chrome='rom'] .bm-main {
+    display: block;
+}
+
+.bm[data-chrome='rom'] .bm-bar {
+    justify-content: flex-start;
+    margin-bottom: 0.35rem;
+}
+
+@media (max-width: 700px) {
+    .rom-stage {
+        grid-template-columns: 1fr;
+    }
+
+    .rom-figure {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .bm[data-chrome='rom'] .bm-svg {
+        max-height: 48vh;
+    }
+
+    .rom-rail {
+        order: -1;
+        position: static;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.45rem;
+        width: auto;
+        height: auto !important;
+        margin: 0 0 0.8rem;
+    }
+
+    .rom-joint {
+        position: static;
+        transform: none;
+        width: auto;
+        padding: 0.4rem 0.8rem;
+    }
+
+    .rom-detail {
+        padding-left: 0;
+    }
+}
