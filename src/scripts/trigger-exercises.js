@@ -3,6 +3,8 @@
  * Loads a small index, then one detail file when an exercise is opened.
  * The body-map widget still owns muscle and zone selection.
  */
+import { installMuscleModal, openMuscleModal } from './muscle-modal.ts';
+import { readModalMuscle } from '../data/muscle-modal-url.ts';
 
 const PAGE = 8;
 const NOTE = 'Allmänna förslag. Avbryt om det gör ont.';
@@ -100,6 +102,8 @@ function writeHash(map) {
     if (sel && sel.type === 'muscle') parts.push('muscle=' + encodeURIComponent(sel.id));
     else if (sel && sel.type === 'zone') parts.push('zone=' + encodeURIComponent(sel.id));
     if (state.openId) parts.push('ex=' + encodeURIComponent(state.openId));
+    const modalId = readModalMuscle(location.hash);
+    if (modalId) parts.push('muskel=' + encodeURIComponent(modalId));
     const hash = parts.length ? '#' + parts.join('&') : '';
     let search = location.search;
     if (window.EXERCISE_PAGE) {
@@ -361,7 +365,12 @@ function paintMuscleExercises(map, body) {
     el('h3', { class: 'bm-panel-title', text: map.muscleName(map.sel.id) }, titles);
     const common = map.commonName ? map.commonName(map.sel.id) : '';
     if (common) el('p', { class: 'bm-common', text: common }, titles);
-    const clear = el('button', { type: 'button', class: 'bm-clear', text: map.t.clear || 'Rensa' }, head);
+    const tools = el('div', { class: 'ex-muscle-tools' }, head);
+    const about = el('button', { type: 'button', class: 'ex-about', text: 'Om muskeln', 'aria-haspopup': 'dialog' }, tools);
+    about.addEventListener('click', () => {
+        void openMuscleModal(map.sel.id, { opener: about });
+    });
+    const clear = el('button', { type: 'button', class: 'bm-clear', text: map.t.clear || 'Rensa' }, tools);
     clear.setAttribute('aria-label', map.t.clearAria || 'Rensa val');
     clear.addEventListener('click', () => map.clear({ scroll: true }));
 
@@ -678,6 +687,7 @@ function revealExercises() {
 }
 
 async function start() {
+    installMuscleModal();
     wireSearch();
     wireDialog();
     const early = readDeepLink();

@@ -24,6 +24,23 @@
     font-size: 0.82rem;
 }
 
+.ex-muscle-tools {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.35rem;
+}
+
+.ex-about {
+    min-height: 44px;
+    padding: 0.35rem 0.75rem;
+    border: 1px solid var(--color-ink);
+    border-radius: 999px;
+    background: #fff;
+    font: inherit;
+    cursor: pointer;
+}
+
 .ex-search h2 {
     margin: 0.2rem 0 0.85rem;
 }
