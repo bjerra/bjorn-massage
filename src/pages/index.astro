@@ -5,6 +5,7 @@ import { placeUrl } from '../data/site';
 // Hero photo of the treatment room. Replace src/assets/hero.jpg to change it.
 import hero from '../assets/hero.jpg';
 import neoLogo from '../assets/neo.png';
+import ymfLogo from '../assets/yrkesmassorernas-forbund.png';
 import ServiceList from '../components/ServiceList.astro';
 import Reviews from '../components/Reviews.astro';
 
@@ -106,6 +107,20 @@ const jsonLd = {
             <p>Jag jobbar lugnt men tungt, som en björn fast utan klor.</p>
             <p>Välkommen att boka tid.</p>
         </div>
+        <p class="membership">
+            <a class="ymf-link" href="https://yrkesmassorerna.se/" target="_blank" rel="noopener">
+                <span class="membership-label">Medlem i Yrkesmassörernas Förbund</span>
+                <Image
+                    src={ymfLogo}
+                    alt="Yrkesmassörernas Förbund"
+                    width={850}
+                    height={193}
+                    format="webp"
+                    quality={90}
+                    class="ymf-mark"
+                />
+            </a>
+        </p>
         </div>
     </section>
     <section class="section band guide" aria-label="Kartor och övningar">

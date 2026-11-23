@@ -1,5 +1,7 @@
 ---
+import { Image } from 'astro:assets';
 import { placeUrl } from '../data/site';
+import ymfLogo from '../assets/yrkesmassorernas-forbund.png';
 
 const year = new Date().getFullYear();
 const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
@@ -45,5 +47,17 @@ const links = [
             </ul>
         </nav>
     </div>
+    <a class="footer-member ymf-link" href="https://yrkesmassorerna.se/" target="_blank" rel="noopener">
+        <span class="footer-member-label">Medlem i</span>
+        <Image
+            src={ymfLogo}
+            alt="Yrkesmassörernas Förbund"
+            width={850}
+            height={193}
+            format="webp"
+            quality={90}
+            class="ymf-mark ymf-mark-footer"
+        />
+    </a>
     <p class="footer-copy">© {year} Björn Massage</p>
 </footer>
