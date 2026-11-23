@@ -5,7 +5,7 @@
  */
 
 const PAGE = 8;
-const NOTE = 'Allmänna förslag. Avbryt om det gör ont, och fråga Björn vid besöket.';
+const NOTE = 'Allmänna förslag. Avbryt om det gör ont.';
 
 const TYPE_LABEL = { stretching: 'Stretch', strengthen: 'Styrka' };
 const LEVEL_LABEL = { beginner: 'Nybörjare', intermediate: 'Medel', expert: 'Avancerad' };
@@ -344,18 +344,68 @@ function renderExerciseBlock(parent, exercises, emptyAll, emptyFiltered) {
     }
 }
 
+function hideMuscleTriggerMarks(map) {
+    if (!map.sel || map.sel.type !== 'muscle') return;
+    map.root.querySelectorAll('.bm-tp').forEach((node) => node.remove());
+    map.root.querySelectorAll('.bm-zone.bm-ref').forEach((node) => {
+        node.classList.remove('bm-ref');
+        node.querySelectorAll('[filter]').forEach((shape) => shape.removeAttribute('filter'));
+    });
+}
+
+function paintMuscleExercises(map, body) {
+    body.replaceChildren();
+    const head = el('div', { class: 'bm-panel-head' }, body);
+    const titles = el('div', null, head);
+    el('div', { class: 'bm-kicker', text: 'Muskel' }, titles);
+    el('h3', { class: 'bm-panel-title', text: map.muscleName(map.sel.id) }, titles);
+    const common = map.commonName ? map.commonName(map.sel.id) : '';
+    if (common) el('p', { class: 'bm-common', text: common }, titles);
+    const clear = el('button', { type: 'button', class: 'bm-clear', text: map.t.clear || 'Rensa' }, head);
+    clear.setAttribute('aria-label', map.t.clearAria || 'Rensa val');
+    clear.addEventListener('click', () => map.clear({ scroll: true }));
+
+    const section = el('section', { class: 'ex-block', 'aria-labelledby': 'ex-panel-title' }, body);
+    el('h4', { class: 'bm-h', id: 'ex-panel-title', text: 'Övningar' }, section);
+    if (!state.ready) {
+        el('p', { class: 'ex-note', text: state.failed ? 'Övningarna kunde inte laddas.' : 'Laddar övningar…' }, section);
+        return;
+    }
+    el('p', { class: 'ex-note ex-safety', text: NOTE }, section);
+    const key = 'muscle:' + map.sel.id;
+    if (state.panelKey !== key) {
+        state.panelKey = key;
+        state.panelShown = PAGE;
+    }
+    renderExerciseBlock(
+        section,
+        state.byMuscle.get(map.sel.id) || [],
+        'Inga övningar är kopplade till den här muskeln.',
+        'Inga övningar med de här filtren.'
+    );
+}
+
 function paintPanel(map) {
     const body = map.panel && map.panel.querySelector('.bm-panel-body');
     if (!body) return;
+    hideMuscleTriggerMarks(map);
+    if (map.sel && map.sel.type === 'muscle') {
+        paintMuscleExercises(map, body);
+        return;
+    }
     body.querySelectorAll('.ex-block').forEach((node) => node.remove());
-    const disclaimer = body.querySelector('.bm-disclaimer');
+    if (!map.sel) {
+        const caution = body.querySelector('.bm-caution');
+        if (caution) caution.remove();
+        const empty = body.querySelector('.bm-muted');
+        if (empty && !empty.textContent.trim()) empty.remove();
+        return;
+    }
+    const disclaimer = body.querySelector('.bm-disclaimer') || body.querySelector('.bm-caution');
     const section = el('section', { class: 'ex-block', 'aria-labelledby': 'ex-panel-title' });
     el('h4', { class: 'bm-h', id: 'ex-panel-title', text: 'Övningar' }, section);
     if (!state.ready) {
         el('p', { class: 'ex-note', text: state.failed ? 'Övningarna kunde inte laddas.' : 'Laddar övningar…' }, section);
-    } else if (!map.sel) {
-        section.remove();
-        return;
     } else if (map.sel.type === 'zone') {
         const ids = zoneMuscleIds(map, map.sel.id);
         const exercises = exercisesForMuscles(ids);
@@ -394,22 +444,8 @@ function paintPanel(map) {
                 if (next) next.focus();
             });
         }
-    } else {
-        const key = 'muscle:' + map.sel.id;
-        if (state.panelKey !== key) {
-            state.panelKey = key;
-            state.panelShown = PAGE;
-        }
-        el('p', { class: 'ex-note', text: NOTE }, section);
-        const exercises = state.byMuscle.get(map.sel.id) || [];
-        renderExerciseBlock(
-            section,
-            exercises,
-            'Inga övningar är kopplade till den här muskeln.',
-            'Inga övningar med de här filtren.'
-        );
     }
-    if (disclaimer) body.insertBefore(section, disclaimer);
+    if (disclaimer) disclaimer.insertAdjacentElement('afterend', section);
     else body.appendChild(section);
 }
 

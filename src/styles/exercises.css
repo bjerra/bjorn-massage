@@ -1,8 +1,27 @@
 /* Exercise lookup on /ovningar. Editorial palette, same as the rest of the site. */
 
+.ex-lead {
+    max-width: 40rem;
+    margin: 0.45rem 0 0;
+    color: var(--color-muted);
+}
+
 .ex-search {
-    padding: 2.25rem 0 0.5rem;
-    border-top: 1px solid var(--color-rule);
+    padding: 1.1rem 0 0.25rem;
+}
+
+.ex-tool .bm-hint:empty {
+    display: none;
+}
+
+.ex-tool .bm-leg-zone,
+.ex-tool .bm-leg-tp {
+    display: none;
+}
+
+.ex-safety {
+    margin: 0 0 0.85rem;
+    font-size: 0.82rem;
 }
 
 .ex-search h2 {
