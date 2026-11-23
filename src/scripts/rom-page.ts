@@ -1,4 +1,5 @@
 import { attachRomAnalysis } from '../data/rom-analysis';
+import { installMuscleModal, openMuscleModal } from './muscle-modal';
 import {
     buildCatalog,
     movementByQuery,
@@ -112,8 +113,8 @@ function writeUrl(push: boolean) {
     if (state.slug) params.set('rorelse', state.slug);
     if (state.muscle) params.set('muskel', state.muscle);
     const query = params.toString();
-    const next = location.pathname + (query ? `?${query}` : '');
-    const current = location.pathname + location.search;
+    const next = location.pathname + (query ? `?${query}` : '') + location.hash;
+    const current = location.pathname + location.search + location.hash;
     if (next === current) return;
     const historyState = { led: state.group, rorelse: state.slug, muskel: state.muscle };
     if (push) history.pushState(historyState, '', next);
@@ -220,7 +221,11 @@ function renderRail() {
 
 function muscleButton(id: string, parent: HTMLElement) {
     const catalog = state.catalog!;
-    const button = el('button', { type: 'button', class: 'rom-muscle' + (state.muscle === id ? ' is-on' : '') }, parent);
+    const button = el('button', {
+        type: 'button',
+        class: 'rom-muscle' + (state.muscle === id ? ' is-on' : ''),
+        'aria-haspopup': 'dialog'
+    }, parent);
     const name = el('span', { class: 'rom-muscle-name' }, button);
     text(latinName(id), name);
     const common = muscleCommon(catalog, id);
@@ -233,7 +238,7 @@ function muscleButton(id: string, parent: HTMLElement) {
         text('Visas inte på figuren.', note);
     }
     button.addEventListener('click', () => {
-        focusMuscle(state.muscle === id ? '' : id, true);
+        void openMuscleModal(id, { opener: button });
     });
 }
 
@@ -245,13 +250,14 @@ function render() {
     const movement = currentMovement();
     const group = catalog.groups.find((item) => item.id === state.group);
 
+    const movesWrap = el('div', { class: 'rom-moves-wrap' }, detail);
     if (!group) {
-        const lead = el('p', { class: 'rom-empty' }, detail);
+        const lead = el('p', { class: 'rom-empty' }, movesWrap);
         text('Välj en led.', lead);
     } else {
-        const heading = el('h2', null, detail);
+        const heading = el('h2', null, movesWrap);
         text(group.label, heading);
-        const list = el('ul', { class: 'rom-moves' }, detail);
+        const list = el('ul', { class: 'rom-moves' }, movesWrap);
         catalog.movements
             .filter((item) => item.groupId === group.id)
             .forEach((item) => {
@@ -263,6 +269,8 @@ function render() {
                 }, li);
                 const term = el('span', { class: 'rom-move-term' }, button);
                 text(item.title, term);
+                const short = el('span', { class: 'rom-move-short' }, button);
+                text(item.term, short);
                 if (item.gloss) {
                     const gloss = el('span', { class: 'rom-move-gloss' }, button);
                     text(item.gloss, gloss);
@@ -285,14 +293,14 @@ function render() {
         const key = el('p', { class: 'rom-key' }, result);
         const primeKey = el('span', null, key);
         el('i', { class: 'rom-swatch rom-swatch-prime', 'aria-hidden': 'true' }, primeKey);
-        text('Primära, de som brukar göra det mesta', primeKey);
+        text('Primära', primeKey);
         const synKey = el('span', null, key);
         el('i', { class: 'rom-swatch rom-swatch-syn', 'aria-hidden': 'true' }, synKey);
-        text('Synergister, muskler som brukar hjälpa till', synKey);
+        text('Synergister', synKey);
 
         const parts = paintLists(movement.primeMovers, movement.synergists);
-        renderRole(result, 'Primära', parts.listPrime);
-        renderRole(result, 'Synergister', parts.listSyn);
+        renderRole(result, 'Primära', parts.listPrime, 'prime');
+        renderRole(result, 'Synergister', parts.listSyn, 'syn');
 
         if (state.muscle) {
             const picked = el('div', { class: 'rom-picked' }, result);
@@ -335,7 +343,7 @@ function render() {
     renderRail();
 }
 
-function renderRole(parent: HTMLElement, heading: string, ids: string[]) {
+function renderRole(parent: HTMLElement, heading: string, ids: string[], tone: 'prime' | 'syn') {
     const title = el('h4', null, parent);
     text(heading, title);
     if (!ids.length) {
@@ -347,6 +355,8 @@ function renderRole(parent: HTMLElement, heading: string, ids: string[]) {
     ids.forEach((id) => {
         const li = el('li', null, list);
         muscleButton(id, li);
+        const button = li.querySelector('button');
+        if (button) button.classList.add(tone === 'prime' ? 'rom-muscle-prime' : 'rom-muscle-syn');
     });
 }
 
@@ -502,6 +512,7 @@ export async function startRom() {
         return;
     }
     state.catalog = buildCatalog(data);
+    installMuscleModal();
     wireSearch();
     const map = await waitForMap();
     if (!map) return;
@@ -530,7 +541,9 @@ export async function startRom() {
         state.pinnedView = true;
     });
     window.addEventListener('popstate', () => {
+        const prev = `${state.group}|${state.slug}|${state.muscle}`;
         readInitial();
+        if (`${state.group}|${state.slug}|${state.muscle}` === prev) return;
         state.pinnedView = false;
         const next = currentMovement();
         paint(next);

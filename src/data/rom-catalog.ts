@@ -5,13 +5,35 @@
  * Käkled stays searchable, without a button, so those rows are not dropped.
  */
 
+export type MuscleFunctionRef = {
+    joint: string;
+    movement: string;
+    role: string;
+};
+
+export type CatalogMuscle = {
+    id: string;
+    nameSv?: string;
+    latinName?: string;
+    commonNameSv?: string | null;
+    noSvg?: boolean;
+    regionSv?: string;
+    /** Free text, when a data file has it. The current movement file does not. */
+    description?: string;
+    /** Ursprung. Absent from the current movement file. */
+    origin?: string;
+    /** Fäste. Absent from the current movement file. */
+    insertion?: string;
+    functions?: MuscleFunctionRef[];
+};
+
 export type MovementFile = {
     labels: {
         joints: Record<string, { sv: string; en?: string }>;
         movements: Record<string, { sv: string; en?: string }>;
     };
     movements: Record<string, Record<string, { labelSv?: string; primeMovers?: string[]; synergists?: string[] }>>;
-    muscles: Array<{ id: string; nameSv?: string; latinName?: string; commonNameSv?: string | null; noSvg?: boolean }>;
+    muscles: CatalogMuscle[];
 };
 
 export type RomGroupId = 'nacke' | 'axel' | 'armbage' | 'handled' | 'bal' | 'hoft' | 'kna' | 'fotled' | 'kake';
@@ -354,4 +376,45 @@ export function muscleCommon(catalog: RomCatalog, id: string): string {
 
 export function muscleOffMap(catalog: RomCatalog, id: string): boolean {
     return !!catalog.musclesById.get(id)?.noSvg;
+}
+
+const ROLE_SV: Record<string, string> = {
+    PrimeMover: 'primär',
+    Synergist: 'synergist'
+};
+
+export type MuscleFact = {
+    latin: string;
+    common: string;
+    /** Only set when the data has a description, or a region name to state plainly. */
+    description: string;
+    origin: string;
+    insertion: string;
+    functions: string[];
+};
+
+/** Facts for the muscle modal. Sections stay empty when the data has nothing to say. */
+export function muscleFacts(catalog: RomCatalog, id: string): MuscleFact {
+    const muscle = catalog.musclesById.get(id);
+    const latin = muscleLatin(catalog, id);
+    const common = muscleCommon(catalog, id);
+    const description = (muscle?.description || '').trim() || (muscle?.regionSv ? `Område: ${muscle.regionSv}.` : '');
+    const functions = (muscle?.functions || [])
+        .map((fn) => {
+            const movement = movementBySource(catalog, fn.joint, fn.movement);
+            if (!movement) return '';
+            const role = ROLE_SV[fn.role] || '';
+            const gloss = movement.gloss ? ` – ${movement.gloss}` : '';
+            const roleText = role ? ` (${role})` : '';
+            return `${movement.groupLabel}: ${movement.term}${gloss}${roleText}`;
+        })
+        .filter(Boolean);
+    return {
+        latin,
+        common,
+        description,
+        origin: (muscle?.origin || '').trim(),
+        insertion: (muscle?.insertion || '').trim(),
+        functions
+    };
 }
