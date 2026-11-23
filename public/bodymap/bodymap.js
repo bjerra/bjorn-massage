@@ -155,11 +155,21 @@
     this.movementPaint = null;
     this.sel = null; // { type: 'zone'|'muscle', id }
     this.focusTp = null;
+    this.keepMovement = !!(opts.keepMovement || root.hasAttribute('data-keep-movement'));
+    this.forceSingle = !!(opts.singleView || root.hasAttribute('data-single-view'));
+    this.activeView = 'front';
+    this._applyingHash = false;
     if (!this.data) { root.textContent = 'Body map data missing (bodymap-data.js).'; return; }
     this._index();
     this._build();
     this.setMode(this.mode);
+    this._applyingHash = true;
     this._fromHash();
+    this._applyingHash = false;
+    var selfMap = this;
+    window.addEventListener('popstate', function () { selfMap._applyHash(); });
+    this._syncSingle();
+    window.addEventListener('resize', function () { selfMap._syncSingle(); });
   }
 
   BodyMap.prototype._index = function () {
@@ -205,14 +215,14 @@
     this.modeOrder = modeList.map(function (m) { return m[0]; });
     modeList.forEach(function (m) {
       var b = h('button', { type: 'button', class: 'bm-seg-btn', role: 'radio', 'data-mode': m[0] }, seg, m[1]);
-      b.addEventListener('click', function () { self.setMode(m[0]); });
+      b.addEventListener('click', function () { self.setMode(m[0]); self._writeHistory(); });
       b.addEventListener('keydown', function (e) {
         if (e.key === 'ArrowRight' || e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'ArrowDown') {
           e.preventDefault();
           var idx = self.modeOrder.indexOf(self.mode);
           var dir = (e.key === 'ArrowRight' || e.key === 'ArrowDown') ? 1 : -1;
           var next = self.modeOrder[(idx + dir + self.modeOrder.length) % self.modeOrder.length];
-          self.setMode(next); self.modeBtns[next].focus();
+          self.setMode(next); self._writeHistory(); self.modeBtns[next].focus();
         }
       });
       self.modeBtns[m[0]] = b;
@@ -220,24 +230,31 @@
     var pickWrap = h('div', { class: 'bm-pick' }, bar);
     this.picker = h('select', { class: 'bm-select', 'aria-label': t.pickZone }, pickWrap);
     this.picker.addEventListener('change', function () {
-      var v = self.picker.value; if (!v) { self.clear(); return; }
+      var v = self.picker.value; if (!v) { self.clear({ scroll: true }); return; }
       if (self.mode === 'zones') self.selectZone(v); else self.selectMuscle(v);
+    });
+    this.viewToggle = h('div', { class: 'bm-views', role: 'radiogroup', 'aria-label': 'Framsida eller baksida' }, bar);
+    this.viewBtns = {};
+    [['front', t.front], ['back', t.back]].forEach(function (pair) {
+      var b = h('button', { type: 'button', class: 'bm-view-btn', role: 'radio', 'data-view': pair[0] }, self.viewToggle, pair[1]);
+      b.addEventListener('click', function () { self.setActiveView(pair[0]); });
+      self.viewBtns[pair[0]] = b;
     });
     this.hint = h('p', { class: 'bm-hint' }, root);
 
     var main = h('div', { class: 'bm-main' }, root);
     var figs = h('div', { class: 'bm-figs' }, main);
     this.figs = figs;
+    var legend = h('div', { class: 'bm-legend' }, figs);
+    [['zone', t.legendZone], ['muscle', t.legendMuscle], ['tp', t.legendTp]].forEach(function (l) {
+      var s = h('span', { class: 'bm-leg bm-leg-' + l[0] }, legend); h('i', null, s); h('span', null, s, l[1]);
+    });
     this.svgs = {};
     this.muscleEls = { front: {}, back: {} };
     this.zoneEls = { front: {}, back: {} };
     this.tpLayer = {};
     ['front', 'back'].forEach(function (v) { self._buildView(v, h('figure', { class: 'bm-fig bm-fig-' + v }, figs)); });
-
-    var legend = h('div', { class: 'bm-legend', 'aria-hidden': 'true' }, figs);
-    [['zone', t.legendZone], ['muscle', t.legendMuscle], ['tp', t.legendTp]].forEach(function (l) {
-      var s = h('span', { class: 'bm-leg bm-leg-' + l[0] }, legend); h('i', null, s); h('span', null, s, l[1]);
-    });
+    this.setActiveView('front');
 
     this.panel = h('aside', { class: 'bm-panel', 'aria-live': 'polite' }, main);
     this.tip = h('div', { class: 'bm-tip', role: 'presentation' }, root);
@@ -254,7 +271,78 @@
       }, { threshold: 0.15 }).observe(this.panel);
     }
 
-    root.addEventListener('keydown', function (e) { if (e.key === 'Escape' && self.sel) { self.clear(); } });
+    root.addEventListener('keydown', function (e) { if (e.key === 'Escape' && self.sel) { self.clear({ scroll: true }); } });
+  };
+
+  BodyMap.prototype.setActiveView = function (view) {
+    if (view !== 'front' && view !== 'back') view = 'front';
+    this.activeView = view;
+    var self = this;
+    ['front', 'back'].forEach(function (v) {
+      var fig = self.root.querySelector('.bm-fig-' + v);
+      if (fig) fig.classList.toggle('bm-view-on', v === view);
+      var btn = self.viewBtns && self.viewBtns[v];
+      if (btn) {
+        btn.setAttribute('aria-checked', v === view ? 'true' : 'false');
+        btn.tabIndex = v === view ? 0 : -1;
+      }
+    });
+  };
+
+  BodyMap.prototype._syncSingle = function () {
+    var narrow = window.matchMedia('(max-width: 700px)').matches;
+    this.root.classList.toggle('bm-single', !!(this.forceSingle || narrow));
+    this.setActiveView(this.activeView || 'front');
+  };
+
+  BodyMap.prototype.commonName = function (id) {
+    var raw = this.t.common && this.t.common[id];
+    if (!raw) return '';
+    return raw.charAt(0).toUpperCase() + raw.slice(1);
+  };
+
+  BodyMap.prototype.locationText = function (raw) {
+    if (!raw) return '';
+    var map = this.t.locations || {};
+    return map[raw] || '';
+  };
+
+  BodyMap.prototype._selectionUrl = function () {
+    var base = location.pathname + location.search;
+    if (!this.sel) return base;
+    return base + '#' + this.sel.type + '=' + encodeURIComponent(this.sel.id);
+  };
+
+  BodyMap.prototype._writeHistory = function () {
+    if (this._applyingHash || this.keepMovement) return;
+    var next = this._selectionUrl();
+    var current = location.pathname + location.search + location.hash;
+    if (next === current) return;
+    history.pushState({ bodymap: this.sel ? { type: this.sel.type, id: this.sel.id } : null }, '', next);
+  };
+
+  BodyMap.prototype._scrollToBody = function () {
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    this.root.scrollIntoView({ block: 'start', behavior: reduce ? 'auto' : 'smooth' });
+  };
+
+  BodyMap.prototype._preferViewForSelection = function () {
+    if (!this.root.classList.contains('bm-single') || !this.sel) return;
+    var front = false, back = false, id = this.sel.id;
+    if (this.sel.type === 'zone') {
+      front = !!this.zoneEls.front[id];
+      back = !!this.zoneEls.back[id];
+    } else {
+      var g = this.groupOf[id] || id;
+      front = !!this.muscleEls.front[g];
+      back = !!this.muscleEls.back[g];
+    }
+    if (front && !back) this.setActiveView('front');
+    else if (back && !front) this.setActiveView('back');
+  };
+
+  BodyMap.prototype._notify = function () {
+    this.root.dispatchEvent(new CustomEvent('bodymap-change', { bubbles: true }));
   };
 
   BodyMap.prototype._buildView = function (v, fig) {
@@ -291,6 +379,8 @@
     });
 
     var zc = svg('g', { class: 'bm-zones', 'clip-path': 'url(#' + clipId + ')' }, s);
+    var hits = svg('g', { class: 'bm-zone-hits' }, s);
+    var HIT_ZONES = { neck_posterior: 1, neck_lateral: 1, shoulder_anterior: 1, shoulder_posterior: 1 };
     var list = [];
     d.zones.forEach(function (z) {
       var sh = self.shapes[z.id];
@@ -304,15 +394,15 @@
       svg('title', null, g).textContent = label;
       var inner = svg('g', { class: 'bm-zone-fill' }, g);
       it.shapes.forEach(function (sp) {
-        var els = [];
-        els.push(shapeEl(sp, inner));
+        shapeEl(sp, inner);
         if (sp.mirror !== false) {
           var mg2 = svg('g', { transform: 'translate(' + (2 * view.centerX) + ',0) scale(-1,1)' }, inner);
-          els.push(shapeEl(sp, mg2));
+          shapeEl(sp, mg2);
         }
       });
       self.zoneEls[v][it.z.id] = g;
       self._interactive(g, 'zone', it.z.id, label);
+      if (HIT_ZONES[it.z.id]) self._hitZone(hits, it, view, label);
     });
 
     this.tpLayer[v] = svg('g', { class: 'bm-tps', 'aria-hidden': 'true' }, s);
@@ -331,10 +421,26 @@
   };
 
   function shapeEl(sp, parent) {
-    if (sp.d) return svg('path', { d: sp.d }, parent);
-    return svg('ellipse', { cx: sp.cx, cy: sp.cy, rx: sp.rx, ry: sp.ry,
+    var cls = sp.hit ? 'bm-hit' : null;
+    if (sp.d) return svg('path', { d: sp.d, class: cls }, parent);
+    return svg('ellipse', { cx: sp.cx, cy: sp.cy, rx: sp.rx, ry: sp.ry, class: cls,
       transform: sp.rot ? 'rotate(' + sp.rot + ' ' + sp.cx + ' ' + sp.cy + ')' : null }, parent);
   }
+
+  BodyMap.prototype._hitZone = function (hits, it, view, label) {
+    var hg = svg('g', { class: 'bm-zone-hit' }, hits);
+    var min = 55;
+    it.shapes.forEach(function (sp) {
+      if (!sp.cx) return;
+      var hit = { cx: sp.cx, cy: sp.cy, rx: Math.max(sp.rx || 0, min), ry: Math.max(sp.ry || 0, min), rot: sp.rot, hit: true };
+      shapeEl(hit, hg);
+      if (sp.mirror !== false) {
+        var mg = svg('g', { transform: 'translate(' + (2 * view.centerX) + ',0) scale(-1,1)' }, hg);
+        shapeEl(hit, mg);
+      }
+    });
+    this._interactive(hg, 'zone', it.z.id, label);
+  };
 
   BodyMap.prototype._interactive = function (g, type, id, label) {
     var self = this;
@@ -410,21 +516,37 @@
   };
 
   BodyMap.prototype.selectZone = function (id) {
+    if (this.keepMovement) return;
     if (id && !this.zoneById[id]) return;
     if (this.mode !== 'zones') this.setMode('zones');
     this.sel = id ? { type: 'zone', id: id } : null; this.focusTp = null; this._render();
+    this._writeHistory();
   };
   BodyMap.prototype.selectMuscle = function (id) {
-    if (id && !this.data.muscleViews[id] && !(this.t.muscles && this.t.muscles[id])) return;
-    if (this.mode !== 'muscles') this.setMode('muscles');
+    if (id && !this.keepMovement && !this.data.muscleViews[id] && !(this.t.muscles && this.t.muscles[id])) return;
+    if (this.mode !== 'muscles' && !this.keepMovement) this.setMode('muscles');
     this.sel = id ? { type: 'muscle', id: id } : null; this.focusTp = null; this._render();
+    this._writeHistory();
   };
-  BodyMap.prototype.clear = function () { this.sel = null; this.focusTp = null; this._render(); };
+  BodyMap.prototype.clear = function (opts) {
+    opts = opts || {};
+    this.sel = null; this.focusTp = null; this._render();
+    if (opts.history !== false) this._writeHistory();
+    if (opts.scroll) this._scrollToBody();
+  };
 
-  BodyMap.prototype._fromHash = function () {
+  BodyMap.prototype._fromHash = function () { this._applyHash(); };
+
+  BodyMap.prototype._applyHash = function () {
+    if (this.keepMovement) return;
+    this._applyingHash = true;
     var m = /(zone|muscle)=([\w-]+)/.exec(location.hash || '');
-    if (!m) return;
-    if (m[1] === 'zone') this.selectZone(m[2]); else this.selectMuscle(m[2]);
+    if (!m) {
+      if (this.sel) { this.sel = null; this.focusTp = null; this._render(); }
+    } else if (!this.sel || this.sel.type !== m[1] || this.sel.id !== m[2]) {
+      if (m[1] === 'zone') this.selectZone(m[2]); else this.selectMuscle(m[2]);
+    }
+    this._applyingHash = false;
   };
 
   // ── Rendering of the current state ─────────────────────────────────────────
@@ -479,7 +601,9 @@
     this.picker.value = sel ? sel.id : '';
     this._renderPanel();
     if (this.mode === 'movements' && this.movementPaint) this._applyMovementPaint();
+    this._preferViewForSelection();
     this._updatePeek();
+    this._notify();
   };
 
   BodyMap.prototype._updatePeek = function () {
@@ -507,10 +631,12 @@
       }
       h('h3', { class: 'bm-panel-title' }, body, emptyTitle);
       h('p', { class: 'bm-muted' }, body, emptyText);
+      this._caution(body);
     } else if (sel.type === 'zone') {
       p.classList.add('bm-panel-active');
       var z = this.zoneById[sel.id];
       this._panelHead(body, t.zoneKicker + ' · ' + this.regionName(z.region), this.zoneName(z.id));
+      this._caution(body);
       h('h4', { class: 'bm-h' }, body, t.zoneMusclesHeading);
       // group entries by muscle
       var order = [], by = {};
@@ -521,10 +647,14 @@
         var li = h('li', null, ul);
         var b = h('button', { type: 'button', class: 'bm-item', title: t.seeMuscle }, li);
         h('span', { class: 'bm-item-name' }, b, self.muscleName(mid));
+        var common = self.commonName(mid);
+        if (common) h('span', { class: 'bm-common' }, b, common);
         by[mid].forEach(function (e) {
+          var place = self.locationText(e.location);
+          if (!place) return;
           var r = h('span', { class: 'bm-item-sub' }, b);
           h('span', { class: 'bm-badge' }, r, t.tpShort + e.tp);
-          h('span', null, r, e.location);
+          h('span', null, r, place);
         });
         h('span', { class: 'bm-chev', 'aria-hidden': 'true' }, b, '›');
         b.addEventListener('click', function () { self.selectMuscle(mid); });
@@ -534,7 +664,8 @@
     } else {
       p.classList.add('bm-panel-active');
       var mid = sel.id;
-      this._panelHead(body, t.muscleKicker, this.muscleName(mid));
+      this._panelHead(body, t.muscleKicker, this.muscleName(mid), this.commonName(mid));
+      this._caution(body);
       var members = this.groupMembers[this.groupOf[mid] || mid] || [mid];
       if (members.length > 1) {
         var sh = h('div', { class: 'bm-shared' }, body);
@@ -558,7 +689,8 @@
         var b = h('button', { type: 'button', class: 'bm-item bm-tpitem' + (self.focusTp === tp.n ? ' bm-on' : ''), 'aria-pressed': self.focusTp === tp.n ? 'true' : 'false' }, li);
         var top = h('span', { class: 'bm-item-name' }, b);
         h('span', { class: 'bm-badge' }, top, t.tpShort + tp.n);
-        h('span', null, top, tp.location || t.tpUnnamed);
+        var place = self.locationText(tp.location);
+        if (place) h('span', null, top, place);
         if (zs.length) h('span', { class: 'bm-item-sub' }, b, t.refersTo + ': ' + zs.map(function (r) { return self.zoneName(r.zone.id); }).join(' · '));
         b.addEventListener('click', function () { self.focusTp = self.focusTp === tp.n ? null : tp.n; self._render(); });
       });
@@ -573,17 +705,21 @@
         b.addEventListener('click', function () { self.selectZone(z.id); });
       });
     }
-    h('p', { class: 'bm-disclaimer' }, body, t.disclaimer);
   };
 
-  BodyMap.prototype._panelHead = function (body, kicker, title) {
+  BodyMap.prototype._caution = function (body) {
+    h('p', { class: 'bm-caution' }, body, this.t.disclaimer);
+  };
+
+  BodyMap.prototype._panelHead = function (body, kicker, title, subtitle) {
     var self = this;
     var head = h('div', { class: 'bm-panel-head' }, body);
     var tt = h('div', null, head);
     h('div', { class: 'bm-kicker' }, tt, kicker);
     h('h3', { class: 'bm-panel-title' }, tt, title);
-    var c = h('button', { type: 'button', class: 'bm-close', 'aria-label': this.t.clearAria, title: this.t.clear }, head, '×');
-    c.addEventListener('click', function () { self.clear(); });
+    if (subtitle) h('p', { class: 'bm-common' }, tt, subtitle);
+    var c = h('button', { type: 'button', class: 'bm-clear', 'aria-label': this.t.clearAria }, head, this.t.clear);
+    c.addEventListener('click', function () { self.clear({ scroll: true }); });
   };
 
   BodyMap.prototype._clearMovementClasses = function () {

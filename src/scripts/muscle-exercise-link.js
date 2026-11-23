@@ -19,18 +19,21 @@ function paint(map) {
     const body = map.panel && map.panel.querySelector('.bm-panel-body');
     if (!body) return;
     body.querySelectorAll('.ex-map-link').forEach((node) => node.remove());
-    if (!map.sel || map.sel.type !== 'muscle' || !map.sel.id) return;
+    if (!map.sel || !map.sel.id || (map.sel.type !== 'muscle' && map.sel.type !== 'zone')) return;
+    const zone = map.sel.type === 'zone';
     const paragraph = el('p', { class: 'ex-map-link' });
     el(
         'a',
         {
-            href: '/ovningar?muskel=' + encodeURIComponent(map.sel.id),
-            text: 'Övningar för den här muskeln'
+            href: zone
+                ? '/ovningar?zon=' + encodeURIComponent(map.sel.id)
+                : '/ovningar?muskel=' + encodeURIComponent(map.sel.id),
+            text: zone ? 'Övningar för de här musklerna' : 'Övningar för den här muskeln'
         },
         paragraph
     );
-    const disclaimer = body.querySelector('.bm-disclaimer');
-    if (disclaimer) body.insertBefore(paragraph, disclaimer);
+    const caution = body.querySelector('.bm-caution');
+    if (caution) caution.insertAdjacentElement('afterend', paragraph);
     else body.appendChild(paragraph);
 }
 
