@@ -49,13 +49,13 @@
         font-weight: 500;
     }
 
-    a:not(.btn):not(.wordmark):not(.nav-link):not(.neo-link) {
+    a:not(.btn):not(.wordmark):not(.nav-link):not(.neo-link):not(.ymf-link) {
         color: inherit;
         text-decoration: underline;
         text-underline-offset: 4px;
     }
 
-    a:not(.btn):not(.wordmark):not(.nav-link):not(.neo-link):hover {
+    a:not(.btn):not(.wordmark):not(.nav-link):not(.neo-link):not(.ymf-link):hover {
         opacity: 0.75;
     }
 
@@ -389,6 +389,44 @@
         display: grid;
         gap: 1rem;
         font-size: 1.05rem;
+    }
+
+    .membership {
+        max-width: 40rem;
+        margin: 1.75rem 0 0;
+    }
+
+    .ymf-link {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .ymf-link:hover .membership-label,
+    .ymf-link:hover .footer-member-label {
+        text-decoration: underline;
+        text-underline-offset: 3px;
+    }
+
+    .membership .ymf-link {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.55rem;
+    }
+
+    .membership-label {
+        font-size: 0.95rem;
+    }
+
+    .ymf-mark {
+        display: block;
+        width: 220px;
+        max-width: 100%;
+        height: auto;
+    }
+
+    .ymf-mark-footer {
+        width: 148px;
     }
 
     .service-list {
@@ -757,6 +795,23 @@
 
     .footer-copy {
         color: var(--color-muted);
+    }
+
+    .footer-member {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.35rem;
+        width: max-content;
+        max-width: 100%;
+    }
+
+    .footer-member-label {
+        color: var(--color-muted);
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
     }
 
     .site-footer a[aria-current='page'] {
