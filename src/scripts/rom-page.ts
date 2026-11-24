@@ -272,6 +272,7 @@ function setViewBox(svg: SVGSVGElement, next: string, instant: boolean) {
     const to = parseViewBox(next);
     const reduce = instant || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduce || from.length !== 4 || to.length !== 4 || from.some((value, index) => Math.abs(value - to[index]) < 0.4)) {
+        svg.setAttribute('preserveAspectRatio', 'xMidYMin meet');
         svg.setAttribute('viewBox', to.join(' '));
         zoomFrames.delete(svg);
         return;
@@ -281,6 +282,7 @@ function setViewBox(svg: SVGSVGElement, next: string, instant: boolean) {
         const t = Math.min(1, (now - start) / 320);
         const eased = 1 - Math.pow(1 - t, 3);
         const frame = from.map((value, index) => value + (to[index] - value) * eased);
+        svg.setAttribute('preserveAspectRatio', 'xMidYMin meet');
         svg.setAttribute('viewBox', frame.join(' '));
         if (t < 1) zoomFrames.set(svg, requestAnimationFrame(step));
         else zoomFrames.delete(svg);

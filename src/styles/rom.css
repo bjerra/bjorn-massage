@@ -329,7 +329,6 @@
 @media (max-width: 700px) {
     .rom-stage {
         grid-template-columns: minmax(6.5rem, 1fr) minmax(0, 2fr);
-        grid-template-rows: auto auto auto;
         gap: 0.45rem 0.45rem;
         align-items: start;
     }
@@ -338,12 +337,21 @@
         display: contents;
     }
 
-    .rom-key-phone {
+    .rom-side {
         grid-column: 2;
         grid-row: 1;
-        align-self: end;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
+        min-width: 0;
+        align-self: start;
+    }
+
+    .rom-key-phone {
+        flex: none;
         gap: 0.2rem 0.55rem;
-        margin: 0;
+        margin: 0 0 0.35rem;
         font-size: 0.68rem;
         line-height: 1.2;
     }
@@ -361,16 +369,11 @@
         width: auto;
         height: auto !important;
         grid-column: 1;
-        grid-row: 1 / span 2;
+        grid-row: 1;
+        align-self: start;
         display: flex;
         flex-direction: column;
         gap: 0.35rem;
-    }
-
-    .rom-figure > [data-bodymap] {
-        grid-column: 2;
-        grid-row: 2;
-        min-width: 0;
     }
 
     .rom-joint,
@@ -414,26 +417,41 @@
 
     .rom-detail {
         grid-column: 1 / -1;
-        grid-row: 3;
+        grid-row: 2;
         padding-left: 0;
     }
 
     .bm[data-chrome='rom'] {
         display: flex;
         flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
+    }
+
+    .bm[data-chrome='rom'] .bm-main,
+    .bm[data-chrome='rom'] .bm-figs,
+    .bm[data-chrome='rom'] .bm-fig,
+    .bm[data-chrome='rom'] .bm-svg {
+        overflow: hidden;
     }
 
     .bm[data-chrome='rom'] .bm-main {
         order: 1;
+        margin-top: 0;
     }
 
     .bm[data-chrome='rom'] .bm-bar {
         order: 2;
+        position: static;
         justify-content: center;
-        margin: 0.4rem 0 0;
+        margin: 0.45rem 0 0;
     }
 
     .bm[data-chrome='rom'] .bm-svg {
+        display: block;
+        width: 100%;
+        height: auto;
         max-height: none;
+        margin: 0;
     }
 }
