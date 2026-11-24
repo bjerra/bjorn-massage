@@ -40,6 +40,8 @@ type State = {
     lock: boolean;
     hits: RomMovement[];
     active: number;
+    /** Phone accordion. Desktop ignores it and always lists the selected joint. */
+    railOpen: boolean;
 };
 
 const state: State = {
@@ -51,8 +53,13 @@ const state: State = {
     pinnedView: false,
     lock: false,
     hits: [],
-    active: -1
+    active: -1,
+    railOpen: false
 };
+
+function phoneLayout(): boolean {
+    return window.matchMedia('(max-width: 700px)').matches;
+}
 
 function el<K extends keyof HTMLElementTagNameMap>(
     tag: K,
@@ -171,6 +178,7 @@ function choose(group: string, slug: string, muscle: string, push: boolean) {
     state.group = movement ? group : group && state.catalog?.groups.some((item) => item.id === group) ? group : '';
     state.slug = movement ? slug : '';
     state.muscle = movement ? muscle : '';
+    state.railOpen = !!state.group;
     if (!movement) state.pinnedView = false;
     hideSuggest();
     const input = document.getElementById('rom-q') as HTMLInputElement | null;
@@ -191,11 +199,72 @@ function choose(group: string, slug: string, muscle: string, push: boolean) {
     placeRail();
 }
 
+function onPhoneJoint(groupId: string) {
+    if (state.group === groupId && state.railOpen) {
+        state.railOpen = false;
+        render();
+        return;
+    }
+    state.railOpen = true;
+    if (state.group === groupId) {
+        render();
+        return;
+    }
+    state.pinnedView = false;
+    choose(groupId, '', '', true);
+}
+
+function renderAccordion(rail: HTMLElement, catalog: RomCatalog) {
+    const movement = currentMovement();
+    catalog.rail.forEach((group) => {
+        const open = state.railOpen && state.group === group.id;
+        const button = el('button', {
+            type: 'button',
+            class: 'rom-joint' + (open ? ' is-open' : '') + (state.group === group.id ? ' is-current' : ''),
+            'data-joint': group.id,
+            'aria-expanded': open ? 'true' : 'false'
+        });
+        const mark = el('span', { class: 'rom-joint-mark', 'aria-hidden': 'true' }, button);
+        text(open ? '▾' : '▸', mark);
+        const label = el('span', null, button);
+        text(group.label, label);
+        button.addEventListener('click', () => onPhoneJoint(group.id));
+        rail.appendChild(button);
+        if (!open) return;
+        const list = el('ul', { class: 'rom-acc' }, rail);
+        catalog.movements
+            .filter((item) => item.groupId === group.id)
+            .forEach((item) => {
+                const li = el('li', null, list);
+                const pressed = movement?.slug === item.slug;
+                const move = el('button', {
+                    type: 'button',
+                    class: 'rom-move' + (pressed ? ' is-on' : ''),
+                    'aria-pressed': pressed ? 'true' : 'false'
+                }, li);
+                const term = el('span', { class: 'rom-move-term' }, move);
+                text(item.title, term);
+                if (item.gloss) {
+                    const gloss = el('span', { class: 'rom-move-gloss' }, move);
+                    text(item.gloss, gloss);
+                }
+                move.addEventListener('click', () => {
+                    state.pinnedView = false;
+                    choose(item.groupId, item.slug, '', true);
+                });
+            });
+    });
+}
+
 function renderRail() {
     const rail = document.querySelector('[data-rom-rail]');
     const catalog = state.catalog;
     if (!rail || !catalog) return;
     rail.replaceChildren();
+    if (phoneLayout()) {
+        renderAccordion(rail, catalog);
+        return;
+    }
     catalog.rail.forEach((group) => {
         const button = el('button', {
             type: 'button',
@@ -466,6 +535,7 @@ function readInitial() {
             state.group = found.groupId;
             state.slug = found.slug;
             state.muscle = '';
+            state.railOpen = true;
             return;
         }
     }
@@ -477,6 +547,7 @@ function readInitial() {
         state.slug = '';
         state.muscle = '';
     }
+    state.railOpen = !!state.group;
 }
 
 function placeRail() {
@@ -563,5 +634,10 @@ export async function startRom() {
     const svg = map.root.querySelector('.bm-svg');
     if (svg && 'ResizeObserver' in window) new ResizeObserver(() => placeRail()).observe(svg);
     window.addEventListener('resize', () => placeRail());
+    const phoneQuery = window.matchMedia('(max-width: 700px)');
+    phoneQuery.addEventListener('change', () => {
+        render();
+        placeRail();
+    });
     requestAnimationFrame(() => placeRail());
 }
