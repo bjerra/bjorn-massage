@@ -329,13 +329,29 @@
 @media (max-width: 700px) {
     .rom-stage {
         grid-template-columns: minmax(6.5rem, 1fr) minmax(0, 2fr);
-        grid-template-rows: auto auto;
-        gap: 0.75rem 0.45rem;
+        grid-template-rows: auto auto auto;
+        gap: 0.45rem 0.45rem;
         align-items: start;
     }
 
     .rom-figure {
         display: contents;
+    }
+
+    .rom-key-phone {
+        grid-column: 2;
+        grid-row: 1;
+        align-self: end;
+        gap: 0.2rem 0.55rem;
+        margin: 0;
+        font-size: 0.68rem;
+        line-height: 1.2;
+    }
+
+    .rom-key-phone .rom-swatch {
+        width: 0.6rem;
+        height: 0.6rem;
+        margin-right: 0.25rem;
     }
 
     .rom-rail {
@@ -345,7 +361,7 @@
         width: auto;
         height: auto !important;
         grid-column: 1;
-        grid-row: 1;
+        grid-row: 1 / span 2;
         display: flex;
         flex-direction: column;
         gap: 0.35rem;
@@ -353,69 +369,68 @@
 
     .rom-figure > [data-bodymap] {
         grid-column: 2;
-        grid-row: 1;
+        grid-row: 2;
         min-width: 0;
     }
 
-    .rom-joint {
+    .rom-joint,
+    .rom-back-joints,
+    .rom-rail .rom-move {
         position: static;
         transform: none;
-        display: flex;
-        align-items: center;
-        gap: 0.3rem;
         width: 100%;
         min-height: 44px;
-        padding: 0.35rem 0.4rem;
-        font-size: 0.82rem;
-        font-weight: 600;
+        padding: 0.4rem 0.45rem;
+        font-size: 0.8rem;
         line-height: 1.15;
         text-align: left;
     }
 
-    .rom-joint-mark {
-        flex: none;
-        width: 0.7rem;
-        font-size: 0.7rem;
-        line-height: 1;
+    .rom-back-joints {
+        border: 1px solid var(--color-ink);
+        border-radius: 2px;
+        background: #fff;
+        color: inherit;
+        font: inherit;
+        font-weight: 600;
+        cursor: pointer;
     }
 
-    .rom-joint.is-current {
-        border-color: var(--color-accent);
+    .rom-rail .rom-moves {
+        margin: 0;
+        gap: 0.35rem;
     }
 
-    .rom-joint.is-open {
-        background: #f4f0ea;
-    }
-
-    .rom-acc {
-        list-style: none;
-        display: grid;
-        gap: 0.3rem;
-        margin: -0.1rem 0 0.15rem;
-        padding: 0 0 0 0.45rem;
-    }
-
-    .rom-acc .rom-move {
-        min-height: 44px;
-        padding: 0.35rem 0.45rem;
-        font-size: 0.78rem;
-        line-height: 1.2;
-        border-left-width: 3px;
-    }
-
-    .rom-acc .rom-move-gloss {
+    .rom-rail .rom-move-gloss {
         font-size: 0.72rem;
-        line-height: 1.2;
+        line-height: 1.15;
     }
 
-    .rom-moves-wrap {
+    .rom-moves-wrap,
+    .rom-caution,
+    .rom-result .rom-key {
         display: none;
     }
 
     .rom-detail {
         grid-column: 1 / -1;
-        grid-row: 2;
+        grid-row: 3;
         padding-left: 0;
+    }
+
+    .bm[data-chrome='rom'] {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .bm[data-chrome='rom'] .bm-main {
+        order: 1;
+    }
+
+    .bm[data-chrome='rom'] .bm-bar {
+        order: 2;
+        justify-content: center;
+        margin: 0.4rem 0 0;
     }
 
     .bm[data-chrome='rom'] .bm-svg {

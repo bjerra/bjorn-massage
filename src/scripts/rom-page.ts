@@ -40,8 +40,8 @@ type State = {
     lock: boolean;
     hits: RomMovement[];
     active: number;
-    /** Phone accordion. Desktop ignores it and always lists the selected joint. */
-    railOpen: boolean;
+    /** Phone list. `moves` replaces the joint list; desktop ignores this. */
+    phoneList: 'joints' | 'moves';
 };
 
 const state: State = {
@@ -54,8 +54,10 @@ const state: State = {
     lock: false,
     hits: [],
     active: -1,
-    railOpen: false
+    phoneList: 'joints'
 };
+
+const zoomFrames = new WeakMap<SVGSVGElement, number>();
 
 function phoneLayout(): boolean {
     return window.matchMedia('(max-width: 700px)').matches;
@@ -178,7 +180,7 @@ function choose(group: string, slug: string, muscle: string, push: boolean) {
     state.group = movement ? group : group && state.catalog?.groups.some((item) => item.id === group) ? group : '';
     state.slug = movement ? slug : '';
     state.muscle = movement ? muscle : '';
-    state.railOpen = !!state.group;
+    state.phoneList = state.group ? 'moves' : 'joints';
     if (!movement) state.pinnedView = false;
     hideSuggest();
     const input = document.getElementById('rom-q') as HTMLInputElement | null;
@@ -199,61 +201,174 @@ function choose(group: string, slug: string, muscle: string, push: boolean) {
     placeRail();
 }
 
-function onPhoneJoint(groupId: string) {
-    if (state.group === groupId && state.railOpen) {
-        state.railOpen = false;
-        render();
-        return;
+function movementButton(item: RomMovement, parent: HTMLElement) {
+    const movement = currentMovement();
+    const pressed = movement?.slug === item.slug && movement.groupId === item.groupId;
+    const button = el('button', {
+        type: 'button',
+        class: 'rom-move' + (pressed ? ' is-on' : ''),
+        'aria-pressed': pressed ? 'true' : 'false'
+    }, parent);
+    const term = el('span', { class: 'rom-move-term' }, button);
+    text(item.title, term);
+    const short = el('span', { class: 'rom-move-short' }, button);
+    text(item.term, short);
+    if (item.gloss) {
+        const gloss = el('span', { class: 'rom-move-gloss' }, button);
+        text(item.gloss, gloss);
     }
-    state.railOpen = true;
-    if (state.group === groupId) {
-        render();
-        return;
-    }
-    state.pinnedView = false;
-    choose(groupId, '', '', true);
+    button.addEventListener('click', () => {
+        state.pinnedView = false;
+        choose(item.groupId, item.slug, '', true);
+    });
 }
 
-function renderAccordion(rail: HTMLElement, catalog: RomCatalog) {
-    const movement = currentMovement();
-    catalog.rail.forEach((group) => {
-        const open = state.railOpen && state.group === group.id;
-        const button = el('button', {
-            type: 'button',
-            class: 'rom-joint' + (open ? ' is-open' : '') + (state.group === group.id ? ' is-current' : ''),
-            'data-joint': group.id,
-            'aria-expanded': open ? 'true' : 'false'
-        });
-        const mark = el('span', { class: 'rom-joint-mark', 'aria-hidden': 'true' }, button);
-        text(open ? '▾' : '▸', mark);
-        const label = el('span', null, button);
-        text(group.label, label);
-        button.addEventListener('click', () => onPhoneJoint(group.id));
-        rail.appendChild(button);
-        if (!open) return;
-        const list = el('ul', { class: 'rom-acc' }, rail);
-        catalog.movements
-            .filter((item) => item.groupId === group.id)
-            .forEach((item) => {
-                const li = el('li', null, list);
-                const pressed = movement?.slug === item.slug;
-                const move = el('button', {
-                    type: 'button',
-                    class: 'rom-move' + (pressed ? ' is-on' : ''),
-                    'aria-pressed': pressed ? 'true' : 'false'
-                }, li);
-                const term = el('span', { class: 'rom-move-term' }, move);
-                text(item.title, term);
-                if (item.gloss) {
-                    const gloss = el('span', { class: 'rom-move-gloss' }, move);
-                    text(item.gloss, gloss);
-                }
-                move.addEventListener('click', () => {
-                    state.pinnedView = false;
-                    choose(item.groupId, item.slug, '', true);
-                });
+function renderPhoneList(rail: HTMLElement, catalog: RomCatalog) {
+    const group = catalog.groups.find((item) => item.id === state.group);
+    if (!group || state.phoneList !== 'moves') {
+        catalog.rail.forEach((item) => {
+            const button = el('button', {
+                type: 'button',
+                class: 'rom-joint' + (item.id === state.group ? ' is-on' : ''),
+                'data-joint': item.id
+            }, rail);
+            text(item.label, button);
+            button.addEventListener('click', () => {
+                state.pinnedView = false;
+                choose(item.id, '', '', true);
             });
+        });
+        return;
+    }
+    const back = el('button', { type: 'button', class: 'rom-back-joints' }, rail);
+    text('← Leder', back);
+    back.addEventListener('click', () => {
+        state.pinnedView = false;
+        choose('', '', '', true);
     });
+    const list = el('ul', { class: 'rom-moves' }, rail);
+    catalog.movements.filter((item) => item.groupId === group.id).forEach((item) => {
+        const li = el('li', null, list);
+        movementButton(item, li);
+    });
+}
+
+function parseViewBox(value: string): number[] {
+    return value.split(/[\s,]+/).map(Number);
+}
+
+function baseViewBox(svg: SVGSVGElement): string {
+    const stored = svg.dataset.baseView;
+    if (stored) return stored;
+    const current = svg.getAttribute('viewBox') || '0 0 1 1';
+    svg.dataset.baseView = current;
+    return current;
+}
+
+function setViewBox(svg: SVGSVGElement, next: string, instant: boolean) {
+    const running = zoomFrames.get(svg);
+    if (running) cancelAnimationFrame(running);
+    const from = parseViewBox(svg.getAttribute('viewBox') || next);
+    const to = parseViewBox(next);
+    const reduce = instant || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce || from.length !== 4 || to.length !== 4 || from.some((value, index) => Math.abs(value - to[index]) < 0.4)) {
+        svg.setAttribute('viewBox', to.join(' '));
+        zoomFrames.delete(svg);
+        return;
+    }
+    const start = performance.now();
+    const step = (now: number) => {
+        const t = Math.min(1, (now - start) / 320);
+        const eased = 1 - Math.pow(1 - t, 3);
+        const frame = from.map((value, index) => value + (to[index] - value) * eased);
+        svg.setAttribute('viewBox', frame.join(' '));
+        if (t < 1) zoomFrames.set(svg, requestAnimationFrame(step));
+        else zoomFrames.delete(svg);
+    };
+    zoomFrames.set(svg, requestAnimationFrame(step));
+}
+
+function regionViewBox(svg: SVGSVGElement): string | null {
+    const primes = svg.querySelectorAll('.bm-muscle.bm-prime');
+    const nodes = primes.length ? primes : svg.querySelectorAll('.bm-muscle.bm-syn');
+    if (!nodes.length) return null;
+    let minX = Infinity;
+    let minY = Infinity;
+    let maxX = -Infinity;
+    let maxY = -Infinity;
+    nodes.forEach((node) => {
+        const box = (node as SVGGraphicsElement).getBBox();
+        if (!box.width || !box.height) return;
+        minX = Math.min(minX, box.x);
+        minY = Math.min(minY, box.y);
+        maxX = Math.max(maxX, box.x + box.width);
+        maxY = Math.max(maxY, box.y + box.height);
+    });
+    if (!Number.isFinite(minX) || maxX <= minX || maxY <= minY) return null;
+    const base = parseViewBox(baseViewBox(svg));
+    const padX = Math.max(48, (maxX - minX) * 0.2);
+    const padY = Math.max(80, (maxY - minY) * 0.55);
+    let x = minX - padX;
+    let y = minY - padY;
+    let w = maxX - minX + padX * 2;
+    let h = maxY - minY + padY * 2;
+    const maxW = base[2] * 0.78;
+    const maxH = base[3] * 0.55;
+    if (w > maxW) {
+        x += (w - maxW) / 2;
+        w = maxW;
+    }
+    if (h > maxH) {
+        y += (h - maxH) / 2;
+        h = maxH;
+    }
+    x = Math.max(base[0], Math.min(x, base[0] + base[2] - w));
+    y = Math.max(base[1], Math.min(y, base[1] + base[3] - h));
+    return `${x} ${y} ${w} ${h}`;
+}
+
+function zoomFigure() {
+    const root = state.map?.root;
+    if (!root) return;
+    const active = root.querySelector('.bm-fig.bm-view-on .bm-svg') as SVGSVGElement | null;
+    root.querySelectorAll('.bm-svg').forEach((node) => {
+        const svg = node as SVGSVGElement;
+        const base = baseViewBox(svg);
+        if (!phoneLayout()) {
+            svg.style.aspectRatio = '';
+            if (svg.getAttribute('viewBox') !== base) setViewBox(svg, base, false);
+            return;
+        }
+        svg.style.aspectRatio = '';
+        if (!currentMovement() || svg !== active) {
+            if (svg.getAttribute('viewBox') !== base) setViewBox(svg, base, svg !== active);
+            return;
+        }
+        let target = base;
+        try {
+            target = regionViewBox(svg) || base;
+        } catch {
+            target = base;
+        }
+        setViewBox(svg, target, false);
+    });
+}
+
+function paintPhoneKey(movement: RomMovement | null) {
+    const slot = document.querySelector('[data-rom-key]');
+    if (!slot) return;
+    slot.replaceChildren();
+    if (!phoneLayout() || !movement) {
+        slot.setAttribute('hidden', '');
+        return;
+    }
+    slot.removeAttribute('hidden');
+    const primeKey = el('span', null, slot);
+    el('i', { class: 'rom-swatch rom-swatch-prime', 'aria-hidden': 'true' }, primeKey);
+    text('Primära', primeKey);
+    const synKey = el('span', null, slot);
+    el('i', { class: 'rom-swatch rom-swatch-syn', 'aria-hidden': 'true' }, synKey);
+    text('Synergister', synKey);
 }
 
 function renderRail() {
@@ -262,7 +377,7 @@ function renderRail() {
     if (!rail || !catalog) return;
     rail.replaceChildren();
     if (phoneLayout()) {
-        renderAccordion(rail, catalog);
+        renderPhoneList(rail, catalog);
         return;
     }
     catalog.rail.forEach((group) => {
@@ -410,6 +525,8 @@ function render() {
               : '';
     }
     renderRail();
+    paintPhoneKey(movement);
+    zoomFigure();
 }
 
 function renderRole(parent: HTMLElement, heading: string, ids: string[], tone: 'prime' | 'syn') {
@@ -535,7 +652,7 @@ function readInitial() {
             state.group = found.groupId;
             state.slug = found.slug;
             state.muscle = '';
-            state.railOpen = true;
+            state.phoneList = 'moves';
             return;
         }
     }
@@ -547,7 +664,7 @@ function readInitial() {
         state.slug = '';
         state.muscle = '';
     }
-    state.railOpen = !!state.group;
+    state.phoneList = state.group ? 'moves' : 'joints';
 }
 
 function placeRail() {
@@ -610,6 +727,7 @@ export async function startRom() {
     });
     map.root.querySelector('.bm-views')?.addEventListener('click', () => {
         state.pinnedView = true;
+        requestAnimationFrame(() => zoomFigure());
     });
     window.addEventListener('popstate', () => {
         const prev = `${state.group}|${state.slug}|${state.muscle}`;
