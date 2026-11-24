@@ -57,8 +57,6 @@ const state: State = {
     phoneList: 'joints'
 };
 
-const zoomFrames = new WeakMap<SVGSVGElement, number>();
-
 function phoneLayout(): boolean {
     return window.matchMedia('(max-width: 700px)').matches;
 }
@@ -253,107 +251,53 @@ function renderPhoneList(rail: HTMLElement, catalog: RomCatalog) {
     });
 }
 
-function parseViewBox(value: string): number[] {
-    return value.split(/[\s,]+/).map(Number);
-}
-
-function baseViewBox(svg: SVGSVGElement): string {
-    const stored = svg.dataset.baseView;
-    if (stored) return stored;
-    const current = svg.getAttribute('viewBox') || '0 0 1 1';
-    svg.dataset.baseView = current;
-    return current;
-}
-
-function setViewBox(svg: SVGSVGElement, next: string, instant: boolean) {
-    const running = zoomFrames.get(svg);
-    if (running) cancelAnimationFrame(running);
-    const from = parseViewBox(svg.getAttribute('viewBox') || next);
-    const to = parseViewBox(next);
-    const reduce = instant || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduce || from.length !== 4 || to.length !== 4 || from.some((value, index) => Math.abs(value - to[index]) < 0.4)) {
-        svg.setAttribute('preserveAspectRatio', 'xMidYMin meet');
-        svg.setAttribute('viewBox', to.join(' '));
-        zoomFrames.delete(svg);
-        return;
-    }
-    const start = performance.now();
-    const step = (now: number) => {
-        const t = Math.min(1, (now - start) / 320);
-        const eased = 1 - Math.pow(1 - t, 3);
-        const frame = from.map((value, index) => value + (to[index] - value) * eased);
-        svg.setAttribute('preserveAspectRatio', 'xMidYMin meet');
-        svg.setAttribute('viewBox', frame.join(' '));
-        if (t < 1) zoomFrames.set(svg, requestAnimationFrame(step));
-        else zoomFrames.delete(svg);
-    };
-    zoomFrames.set(svg, requestAnimationFrame(step));
-}
-
-function regionViewBox(svg: SVGSVGElement): string | null {
-    const primes = svg.querySelectorAll('.bm-muscle.bm-prime');
-    const nodes = primes.length ? primes : svg.querySelectorAll('.bm-muscle.bm-syn');
-    if (!nodes.length) return null;
-    let minX = Infinity;
-    let minY = Infinity;
-    let maxX = -Infinity;
-    let maxY = -Infinity;
-    nodes.forEach((node) => {
-        const box = (node as SVGGraphicsElement).getBBox();
-        if (!box.width || !box.height) return;
-        minX = Math.min(minX, box.x);
-        minY = Math.min(minY, box.y);
-        maxX = Math.max(maxX, box.x + box.width);
-        maxY = Math.max(maxY, box.y + box.height);
-    });
-    if (!Number.isFinite(minX) || maxX <= minX || maxY <= minY) return null;
-    const base = parseViewBox(baseViewBox(svg));
-    const padX = Math.max(48, (maxX - minX) * 0.2);
-    const padY = Math.max(80, (maxY - minY) * 0.55);
-    let x = minX - padX;
-    let y = minY - padY;
-    let w = maxX - minX + padX * 2;
-    let h = maxY - minY + padY * 2;
-    const maxW = base[2] * 0.78;
-    const maxH = base[3] * 0.55;
-    if (w > maxW) {
-        x += (w - maxW) / 2;
-        w = maxW;
-    }
-    if (h > maxH) {
-        y += (h - maxH) / 2;
-        h = maxH;
-    }
-    x = Math.max(base[0], Math.min(x, base[0] + base[2] - w));
-    y = Math.max(base[1], Math.min(y, base[1] + base[3] - h));
-    return `${x} ${y} ${w} ${h}`;
-}
-
-function zoomFigure() {
-    const root = state.map?.root;
-    if (!root) return;
-    const active = root.querySelector('.bm-fig.bm-view-on .bm-svg') as SVGSVGElement | null;
+function resetFigure(root: HTMLElement) {
     root.querySelectorAll('.bm-svg').forEach((node) => {
         const svg = node as SVGSVGElement;
-        const base = baseViewBox(svg);
-        if (!phoneLayout()) {
-            svg.style.aspectRatio = '';
-            if (svg.getAttribute('viewBox') !== base) setViewBox(svg, base, false);
-            return;
-        }
+        svg.style.transform = '';
         svg.style.aspectRatio = '';
-        if (!currentMovement() || svg !== active) {
-            if (svg.getAttribute('viewBox') !== base) setViewBox(svg, base, svg !== active);
-            return;
+        if (svg.dataset.baseView) {
+            svg.setAttribute('viewBox', svg.dataset.baseView);
+            svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
         }
-        let target = base;
-        try {
-            target = regionViewBox(svg) || base;
-        } catch {
-            target = base;
-        }
-        setViewBox(svg, target, false);
     });
+    root.querySelectorAll('.bm-fig').forEach((node) => {
+        const fig = node as HTMLElement;
+        fig.style.height = '';
+        fig.style.overflow = '';
+    });
+}
+
+/** Show the full figure, or the top half of that height with the highlighted muscles centred. */
+function frameFigure() {
+    const root = state.map?.root;
+    if (!root) return;
+    resetFigure(root);
+    if (!phoneLayout() || !currentMovement()) return;
+    const fig = root.querySelector('.bm-fig.bm-view-on') as HTMLElement | null;
+    const svg = fig?.querySelector('.bm-svg') as SVGSVGElement | null;
+    if (!fig || !svg) return;
+    const fullBox = svg.getBoundingClientRect();
+    const full = fullBox.height;
+    if (!full) return;
+    const primes = svg.querySelectorAll('.bm-muscle.bm-prime');
+    const nodes = primes.length ? primes : svg.querySelectorAll('.bm-muscle.bm-syn');
+    if (!nodes.length) return;
+    let min = Infinity;
+    let max = -Infinity;
+    nodes.forEach((node) => {
+        const rect = node.getBoundingClientRect();
+        if (!rect.height) return;
+        min = Math.min(min, rect.top);
+        max = Math.max(max, rect.bottom);
+    });
+    if (!Number.isFinite(min) || max <= min) return;
+    const windowH = full * 0.5;
+    const center = (min + max) / 2 - fullBox.top;
+    const offset = Math.max(windowH - full, Math.min(0, windowH / 2 - center));
+    fig.style.height = `${windowH}px`;
+    fig.style.overflow = 'hidden';
+    svg.style.transform = `translateY(${offset}px)`;
 }
 
 function paintPhoneKey(movement: RomMovement | null) {
@@ -371,6 +315,20 @@ function paintPhoneKey(movement: RomMovement | null) {
     const synKey = el('span', null, slot);
     el('i', { class: 'rom-swatch rom-swatch-syn', 'aria-hidden': 'true' }, synKey);
     text('Synergister', synKey);
+}
+
+function paintPhoneMuscles(movement: RomMovement | null) {
+    const slot = document.querySelector('[data-rom-phone-muscles]');
+    if (!slot) return;
+    slot.replaceChildren();
+    if (!phoneLayout() || !movement) {
+        slot.setAttribute('hidden', '');
+        return;
+    }
+    slot.removeAttribute('hidden');
+    const parts = paintLists(movement.primeMovers, movement.synergists);
+    renderRole(slot, 'Primära', parts.listPrime, 'prime');
+    renderRole(slot, 'Synergister', parts.listSyn, 'syn');
 }
 
 function renderRail() {
@@ -528,7 +486,8 @@ function render() {
     }
     renderRail();
     paintPhoneKey(movement);
-    zoomFigure();
+    paintPhoneMuscles(movement);
+    frameFigure();
 }
 
 function renderRole(parent: HTMLElement, heading: string, ids: string[], tone: 'prime' | 'syn') {
@@ -729,7 +688,7 @@ export async function startRom() {
     });
     map.root.querySelector('.bm-views')?.addEventListener('click', () => {
         state.pinnedView = true;
-        requestAnimationFrame(() => zoomFigure());
+        requestAnimationFrame(() => frameFigure());
     });
     window.addEventListener('popstate', () => {
         const prev = `${state.group}|${state.slug}|${state.muscle}`;
