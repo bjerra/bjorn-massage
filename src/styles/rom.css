@@ -327,323 +327,236 @@
 }
 
 @media (max-width: 700px) {
-    body:has([data-rom]) {
-        height: 100dvh;
-        overflow: hidden;
-    }
-
-    body:has([data-rom]) > .flex {
-        height: 100dvh;
-        max-height: 100dvh;
-        min-height: 0;
-        overflow: hidden;
-        padding-left: 0.4rem;
-        padding-right: 0.4rem;
-    }
-
-    body:has([data-rom]) footer {
-        display: none;
-    }
-
-    body:has([data-rom]) main {
-        display: flex;
-        flex-direction: column;
-        min-height: 0;
-        overflow: hidden;
-    }
-
-    body:has([data-rom]) .site-header {
-        padding-top: 8px;
-    }
-
-    body:has([data-rom]) .eyebrow {
-        display: none;
-    }
-
-    body:has([data-rom]) .map-page-head {
-        padding-top: 0.2rem;
-        gap: 0.2rem 0.75rem;
-    }
-
-    body:has([data-rom]) .map-page-head h1 {
-        font-size: 1.45rem;
-    }
-
-    body:has([data-rom]) .map-page-head a {
-        font-size: 0.78rem;
-    }
-
-    .rom-lede {
-        margin: 0;
-        font-size: 0.75rem;
-        line-height: 1.3;
-    }
-
-    [data-rom] {
-        display: flex;
-        flex-direction: column;
-        flex: 1;
-        min-height: 0;
-    }
-
-    .rom-search {
-        margin-top: 0.3rem;
-        gap: 0;
-    }
-
-    .rom-search label {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip: rect(0, 0, 0, 0);
-        white-space: nowrap;
-        border: 0;
-    }
-
-    .rom-search input {
-        min-height: 36px;
-        padding: 0.3rem 0.5rem;
-        font-size: 0.85rem;
-    }
-
-    .rom-status {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip: rect(0, 0, 0, 0);
-        white-space: nowrap;
-        border: 0;
-    }
-
     .rom-stage {
-        flex: 1;
-        min-height: 0;
-        margin-top: 0.3rem;
-        grid-template-columns: 4.45rem minmax(0, 1fr) minmax(6.1rem, 7.15rem);
-        grid-template-rows: minmax(0, 1fr) auto;
-        gap: 0.28rem 0.28rem;
-        align-items: stretch;
+        grid-template-columns: minmax(6.5rem, 1fr) minmax(0, 2fr);
+        gap: 0.45rem 0.45rem;
+        align-items: start;
     }
 
-    .rom-figure,
-    .rom-detail {
+    .rom-figure {
         display: contents;
     }
 
-    .rom-figure > [data-bodymap] {
+    .rom-side {
         grid-column: 2;
         grid-row: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
         min-width: 0;
-        min-height: 0;
-        height: 100%;
+        align-self: start;
+    }
+
+    .rom-key-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.35rem;
+        margin: 0 0 0.3rem;
+    }
+
+    .rom-key-phone {
+        flex: 1;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.05rem;
+        margin: 0;
+        font-size: 0.62rem;
+        line-height: 1.15;
+    }
+
+    .rom-key-phone .rom-swatch {
+        width: 0.6rem;
+        height: 0.6rem;
+        margin-right: 0.25rem;
     }
 
     .rom-rail {
         position: static;
         left: auto;
+        top: auto !important;
         width: auto;
         height: auto !important;
-        top: auto !important;
         grid-column: 1;
         grid-row: 1;
+        align-self: start;
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
-        gap: 0.15rem;
-        min-height: 0;
-        overflow: auto;
+        gap: 0.35rem;
+    }
+
+    .rom-joint,
+    .rom-back-joints,
+    .rom-rail .rom-move {
+        position: static;
+        transform: none;
+        width: 100%;
+        min-height: 44px;
+        padding: 0.4rem 0.45rem;
+        font-size: 0.8rem;
+        line-height: 1.15;
+        text-align: left;
+    }
+
+    .rom-back-joints {
+        border: 1px solid var(--color-ink);
+        border-radius: 2px;
+        background: #fff;
+        color: inherit;
+        font: inherit;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .rom-rail .rom-moves {
+        margin: 0;
+        gap: 0.35rem;
+    }
+
+    .rom-rail .rom-move-gloss {
+        font-size: 0.72rem;
+        line-height: 1.15;
+    }
+
+    .rom-moves-wrap,
+    .rom-caution,
+    .rom-result {
+        display: none;
+    }
+
+    .rom-phone-muscles {
+        margin-top: 0.55rem;
+    }
+
+    .rom-phone-muscles .rom-muscles {
+        gap: 0.28rem;
         margin: 0;
     }
 
-    .rom-joint {
-        position: static;
-        transform: none;
-        flex: 0 0 auto;
-        width: 100%;
-        min-height: 36px;
-        padding: 0.1rem 0.15rem;
-        font-size: 0.68rem;
+    .rom-muscle-row {
+        display: flex;
+        align-items: stretch;
+        gap: 0.25rem;
+    }
+
+    .rom-phone-muscles .rom-muscle {
+        flex: 1;
+        min-height: 0;
+        min-width: 0;
+        padding: 0.2rem 0.4rem;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 0.15rem 0.35rem;
+        font-size: 0.75rem;
+        line-height: 1.15;
+    }
+
+    .rom-phone-muscles .rom-muscle-sv,
+    .rom-phone-muscles .rom-offmap {
+        font-size: 0.65rem;
+    }
+
+    .rom-muscle-info {
+        flex: none;
+        width: 44px;
+        min-height: 44px;
+        border: 1px solid var(--color-ink);
+        border-radius: 2px;
+        background: #fff;
+        color: inherit;
+        font: inherit;
+        font-size: 1.35rem;
+        line-height: 1;
+        cursor: pointer;
+    }
+
+    .rom-flip {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex: none;
+        min-width: 40px;
+        min-height: 40px;
+        margin: 0;
+        padding: 0.35rem;
+        border: 0;
+        background: transparent;
+        color: inherit;
+        font: inherit;
+        cursor: pointer;
+    }
+
+    .rom-flip-face {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.15rem;
+        padding: 0.08rem 0.32rem;
+        border: 1px solid var(--color-ink);
+        border-radius: 999px;
+        background: #fff;
+        font-size: 0.62rem;
+        font-weight: 600;
         line-height: 1.1;
+        pointer-events: none;
+    }
+
+    .rom-flip-icon {
+        width: 0.68rem;
+        height: 0.68rem;
+        flex: none;
     }
 
     .rom-detail {
+        grid-column: 1 / -1;
+        grid-row: 2;
         padding-left: 0;
     }
 
-    .rom-moves-wrap {
-        grid-column: 3;
-        grid-row: 1;
-        min-width: 0;
-        min-height: 0;
-        overflow: auto;
+    .bm[data-chrome='rom'] {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
     }
 
-    .rom-moves-wrap h2 {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip: rect(0, 0, 0, 0);
-        white-space: nowrap;
-        border: 0;
-    }
-
-    .rom-moves {
-        gap: 0;
-        margin: 0;
-    }
-
-    .rom-move {
-        min-height: 36px;
-        max-height: 40px;
-        padding: 0.1rem 0.28rem;
-        gap: 0;
-        font-size: 0.66rem;
-        line-height: 1.1;
-        overflow: hidden;
-    }
-
-    .rom-move-term {
-        display: none;
-    }
-
-    .rom-move-short {
-        display: block;
-    }
-
-    .rom-move-short,
-    .rom-move-gloss {
-        display: block;
-        max-width: 100%;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-
-    .rom-move-gloss {
-        font-size: 0.6rem;
-        line-height: 1.1;
-    }
-
-    .rom-empty {
-        font-size: 0.75rem;
-    }
-
-    .rom-result {
-        grid-column: 1 / -1;
-        grid-row: 2;
-        margin: 0;
-        padding: 0.2rem 0 0;
+    .bm[data-chrome='rom'] .bm-main {
+        order: 1;
+        margin-top: 0;
         overflow: visible;
     }
 
-    .rom-result .rom-kicker {
+    .bm[data-chrome='rom'] .bm-figs,
+    .bm[data-chrome='rom'] .bm-svg {
+        overflow: visible;
+    }
+
+    .bm[data-chrome='rom'] .bm-fig {
+        position: relative;
+    }
+
+    .bm[data-chrome='rom'] .bm-bar,
+    .bm[data-chrome='rom'] .bm-views {
         display: none;
     }
 
-    .rom-result h3 {
-        margin: 0 0 0.15rem;
-        font-size: 0.95rem;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+    [data-bodymap].bm[data-chrome='rom'] .bm-muscle.rom-dim path {
+        opacity: 0.28;
     }
 
-    .rom-caution {
-        margin: 0 0 0.15rem;
-        padding: 0.15rem 0.4rem;
-        font-size: 0.68rem;
-        line-height: 1.2;
-    }
-
-    .rom-key {
-        gap: 0.2rem 0.7rem;
-        margin: 0 0 0.25rem;
-        font-size: 0.68rem;
-        line-height: 1.2;
-    }
-
-    .rom-result h4 {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip: rect(0, 0, 0, 0);
-        white-space: nowrap;
-        border: 0;
-    }
-
-    .rom-muscles {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.22rem;
-        margin: 0 0 0.2rem;
-    }
-
-    .rom-muscle {
-        width: auto;
-        min-height: 36px;
-        padding: 0.12rem 0.4rem 0.12rem 0.5rem;
-        font-size: 0.68rem;
-        line-height: 1.1;
-    }
-
-    .rom-muscle-sv,
-    .rom-offmap {
-        font-size: 0.62rem;
-    }
-
-    .rom-picked {
-        margin-top: 0.25rem;
-        padding: 0.35rem 0.45rem;
-    }
-
-    .bm[data-chrome='rom'] {
-        height: 100%;
-        min-height: 0;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .bm[data-chrome='rom'] .bm-bar {
-        justify-content: center;
-        margin: 0 0 0.15rem;
-        gap: 0;
-    }
-
-    .bm[data-chrome='rom'] .bm-views {
-        padding: 2px;
-    }
-
-    .bm[data-chrome='rom'] .bm-view-btn {
-        min-height: 28px;
-        padding: 0.1rem 0.45rem;
-        font-size: 0.68rem;
-    }
-
-    .bm[data-chrome='rom'] .bm-main,
-    .bm[data-chrome='rom'] .bm-figs,
-    .bm[data-chrome='rom'] .bm-fig.bm-view-on {
-        flex: 1;
-        min-height: 0;
-        height: 100%;
+    [data-bodymap].bm[data-chrome='rom'] .bm-muscle.rom-focus path {
+        fill: #5c2418;
+        stroke: #171513;
+        stroke-width: 2.5px;
+        opacity: 1;
     }
 
     .bm[data-chrome='rom'] .bm-svg {
-        width: auto;
-        max-width: 100%;
-        height: 100%;
-        max-height: 100%;
-        margin: 0 auto;
+        display: block;
+        width: 100%;
+        height: auto;
+        max-height: none;
+        margin: 0;
     }
 }
