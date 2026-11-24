@@ -26,6 +26,7 @@ type MapApi = {
     setMovementHighlight: (paint: { prime: string[]; synergist: string[] } | null) => void;
     selectMuscle: (id: string | null) => void;
     clear: (opts?: { scroll?: boolean; history?: boolean }) => void;
+    activeView: string;
     setActiveView: (view: string) => void;
     _render: () => void;
 };
@@ -184,7 +185,7 @@ function choose(group: string, slug: string, muscle: string, push: boolean) {
     const input = document.getElementById('rom-q') as HTMLInputElement | null;
     if (input) input.value = '';
     paint(movement);
-    if (movement && state.muscle && state.map) {
+    if (!phoneLayout() && movement && state.muscle && state.map) {
         state.lock = true;
         state.map.selectMuscle(state.muscle);
         state.lock = false;
@@ -251,6 +252,108 @@ function renderPhoneList(rail: HTMLElement, catalog: RomCatalog) {
     });
 }
 
+function muscleGroup(id: string): string {
+    const map = state.map;
+    if (!map) return id;
+    return map.groupOf[id] || id;
+}
+
+function muscleSides(id: string): { front: boolean; back: boolean } {
+    const map = state.map;
+    const group = muscleGroup(id);
+    if (!map) return { front: false, back: false };
+    return {
+        front: !!map.muscleEls.front[group],
+        back: !!map.muscleEls.back[group]
+    };
+}
+
+function aimViewAtMuscle(id: string) {
+    const map = state.map;
+    if (!map) return;
+    const sides = muscleSides(id);
+    if (sides.back && !sides.front && map.activeView !== 'back') {
+        state.pinnedView = true;
+        map.setActiveView('back');
+    } else if (sides.front && !sides.back && map.activeView !== 'front') {
+        state.pinnedView = true;
+        map.setActiveView('front');
+    }
+}
+
+function markFocus() {
+    const root = state.map?.root;
+    if (!root || !state.map) return;
+    root.querySelectorAll('.rom-focus, .rom-dim').forEach((node) => {
+        node.classList.remove('rom-focus', 'rom-dim');
+    });
+    if (!phoneLayout() || !state.muscle || !currentMovement()) return;
+    const group = muscleGroup(state.muscle);
+    (['front', 'back'] as const).forEach((view) => {
+        state.map?.muscleEls[view][group]?.classList.add('rom-focus');
+    });
+    root.querySelectorAll('.bm-muscle.bm-prime, .bm-muscle.bm-syn').forEach((node) => {
+        if (!node.classList.contains('rom-focus')) node.classList.add('rom-dim');
+    });
+}
+
+function focusPhoneMuscle(id: string) {
+    const movement = currentMovement();
+    if (state.muscle === id) {
+        state.muscle = '';
+        state.pinnedView = false;
+        paint(movement);
+        writeUrl(true);
+        render();
+        return;
+    }
+    state.muscle = id;
+    aimViewAtMuscle(id);
+    writeUrl(true);
+    render();
+}
+
+function placeFlip() {
+    const root = state.map?.root;
+    root?.querySelectorAll('.rom-flip').forEach((node) => node.remove());
+    if (!phoneLayout() || !root || !state.map) return;
+    const fig = root.querySelector('.bm-fig.bm-view-on') as HTMLElement | null;
+    if (!fig) return;
+    const toBack = state.map.activeView !== 'back';
+    const label = toBack ? 'Baksida' : 'Framsida';
+    const button = el('button', { type: 'button', class: 'rom-flip' });
+    button.setAttribute('aria-label', toBack ? 'Visa baksidan' : 'Visa framsidan');
+    const icon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    icon.setAttribute('viewBox', '0 0 16 16');
+    icon.setAttribute('aria-hidden', 'true');
+    icon.setAttribute('class', 'rom-flip-icon');
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('d', 'M2 5h8.5M8.5 2.5 11.5 5 8.5 7.5M14 11H5.5M7.5 8.5 4.5 11 7.5 13.5');
+    path.setAttribute('fill', 'none');
+    path.setAttribute('stroke', 'currentColor');
+    path.setAttribute('stroke-width', '1.4');
+    path.setAttribute('stroke-linecap', 'round');
+    path.setAttribute('stroke-linejoin', 'round');
+    icon.appendChild(path);
+    button.append(icon, document.createTextNode(label));
+    button.addEventListener('click', () => {
+        const map = state.map;
+        if (!map) return;
+        state.pinnedView = true;
+        map.setActiveView(map.activeView === 'back' ? 'front' : 'back');
+        frameFigure();
+    });
+    fig.appendChild(button);
+    const spot = button.getBoundingClientRect();
+    const hits = fig.querySelectorAll('.bm-muscle.rom-focus, .bm-muscle.bm-prime');
+    const crowded = [...hits].some((node) => {
+        const rect = node.getBoundingClientRect();
+        if (!rect.height) return false;
+        return rect.left < spot.right && rect.right > spot.left && rect.top < spot.bottom && rect.bottom > spot.top;
+    });
+    if (crowded) button.classList.add('is-left');
+}
+
 function resetFigure(root: HTMLElement) {
     root.querySelectorAll('.bm-svg').forEach((node) => {
         const svg = node as SVGSVGElement;
@@ -273,15 +376,19 @@ function frameFigure() {
     const root = state.map?.root;
     if (!root) return;
     resetFigure(root);
+    placeFlip();
     if (!phoneLayout() || !currentMovement()) return;
+    if (state.muscle) aimViewAtMuscle(state.muscle);
+    markFocus();
     const fig = root.querySelector('.bm-fig.bm-view-on') as HTMLElement | null;
     const svg = fig?.querySelector('.bm-svg') as SVGSVGElement | null;
     if (!fig || !svg) return;
     const fullBox = svg.getBoundingClientRect();
     const full = fullBox.height;
     if (!full) return;
+    const focus = svg.querySelectorAll('.bm-muscle.rom-focus');
     const primes = svg.querySelectorAll('.bm-muscle.bm-prime');
-    const nodes = primes.length ? primes : svg.querySelectorAll('.bm-muscle.bm-syn');
+    const nodes = focus.length ? focus : primes.length ? primes : svg.querySelectorAll('.bm-muscle.bm-syn');
     if (!nodes.length) return;
     let min = Infinity;
     let max = -Infinity;
@@ -298,6 +405,7 @@ function frameFigure() {
     fig.style.height = `${windowH}px`;
     fig.style.overflow = 'hidden';
     svg.style.transform = `translateY(${offset}px)`;
+    placeFlip();
 }
 
 function paintPhoneKey(movement: RomMovement | null) {
@@ -327,8 +435,14 @@ function paintPhoneMuscles(movement: RomMovement | null) {
     }
     slot.removeAttribute('hidden');
     const parts = paintLists(movement.primeMovers, movement.synergists);
-    renderRole(slot, 'Primära', parts.listPrime, 'prime');
-    renderRole(slot, 'Synergister', parts.listSyn, 'syn');
+    const list = el('ul', { class: 'rom-muscles' }, slot);
+    const add = (id: string, tone: 'prime' | 'syn') => {
+        const li = el('li', { class: 'rom-muscle-row' }, list);
+        muscleButton(id, li);
+        li.querySelector('button')?.classList.add(tone === 'prime' ? 'rom-muscle-prime' : 'rom-muscle-syn');
+    };
+    parts.listPrime.forEach((id) => add(id, 'prime'));
+    parts.listSyn.forEach((id) => add(id, 'syn'));
 }
 
 function renderRail() {
@@ -365,11 +479,13 @@ function renderRail() {
 
 function muscleButton(id: string, parent: HTMLElement) {
     const catalog = state.catalog!;
+    const onPhone = phoneLayout() && parent.closest('[data-rom-phone-muscles]');
     const button = el('button', {
         type: 'button',
         class: 'rom-muscle' + (state.muscle === id ? ' is-on' : ''),
-        'aria-haspopup': 'dialog'
+        'aria-pressed': onPhone && state.muscle === id ? 'true' : 'false'
     }, parent);
+    if (!onPhone) button.setAttribute('aria-haspopup', 'dialog');
     const name = el('span', { class: 'rom-muscle-name' }, button);
     text(latinName(id), name);
     const common = muscleCommon(catalog, id);
@@ -380,6 +496,16 @@ function muscleButton(id: string, parent: HTMLElement) {
     if (muscleOffMap(catalog, id)) {
         const note = el('span', { class: 'rom-offmap' }, button);
         text('Visas inte på figuren.', note);
+    }
+    if (onPhone) {
+        button.addEventListener('click', () => focusPhoneMuscle(id));
+        const info = el('button', { type: 'button', class: 'rom-muscle-info', 'aria-label': 'Om muskeln' }, parent);
+        info.setAttribute('aria-haspopup', 'dialog');
+        text('›', info);
+        info.addEventListener('click', () => {
+            void openMuscleModal(id, { opener: info });
+        });
+        return;
     }
     button.addEventListener('click', () => {
         void openMuscleModal(id, { opener: button });
@@ -670,7 +796,7 @@ export async function startRom() {
     readInitial();
     const movement = currentMovement();
     paint(movement);
-    if (movement && state.muscle) {
+    if (!phoneLayout() && movement && state.muscle) {
         state.lock = true;
         map.selectMuscle(state.muscle);
         state.lock = false;
@@ -697,7 +823,7 @@ export async function startRom() {
         state.pinnedView = false;
         const next = currentMovement();
         paint(next);
-        if (next && state.muscle && state.map) {
+        if (!phoneLayout() && next && state.muscle && state.map) {
             state.lock = true;
             state.map.selectMuscle(state.muscle);
             state.lock = false;
