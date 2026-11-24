@@ -314,15 +314,20 @@ function focusPhoneMuscle(id: string) {
 }
 
 function placeFlip() {
-    const root = state.map?.root;
-    root?.querySelectorAll('.rom-flip').forEach((node) => node.remove());
-    if (!phoneLayout() || !root || !state.map) return;
-    const fig = root.querySelector('.bm-fig.bm-view-on') as HTMLElement | null;
-    if (!fig) return;
+    const host = document.querySelector('[data-rom-flip]');
+    const row = document.querySelector('[data-rom-key-row]');
+    if (!host || !row) return;
+    host.replaceChildren();
+    if (!phoneLayout() || !state.map) {
+        row.setAttribute('hidden', '');
+        return;
+    }
+    row.removeAttribute('hidden');
     const toBack = state.map.activeView !== 'back';
     const label = toBack ? 'Baksida' : 'Framsida';
-    const button = el('button', { type: 'button', class: 'rom-flip' });
+    const button = el('button', { type: 'button', class: 'rom-flip' }, host);
     button.setAttribute('aria-label', toBack ? 'Visa baksidan' : 'Visa framsidan');
+    const face = el('span', { class: 'rom-flip-face' }, button);
     const icon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     icon.setAttribute('viewBox', '0 0 16 16');
     icon.setAttribute('aria-hidden', 'true');
@@ -335,7 +340,7 @@ function placeFlip() {
     path.setAttribute('stroke-linecap', 'round');
     path.setAttribute('stroke-linejoin', 'round');
     icon.appendChild(path);
-    button.append(icon, document.createTextNode(label));
+    face.append(icon, document.createTextNode(label));
     button.addEventListener('click', () => {
         const map = state.map;
         if (!map) return;
@@ -343,15 +348,6 @@ function placeFlip() {
         map.setActiveView(map.activeView === 'back' ? 'front' : 'back');
         frameFigure();
     });
-    fig.appendChild(button);
-    const spot = button.getBoundingClientRect();
-    const hits = fig.querySelectorAll('.bm-muscle.rom-focus, .bm-muscle.bm-prime');
-    const crowded = [...hits].some((node) => {
-        const rect = node.getBoundingClientRect();
-        if (!rect.height) return false;
-        return rect.left < spot.right && rect.right > spot.left && rect.top < spot.bottom && rect.bottom > spot.top;
-    });
-    if (crowded) button.classList.add('is-left');
 }
 
 function resetFigure(root: HTMLElement) {
@@ -376,8 +372,10 @@ function frameFigure() {
     const root = state.map?.root;
     if (!root) return;
     resetFigure(root);
-    placeFlip();
-    if (!phoneLayout() || !currentMovement()) return;
+    if (!phoneLayout() || !currentMovement()) {
+        placeFlip();
+        return;
+    }
     if (state.muscle) aimViewAtMuscle(state.muscle);
     markFocus();
     const fig = root.querySelector('.bm-fig.bm-view-on') as HTMLElement | null;

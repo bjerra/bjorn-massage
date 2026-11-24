@@ -348,12 +348,22 @@
         align-self: start;
     }
 
+    .rom-key-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.35rem;
+        margin: 0 0 0.3rem;
+    }
+
     .rom-key-phone {
-        flex: none;
-        gap: 0.2rem 0.55rem;
-        margin: 0 0 0.35rem;
-        font-size: 0.68rem;
-        line-height: 1.2;
+        flex: 1;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.05rem;
+        margin: 0;
+        font-size: 0.62rem;
+        line-height: 1.15;
     }
 
     .rom-key-phone .rom-swatch {
@@ -463,36 +473,38 @@
     }
 
     .rom-flip {
-        position: absolute;
-        z-index: 3;
-        top: 0.3rem;
-        right: 0.3rem;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        gap: 0.25rem;
-        min-width: 44px;
-        min-height: 44px;
-        padding: 0.2rem 0.45rem;
-        border: 1px solid var(--color-ink);
-        border-radius: 999px;
-        background: rgba(250, 248, 244, 0.94);
+        flex: none;
+        min-width: 40px;
+        min-height: 40px;
+        margin: 0;
+        padding: 0.35rem;
+        border: 0;
+        background: transparent;
         color: inherit;
         font: inherit;
-        font-size: 0.68rem;
-        font-weight: 600;
-        line-height: 1;
         cursor: pointer;
     }
 
-    .rom-flip.is-left {
-        right: auto;
-        left: 0.3rem;
+    .rom-flip-face {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.15rem;
+        padding: 0.08rem 0.32rem;
+        border: 1px solid var(--color-ink);
+        border-radius: 999px;
+        background: #fff;
+        font-size: 0.62rem;
+        font-weight: 600;
+        line-height: 1.1;
+        pointer-events: none;
     }
 
     .rom-flip-icon {
-        width: 0.9rem;
-        height: 0.9rem;
+        width: 0.68rem;
+        height: 0.68rem;
         flex: none;
     }
 
