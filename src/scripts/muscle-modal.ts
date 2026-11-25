@@ -1,5 +1,16 @@
 import { buildCatalog, muscleFacts, type MovementFile, type RomCatalog } from '../data/rom-catalog';
 import { hashWithModal, readModalMuscle } from '../data/muscle-modal-url';
+import {
+    EXERCISE_NOTE,
+    EXERCISE_PAGE,
+    closeExerciseDialog,
+    getExerciseIndex,
+    isExerciseDialogOpen,
+    latinMuscleName,
+    loadExerciseIndex,
+    openExerciseDialog,
+    renderExerciseChoices
+} from './exercise-dialog.js';
 
 type MapApi = {
     selectMuscle: (id: string | null) => void;
@@ -32,6 +43,7 @@ let opener: HTMLElement | null = null;
 let scrollY = 0;
 let closingFromHistory = false;
 let installed = false;
+let exercisePaint = 0;
 
 function strings(): Strings {
     return (window as Window & { BODYMAP_STRINGS?: Strings }).BODYMAP_STRINGS || {};
@@ -69,6 +81,7 @@ function ensureDialog(): HTMLDialogElement {
     dialog = document.createElement('dialog');
     dialog.className = 'mm-dialog';
     dialog.addEventListener('close', () => {
+        if (isExerciseDialogOpen()) closeExerciseDialog({ restoreFocus: false });
         const fromHistory = closingFromHistory;
         closingFromHistory = false;
         unlockPage();
@@ -86,9 +99,15 @@ function ensureDialog(): HTMLDialogElement {
         if (returnTo && document.contains(returnTo)) returnTo.focus();
     });
     dialog.addEventListener('click', (event) => {
+        if (isExerciseDialogOpen()) return;
         if (event.target === dialog) dialog?.close();
     });
     dialog.addEventListener('cancel', (event) => {
+        if (isExerciseDialogOpen()) {
+            event.preventDefault();
+            closeExerciseDialog();
+            return;
+        }
         event.preventDefault();
         dialog?.close();
     });
@@ -266,20 +285,68 @@ function render(id: string) {
         scroll.append(section);
     }
 
+    mountExercises(scroll, id);
+
     const links = el('div', 'mm-links');
-    const exercises = el('a') as HTMLAnchorElement;
-    exercises.href = `/ovningar?muskel=${encodeURIComponent(id)}`;
-    exercises.textContent = 'Övningar för den här muskeln';
     const mapLink = el('a') as HTMLAnchorElement;
     mapLink.href = `/muskelkarta#muscle=${encodeURIComponent(id)}`;
     mapLink.textContent = 'Visa på muskelkartan';
-    links.append(exercises, mapLink);
+    links.append(mapLink);
     scroll.append(links);
 
     const caution = el('p', 'mm-caution');
     caution.textContent = strings().disclaimer || CAUTION;
     scroll.append(caution);
     close.focus();
+}
+
+function mountExercises(scroll: HTMLElement, id: string) {
+    const section = el('section', 'mm-section mm-exercises');
+    section.setAttribute('aria-labelledby', 'mm-exercises-title');
+    const heading = el('h3');
+    heading.id = 'mm-exercises-title';
+    heading.textContent = 'Övningar';
+    const choices = el('div');
+    section.append(heading, choices);
+    scroll.append(section);
+
+    const paintId = ++exercisePaint;
+    let shown = EXERCISE_PAGE;
+    const paint = () => {
+        if (paintId !== exercisePaint || currentId !== id || !section.isConnected) return;
+        const data = getExerciseIndex();
+        const list = data.byMuscle.get(id) || [];
+        renderExerciseChoices(choices, list, {
+            shown,
+            ready: data.ready,
+            failed: data.failed,
+            note: EXERCISE_NOTE,
+            emptyText: 'Inga övningar är kopplade till den här muskeln.',
+            onOpen: (exerciseId: string, opener: HTMLElement) => {
+                void openExerciseDialog(exerciseId, {
+                    opener,
+                    muscleName: latinMuscleName,
+                    onMuscle: (muscleId: string) => {
+                        closeExerciseDialog({ restoreFocus: false });
+                        void openMuscleModal(muscleId, { push: true });
+                    }
+                });
+            },
+            onMore: () => {
+                shown += EXERCISE_PAGE;
+                paint();
+                const next = choices.querySelector('.ex-more');
+                if (next instanceof HTMLElement) next.focus();
+            }
+        });
+    };
+    paint();
+    if (!dataReady()) void loadExerciseIndex().then(paint);
+}
+
+function dataReady() {
+    const data = getExerciseIndex();
+    return data.ready || data.failed;
 }
 
 function selectBehindModal(id: string) {
@@ -295,7 +362,8 @@ export async function openMuscleModal(id: string, options?: { push?: boolean; op
     if (!id) return;
     await loadCatalog();
     const push = options?.push !== false;
-    opener = options?.opener || (document.activeElement instanceof HTMLElement ? document.activeElement : null);
+    if (options?.opener) opener = options.opener;
+    else if (!dialog?.open) opener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     if (!dialog?.open) lockPage();
     currentId = id;
     render(id);
@@ -326,7 +394,18 @@ function onPop() {
 export function installMuscleModal() {
     if (installed) return;
     installed = true;
-    ensureDialog();
+    const box = ensureDialog();
+    window.addEventListener(
+        'keydown',
+        (event) => {
+            if (event.key !== 'Escape' || event.repeat) return;
+            if (!box.open || !isExerciseDialogOpen()) return;
+            event.preventDefault();
+            event.stopPropagation();
+            closeExerciseDialog();
+        },
+        true
+    );
     window.addEventListener('popstate', onPop);
     const start = () => {
         const id = readModalMuscle(location.hash);

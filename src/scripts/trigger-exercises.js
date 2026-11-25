@@ -5,26 +5,18 @@
  */
 import { installMuscleModal, openMuscleModal } from './muscle-modal.ts';
 import { readModalMuscle } from '../data/muscle-modal-url.ts';
+import {
+    EXERCISE_NOTE,
+    closeExerciseDialog,
+    ensureExerciseDialog,
+    fillExerciseList,
+    getExerciseIndex,
+    loadExerciseIndex,
+    openExerciseDialog
+} from './exercise-dialog.js';
 
 const PAGE = 8;
-const NOTE = 'Allmänna förslag. Avbryt om det gör ont.';
-
-const TYPE_LABEL = { stretching: 'Stretch', strengthen: 'Styrka' };
-const LEVEL_LABEL = { beginner: 'Nybörjare', intermediate: 'Medel', expert: 'Avancerad' };
-const EQUIPMENT_LABEL = {
-    'body only': 'Kroppsvikt',
-    bands: 'Band',
-    dumbbell: 'Hantel',
-    kettlebells: 'Kettlebell',
-    barbell: 'Skivstång',
-    cable: 'Kabel',
-    machine: 'Maskin',
-    'medicine ball': 'Medicinsboll',
-    'exercise ball': 'Boll',
-    'foam roll': 'Foamroller',
-    'e-z curl bar': 'EZ-stång',
-    other: 'Annat'
-};
+const NOTE = EXERCISE_NOTE;
 
 const state = {
     exercises: [],
@@ -35,7 +27,6 @@ const state = {
     hashReady: false,
     openId: null,
     suspendClose: false,
-    returnFocus: null,
     panelType: 'all',
     panelLevel: 'all',
     panelShown: PAGE,
@@ -44,33 +35,11 @@ const state = {
     searchShown: PAGE
 };
 
-const details = new Map();
-
 function norm(value) {
     return String(value || '')
         .toLowerCase()
         .normalize('NFD')
         .replace(/\p{M}/gu, '');
-}
-
-function typeLabel(type) {
-    return TYPE_LABEL[type] || type;
-}
-
-function levelLabel(level) {
-    return LEVEL_LABEL[level] || level;
-}
-
-function equipmentLabel(equipment) {
-    if (!equipment) return '';
-    return EQUIPMENT_LABEL[equipment] || equipment;
-}
-
-function meta(exercise) {
-    const parts = [typeLabel(exercise.type), levelLabel(exercise.level)];
-    const equipment = equipmentLabel(exercise.equipment);
-    if (equipment) parts.push(equipment);
-    return parts.join(' · ');
 }
 
 function readHash() {
@@ -92,8 +61,6 @@ function readDeepLink() {
         ex: params.get('ovning') || hash.ex
     };
 }
-
-let restoreOnClose = true;
 
 function writeHash(map) {
     if (!state.hashReady || !map) return;
@@ -234,14 +201,7 @@ function setChips(group, value, onChange) {
 }
 
 function fillList(ul, exercises, shown) {
-    ul.replaceChildren();
-    exercises.slice(0, shown).forEach((exercise) => {
-        const li = el('li', null, ul);
-        const button = el('button', { type: 'button', class: 'ex-row' }, li);
-        el('span', { class: 'ex-name', text: exercise.name_sv }, button);
-        el('span', { class: 'ex-meta', text: meta(exercise) }, button);
-        button.addEventListener('click', () => openExercise(exercise.id, button));
-    });
+    fillExerciseList(ul, exercises.slice(0, shown), (id, button) => openExercise(id, button));
 }
 
 function renderSearch() {
@@ -472,97 +432,34 @@ function contextMuscle(map, exercise) {
 }
 
 async function openExercise(id, opener) {
-    const map = getMap();
-    const dialog = document.getElementById('ex-dialog');
-    const body = document.getElementById('ex-dialog-body');
-    if (!dialog || !body) return;
-    state.returnFocus = opener || document.activeElement;
     state.openId = id;
-    body.replaceChildren();
-    el('p', { class: 'ex-note', text: 'Laddar…' }, body);
-    if (!dialog.open) dialog.showModal();
-    let detail = details.get(id);
-    if (!detail) {
-        try {
-            const response = await fetch('/exercises/d/' + encodeURIComponent(id) + '.json');
-            if (!response.ok) throw new Error(String(response.status));
-            detail = await response.json();
-            details.set(id, detail);
-        } catch {
-            body.replaceChildren();
-            el('p', { text: 'Övningen kunde inte hämtas.' }, body);
-            return;
+    const result = await openExerciseDialog(id, {
+        opener: opener || (document.activeElement instanceof HTMLElement ? document.activeElement : null),
+        muscleName: (muscleId) => muscleName(getMap(), muscleId),
+        onMuscle: (muscleId) => jumpToMuscle(muscleId),
+        onClose: () => {
+            state.openId = null;
+            writeHash(getMap());
+        },
+        beforeRender: (_detail, indexEntry) => {
+            const live = getMap();
+            const muscleId = contextMuscle(live, indexEntry);
+            if (live && muscleId && (!live.sel || live.sel.type !== 'muscle' || live.sel.id !== muscleId)) {
+                state.suspendClose = true;
+                live.selectMuscle(muscleId);
+                state.suspendClose = false;
+            }
         }
+    });
+    if (result === 'ok' && state.openId === id) {
+        state.hashReady = true;
+        writeHash(getMap());
     }
-    if (state.openId !== id) return;
-    const indexEntry = state.byId.get(id) || detail;
-    const muscleId = contextMuscle(map, indexEntry);
-    if (map && muscleId && (!map.sel || map.sel.type !== 'muscle' || map.sel.id !== muscleId)) {
-        state.suspendClose = true;
-        map.selectMuscle(muscleId);
-        state.suspendClose = false;
-    }
-    renderDialog(detail, map);
-    state.hashReady = true;
-    writeHash(map);
-}
-
-function renderDialog(detail, map) {
-    const body = document.getElementById('ex-dialog-body');
-    const dialog = document.getElementById('ex-dialog');
-    body.replaceChildren();
-    el('p', { class: 'ex-kicker', text: typeLabel(detail.type) }, body);
-    const title = el('h2', { id: 'ex-dialog-title', text: detail.name_sv }, body);
-    dialog.setAttribute('aria-labelledby', 'ex-dialog-title');
-    if (detail.name && norm(detail.name) !== norm(detail.name_sv)) {
-        el('p', { class: 'ex-en', text: detail.name }, body);
-    }
-    el('p', { class: 'ex-meta', text: meta(detail) }, body);
-    if (detail.images && detail.images.length) {
-        const photos = el('div', { class: 'ex-photos' }, body);
-        detail.images.forEach((src, index) => {
-            const img = el('img', {
-                alt: detail.name_sv + ', bild ' + (index + 1),
-                width: '640',
-                height: '426',
-                decoding: 'async',
-                loading: 'lazy'
-            }, photos);
-            img.src = src;
-        });
-    }
-    el('h3', { text: 'Så gör du' }, body);
-    const cues = detail.cue_sv && detail.cue_sv.length ? detail.cue_sv : [];
-    if (cues.length) {
-        const list = el('ol', { class: 'ex-steps' }, body);
-        cues.forEach((step) => el('li', { text: step }, list));
-    } else if (detail.cue && detail.cue.length) {
-        el('p', { class: 'ex-note', text: 'Stegen finns bara på engelska för den här övningen.' }, body);
-        const list = el('ol', { class: 'ex-steps' }, body);
-        detail.cue.forEach((step) => el('li', { text: step }, list));
-    } else {
-        el('p', { class: 'ex-note', text: 'Instruktioner saknas för den här övningen.' }, body);
-    }
-    if (detail.muscleIds && detail.muscleIds.length) {
-        el('h3', { text: 'Muskler' }, body);
-        const muscles = el('ul', { class: 'ex-muscles' }, body);
-        detail.muscleIds.forEach((id) => {
-            const li = el('li', null, muscles);
-            const button = el('button', { type: 'button', class: 'ex-muscle', text: muscleName(map, id) }, li);
-            button.addEventListener('click', () => jumpToMuscle(id));
-        });
-    }
-    el('p', { class: 'ex-note', text: NOTE }, body);
-    el('p', { class: 'ex-source', text: 'Bilderna kommer från free-exercise-db (public domain).' }, body);
-    title.tabIndex = -1;
-    title.focus();
 }
 
 function jumpToMuscle(id) {
     const map = getMap();
-    const dialog = document.getElementById('ex-dialog');
-    state.openId = null;
-    if (dialog && dialog.open) dialog.close();
+    closeExerciseDialog({ restoreFocus: false });
     if (map) map.selectMuscle(id);
     const root = mapRoot();
     if (root) {
@@ -572,19 +469,7 @@ function jumpToMuscle(id) {
 }
 
 function wireDialog() {
-    const dialog = document.getElementById('ex-dialog');
-    if (!dialog) return;
-    dialog.addEventListener('close', () => {
-        state.openId = null;
-        writeHash(getMap());
-        if (restoreOnClose && state.returnFocus && state.returnFocus.focus) state.returnFocus.focus();
-        restoreOnClose = true;
-    });
-    dialog.addEventListener('click', (event) => {
-        if (event.target === dialog) dialog.close();
-    });
-    const close = dialog.querySelector('.ex-close');
-    if (close) close.addEventListener('click', () => dialog.close());
+    ensureExerciseDialog();
 }
 
 function wireSearch() {
@@ -630,10 +515,7 @@ function hookMap(map) {
         const stillHere =
             exercise && sel && sel.type === 'muscle' && exercise.muscleIds.indexOf(sel.id) !== -1;
         if (!state.suspendClose && state.openId && !stillHere) {
-            state.openId = null;
-            restoreOnClose = false;
-            const dialog = document.getElementById('ex-dialog');
-            if (dialog && dialog.open) dialog.close();
+            closeExerciseDialog({ restoreFocus: false });
         }
         paintPanel(map);
         writeHash(map);
@@ -642,19 +524,14 @@ function hookMap(map) {
 }
 
 async function loadIndex() {
-    const response = await fetch('/exercises/index.json');
-    if (!response.ok) throw new Error(String(response.status));
-    const data = await response.json();
-    state.exercises = data.exercises || [];
-    state.exercises.forEach((exercise, index) => {
-        exercise.order = index;
-        state.byId.set(exercise.id, exercise);
-        exercise.muscleIds.forEach((id) => {
-            if (!state.byMuscle.has(id)) state.byMuscle.set(id, []);
-            state.byMuscle.get(id).push(exercise);
-        });
-    });
-    state.ready = true;
+    await loadExerciseIndex();
+    const data = getExerciseIndex();
+    state.exercises = data.exercises;
+    state.byId = data.byId;
+    state.byMuscle = data.byMuscle;
+    state.ready = data.ready;
+    state.failed = data.failed;
+    if (data.failed) throw new Error('index');
 }
 
 function waitForMap() {

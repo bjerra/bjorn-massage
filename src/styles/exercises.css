@@ -197,12 +197,40 @@
     border-radius: 12px;
 }
 
+.ex-inline,
+.mm-exercises {
+    min-width: 0;
+    max-width: 100%;
+}
+
+.ex-inline .ex-list,
+.mm-exercises .ex-list,
+.bm-panel .ex-list {
+    max-width: none;
+}
+
+.ex-inline .ex-more,
+.mm-exercises .ex-more {
+    width: 100%;
+}
+
+.ex-name,
+.ex-meta,
+.ex-steps,
+.ex-dialog h2,
+.ex-dialog h3 {
+    overflow-wrap: anywhere;
+}
+
 .ex-dialog {
     width: min(42rem, calc(100vw - 1.5rem));
+    max-width: 100%;
     max-height: min(46rem, calc(100dvh - 1.5rem));
     margin: auto;
     padding: 0;
     overflow: auto;
+    overscroll-behavior: contain;
+    box-sizing: border-box;
     border: 1px solid var(--color-ink);
     background: var(--color-paper);
     color: var(--color-ink);
@@ -264,12 +292,47 @@
     margin: 0 0 1.1rem;
 }
 
-.ex-photos img {
+.ex-photo {
+    position: relative;
+    aspect-ratio: 640 / 426;
+    overflow: hidden;
+    background: #e4ddd4;
+    border: 1px solid var(--color-rule);
+}
+
+.ex-photo::before {
+    content: '';
+    position: absolute;
+    inset: -12%;
+    background:
+        radial-gradient(circle at 28% 36%, #f7f3ee 0%, transparent 52%),
+        radial-gradient(circle at 72% 64%, #cfc4b6 0%, transparent 48%),
+        #e4ddd4;
+    filter: blur(14px);
+    transform: scale(1.08);
+}
+
+.ex-photo img {
+    position: absolute;
+    inset: 0;
     display: block;
     width: 100%;
-    height: auto;
-    background: #fff;
-    border: 1px solid var(--color-rule);
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    background: transparent;
+    border: 0;
+}
+
+.ex-photo img.is-ready {
+    opacity: 1;
+    transition: opacity 180ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ex-photo img.is-ready {
+        transition: none;
+    }
 }
 
 .ex-dialog h3 {
