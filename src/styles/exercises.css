@@ -197,12 +197,40 @@
     border-radius: 12px;
 }
 
+.ex-inline,
+.mm-exercises {
+    min-width: 0;
+    max-width: 100%;
+}
+
+.ex-inline .ex-list,
+.mm-exercises .ex-list,
+.bm-panel .ex-list {
+    max-width: none;
+}
+
+.ex-inline .ex-more,
+.mm-exercises .ex-more {
+    width: 100%;
+}
+
+.ex-name,
+.ex-meta,
+.ex-steps,
+.ex-dialog h2,
+.ex-dialog h3 {
+    overflow-wrap: anywhere;
+}
+
 .ex-dialog {
     width: min(42rem, calc(100vw - 1.5rem));
+    max-width: 100%;
     max-height: min(46rem, calc(100dvh - 1.5rem));
     margin: auto;
     padding: 0;
     overflow: auto;
+    overscroll-behavior: contain;
+    box-sizing: border-box;
     border: 1px solid var(--color-ink);
     background: var(--color-paper);
     color: var(--color-ink);
