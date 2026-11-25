@@ -290,15 +290,22 @@ async function main() {
     await mkdir(detailDir, { recursive: true });
     await mkdir(imgDir, { recursive: true });
 
-    const index = kept.map((exercise) => ({
-        id: exercise.id,
-        name: exercise.name,
-        name_sv: exercise.name_sv,
-        type: exercise.type,
-        level: exercise.level,
-        equipment: exercise.equipment,
-        muscleIds: exercise.muscleIds
-    }));
+    const index = kept.map((exercise) => {
+        const images = (exercise.images || []).map((_, i) => '/exercises/img/' + exercise.id + '-' + i + '.webp');
+        const entry = {
+            id: exercise.id,
+            name: exercise.name,
+            name_sv: exercise.name_sv,
+            type: exercise.type,
+            level: exercise.level,
+            equipment: exercise.equipment,
+            muscleIds: exercise.muscleIds,
+            cue_sv: exercise.cue_sv,
+            images
+        };
+        if (!exercise.cue_sv.length && exercise.cue && exercise.cue.length) entry.cue = exercise.cue;
+        return entry;
+    });
     await writeFile(join(outDir, 'index.json'), JSON.stringify({ exercises: index }));
 
     const expectedDetails = new Set();

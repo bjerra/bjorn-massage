@@ -98,6 +98,7 @@ export function loadExerciseIndex() {
                 index.exercises.forEach((exercise, order) => {
                     exercise.order = order;
                     index.byId.set(exercise.id, exercise);
+                    details.set(exercise.id, exercise);
                     (exercise.muscleIds || []).forEach((id) => {
                         if (!index.byMuscle.has(id)) index.byMuscle.set(id, []);
                         index.byMuscle.get(id).push(exercise);
@@ -185,6 +186,7 @@ function renderDialog(detail) {
     if (detail.images && detail.images.length) {
         const photos = el('div', { class: 'ex-photos' }, body);
         detail.images.forEach((src, imageIndex) => {
+            const frame = el('div', { class: 'ex-photo' }, photos);
             const img = el(
                 'img',
                 {
@@ -194,9 +196,13 @@ function renderDialog(detail) {
                     decoding: 'async',
                     loading: 'lazy'
                 },
-                photos
+                frame
             );
+            const ready = () => img.classList.add('is-ready');
+            img.addEventListener('load', ready);
+            img.addEventListener('error', () => img.remove());
             img.src = src;
+            if (img.complete && img.naturalWidth) ready();
         });
     }
     el('h3', { text: 'Så gör du' }, body);
@@ -225,7 +231,6 @@ function renderDialog(detail) {
     el('p', { class: 'ex-note', text: EXERCISE_NOTE }, body);
     el('p', { class: 'ex-source', text: 'Bilderna kommer från free-exercise-db (public domain).' }, body);
     title.tabIndex = -1;
-    title.focus();
 }
 
 export function ensureExerciseDialog() {
@@ -266,10 +271,18 @@ export function closeExerciseDialog(options = {}) {
     dialog.close();
 }
 
+async function detailFor(id) {
+    await loadExerciseIndex();
+    if (details.has(id) && details.get(id).images) return details.get(id);
+    const response = await fetch('/exercises/d/' + encodeURIComponent(id) + '.json');
+    if (!response.ok) throw new Error(String(response.status));
+    const detail = await response.json();
+    details.set(id, detail);
+    return detail;
+}
+
 export async function openExerciseDialog(id, options = {}) {
     const token = ++request;
-    const dialog = ensureExerciseDialog();
-    const body = document.getElementById('ex-dialog-body');
     session = {
         id,
         token,
@@ -279,27 +292,26 @@ export async function openExerciseDialog(id, options = {}) {
         muscleName: options.muscleName || latinMuscleName,
         restoreFocus: true
     };
-    body.replaceChildren();
-    el('p', { class: 'ex-note', text: 'Laddar…' }, body);
-    if (!dialog.open) dialog.showModal();
-    let detail = details.get(id);
-    if (!detail) {
-        try {
-            const response = await fetch('/exercises/d/' + encodeURIComponent(id) + '.json');
-            if (!response.ok) throw new Error(String(response.status));
-            detail = await response.json();
-            details.set(id, detail);
-        } catch {
-            if (!session || session.token !== token) return 'stale';
-            body.replaceChildren();
-            el('p', { text: 'Övningen kunde inte hämtas.' }, body);
-            return 'error';
-        }
+    let detail;
+    try {
+        detail = await detailFor(id);
+    } catch {
+        if (!session || session.token !== token) return 'stale';
+        const dialog = ensureExerciseDialog();
+        const body = document.getElementById('ex-dialog-body');
+        body.replaceChildren();
+        el('p', { text: 'Övningen kunde inte hämtas.' }, body);
+        if (!dialog.open) dialog.showModal();
+        return 'error';
     }
-    if (!session || session.token !== token || !dialog.open) return 'stale';
+    if (!session || session.token !== token) return 'stale';
+    const dialog = ensureExerciseDialog();
     const indexEntry = index.byId.get(id) || detail;
     if (options.beforeRender) options.beforeRender(detail, indexEntry);
-    if (!session || session.token !== token || !dialog.open) return 'stale';
+    if (!session || session.token !== token) return 'stale';
     renderDialog(detail);
+    if (!dialog.open) dialog.showModal();
+    const title = document.getElementById('ex-dialog-title');
+    if (title) title.focus();
     return 'ok';
 }
