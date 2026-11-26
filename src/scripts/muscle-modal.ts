@@ -289,8 +289,8 @@ function render(id: string) {
 
     const links = el('div', 'mm-links');
     const mapLink = el('a') as HTMLAnchorElement;
-    mapLink.href = `/muskelkarta#muscle=${encodeURIComponent(id)}`;
-    mapLink.textContent = 'Visa på muskelkartan';
+    mapLink.href = `/triggerpunkter?muskel=${encodeURIComponent(id)}`;
+    mapLink.textContent = 'Visa triggerpunkter';
     links.append(mapLink);
     scroll.append(links);
 

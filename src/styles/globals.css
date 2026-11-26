@@ -211,7 +211,7 @@
         display: inline-flex;
     }
 
-    @media (max-width: 767px) {
+    @media (max-width: 799px) {
         .js .site-nav {
             display: none;
             position: absolute;
@@ -246,7 +246,7 @@
         }
     }
 
-    @media (min-width: 768px) {
+    @media (min-width: 800px) {
         .js .menu-button {
             display: none;
         }
@@ -890,6 +890,12 @@
     .map-page-head h1 {
         margin: 0;
         font-size: clamp(2rem, 4vw, 2.6rem);
+    }
+
+    .map-lede {
+        max-width: 40rem;
+        margin: 0.4rem 0 0;
+        color: var(--color-muted);
     }
 
     .trigger-map {

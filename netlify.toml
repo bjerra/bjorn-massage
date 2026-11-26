@@ -12,29 +12,16 @@
   status = 301
   force = true
 
-# The trigger-point map moved to /muskelkarta.
-[[redirects]]
-  from = "/triggerpunkter"
-  to = "/muskelkarta"
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "/triggerpunkter/"
-  to = "/muskelkarta"
-  status = 301
-  force = true
-
-# The muscle quiz was removed. Old links go to the map.
+# The muscle quiz was removed. Old links go to the trigger-point map.
 [[redirects]]
   from = "/muskelspel"
-  to = "/muskelkarta"
+  to = "/triggerpunkter"
   status = 301
   force = true
 
 [[redirects]]
   from = "/muskelspel/"
-  to = "/muskelkarta"
+  to = "/triggerpunkter"
   status = 301
   force = true
 
@@ -57,6 +44,19 @@
   status = 301
   force = true
   conditions = {Query = ["lage=rorelser"]}
+
+# The combined map is now the trigger-point page. Query strings such as ?muskel= pass through.
+[[redirects]]
+  from = "/muskelkarta"
+  to = "/triggerpunkter"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/muskelkarta/"
+  to = "/triggerpunkter"
+  status = 301
+  force = true
 
 # Retired Netlify starter pages.
 [[redirects]]
