@@ -14,6 +14,15 @@
     display: none;
 }
 
+/* This page only picks a muscle. The zone/muscle switch stays on the muscle map. */
+.ex-tool .bm-seg {
+    display: none;
+}
+
+.ex-tool .bm-bar {
+    justify-content: flex-start;
+}
+
 .ex-tool .bm-leg-zone,
 .ex-tool .bm-leg-tp {
     display: none;
