@@ -41,14 +41,14 @@
 # A query rule matches only that exact query. The old conditions.Query form never fired.
 [[redirects]]
   from = "/muskelkarta"
-  to = "/rom"
+  to = "/rom?"
   status = 301
   force = true
   query = {lage = "rorelser"}
 
 [[redirects]]
   from = "/muskelkarta"
-  to = "/rom"
+  to = "/rom?"
   status = 301
   force = true
   query = {lage = "rorelser", muskel = ":muskel"}
@@ -68,14 +68,14 @@
 
 [[redirects]]
   from = "/triggerpunkter"
-  to = "/rom"
+  to = "/rom?"
   status = 301
   force = true
   query = {lage = "rorelser"}
 
 [[redirects]]
   from = "/triggerpunkter"
-  to = "/rom"
+  to = "/rom?"
   status = 301
   force = true
   query = {lage = "rorelser", muskel = ":muskel"}
