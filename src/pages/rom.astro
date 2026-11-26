@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import MapTabs from '../components/MapTabs.astro';
 import '../styles/rom.css';
 import '../styles/muscle-modal.css';
 import '../styles/exercises.css';
@@ -14,9 +15,9 @@ const description =
 
     <header class="map-page-head">
         <h1>ROM</h1>
-        <a href="/triggerpunkter">Triggerpunkter</a>
     </header>
     <p class="rom-lede">Rörelser och muskler. Välj en led, sedan en rörelse.</p>
+    <MapTabs />
 
     <div class="rom" data-rom>
         <form id="rom-form" class="rom-search" role="search">

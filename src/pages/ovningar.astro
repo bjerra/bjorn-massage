@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import MapTabs from '../components/MapTabs.astro';
 import '../styles/exercises.css';
 import '../styles/muscle-modal.css';
 
@@ -15,6 +16,7 @@ const description =
         <h1>Övningar</h1>
     </header>
     <p class="ex-lead">Välj en muskel på kartan, eller sök på övningens namn.</p>
+    <MapTabs />
 
     <section class="ex-search" aria-label="Sök övning">
         <form id="ex-search-form" class="ex-form" role="search">
