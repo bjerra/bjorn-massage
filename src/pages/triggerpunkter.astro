@@ -1,0 +1,51 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const description =
+    'Triggerpunkter. Områden och latinska muskelnamn. Kartan är ingen undersökning.';
+---
+
+<Layout title="Triggerpunkter – BjörnMassage" description={description}>
+    <link slot="head" rel="stylesheet" href="/bodymap/bodymap.css" />
+    <link slot="head" rel="stylesheet" href="/bodymap/site-theme.css" />
+
+    <header class="map-page-head">
+        <h1>Triggerpunkter</h1>
+    </header>
+    <p class="map-lede">Områden och latinska muskelnamn. Kartan är ingen undersökning.</p>
+
+    <div class="trigger-map">
+        <div data-bodymap></div>
+    </div>
+    <script is:inline>
+        (function () {
+            var params = new URLSearchParams(location.search);
+            var rawHash = location.hash || '';
+            if (params.get('lage') === 'rorelser' || rawHash === '#rorelser') {
+                location.replace('/rom');
+                return;
+            }
+            if (/^#movement=[A-Za-z]+\.[A-Za-z]+/.test(rawHash)) {
+                location.replace('/rom' + rawHash);
+                return;
+            }
+            var hash = new URLSearchParams(rawHash.replace(/^#/, ''));
+            var fromHash = hash.get('muscle') || hash.get('muskel') || '';
+            var id = fromHash || params.get('muskel') || '';
+            if (fromHash) params.set('muskel', fromHash);
+            if (id && !hash.get('zone') && hash.get('muscle') !== id) {
+                hash.delete('muskel');
+                hash.set('muscle', id);
+            }
+            var query = params.toString();
+            var nextHash = hash.toString();
+            var next = location.pathname + (query ? '?' + query : '') + (nextHash ? '#' + nextHash : '');
+            var current = location.pathname + location.search + location.hash;
+            if (next !== current) history.replaceState(null, '', next);
+        })();
+    </script>
+    <script is:inline src="/bodymap/strings-sv.js"></script>
+    <script is:inline src="/bodymap/bodymap-data.js" defer></script>
+    <script is:inline src="/bodymap/bodymap-zones.js" defer></script>
+    <script is:inline src="/bodymap/bodymap.js" defer></script>
+</Layout>

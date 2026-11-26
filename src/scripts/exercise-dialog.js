@@ -1,5 +1,5 @@
 /**
- * The exercise popup used on /ovningar, in the muscle modal, and on /muskelkarta.
+ * The exercise popup used on /ovningar and in the muscle modal.
  * One dialog, so closing and stacking stay in one place.
  */
 

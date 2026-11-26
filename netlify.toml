@@ -12,29 +12,16 @@
   status = 301
   force = true
 
-# The trigger-point map moved to /muskelkarta.
-[[redirects]]
-  from = "/triggerpunkter"
-  to = "/muskelkarta"
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "/triggerpunkter/"
-  to = "/muskelkarta"
-  status = 301
-  force = true
-
-# The muscle quiz was removed. Old links go to the map.
+# The muscle quiz was removed. Old links go to the trigger-point map.
 [[redirects]]
   from = "/muskelspel"
-  to = "/muskelkarta"
+  to = "/triggerpunkter"
   status = 301
   force = true
 
 [[redirects]]
   from = "/muskelspel/"
-  to = "/muskelkarta"
+  to = "/triggerpunkter"
   status = 301
   force = true
 
@@ -51,12 +38,47 @@
   status = 301
   force = true
 
+# A query rule matches only that exact query. The old conditions.Query form never fired.
 [[redirects]]
   from = "/muskelkarta"
   to = "/rom"
   status = 301
   force = true
-  conditions = {Query = ["lage=rorelser"]}
+  query = {lage = "rorelser"}
+
+[[redirects]]
+  from = "/muskelkarta"
+  to = "/rom"
+  status = 301
+  force = true
+  query = {lage = "rorelser", muskel = ":muskel"}
+
+# The combined map is now the trigger-point page. Query strings such as ?muskel= pass through.
+[[redirects]]
+  from = "/muskelkarta"
+  to = "/triggerpunkter"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/muskelkarta/"
+  to = "/triggerpunkter"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/triggerpunkter"
+  to = "/rom"
+  status = 301
+  force = true
+  query = {lage = "rorelser"}
+
+[[redirects]]
+  from = "/triggerpunkter"
+  to = "/rom"
+  status = 301
+  force = true
+  query = {lage = "rorelser", muskel = ":muskel"}
 
 # Retired Netlify starter pages.
 [[redirects]]

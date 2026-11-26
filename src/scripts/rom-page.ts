@@ -585,8 +585,8 @@ function render() {
                 const off = el('p', { class: 'rom-offmap' }, picked);
                 text('Visas inte på figuren.', off);
             }
-            const link = el('a', { href: `/muskelkarta#muscle=${encodeURIComponent(state.muscle)}` }, picked);
-            text('Öppna muskeln på muskelkartan', link);
+            const link = el('a', { href: `/triggerpunkter?muskel=${encodeURIComponent(state.muscle)}` }, picked);
+            text('Visa triggerpunkter', link);
             const back = el('button', { type: 'button', class: 'rom-back' }, picked);
             text('Tillbaka till rörelsen', back);
             back.addEventListener('click', () => focusMuscle('', true));
