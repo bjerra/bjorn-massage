@@ -1,0 +1,16 @@
+/* Muscle page only: the figure stays in muscle mode, without zones or trigger points. */
+
+.muscle-page .bm-seg,
+.muscle-page .bm-zones,
+.muscle-page .bm-tps,
+.muscle-page .bm-leg-zone,
+.muscle-page .bm-leg-tp,
+.muscle-page .bm-h,
+.muscle-page .bm-tplist,
+.muscle-page .bm-tags {
+    display: none;
+}
+
+.muscle-page .bm-bar {
+    justify-content: flex-start;
+}

@@ -1,0 +1,58 @@
+---
+import Layout from '../layouts/Layout.astro';
+import MapTabs from '../components/MapTabs.astro';
+import '../styles/muscle-page.css';
+
+const description =
+    'Latinska namn, ursprung, fäste och vilken rörelse muskeln brukar delta i.';
+---
+
+<Layout title="Muskler – ursprung och fäste – BjörnMassage" description={description}>
+    <link slot="head" rel="stylesheet" href="/bodymap/bodymap.css" />
+    <link slot="head" rel="stylesheet" href="/bodymap/site-theme.css" />
+
+    <header class="map-page-head">
+        <h1>Muskler</h1>
+    </header>
+    <p class="map-lede">Latinska namn, ursprung, fäste och vilken rörelse muskeln brukar delta i.</p>
+    <MapTabs />
+
+    <div class="trigger-map muscle-page">
+        <div data-bodymap data-mode="muscles"></div>
+    </div>
+    <script is:inline>
+        (function () {
+            var params = new URLSearchParams(location.search);
+            var hash = new URLSearchParams((location.hash || '').replace(/^#/, ''));
+            hash.delete('zone');
+            var fromHash = hash.get('muscle') || hash.get('muskel') || '';
+            var id = fromHash || params.get('muskel') || '';
+            if (fromHash) params.set('muskel', fromHash);
+            if (id && hash.get('muscle') !== id) {
+                hash.delete('muskel');
+                hash.set('muscle', id);
+            }
+            if (!id) {
+                hash.delete('muscle');
+                hash.delete('muskel');
+            }
+            var query = params.toString();
+            var nextHash = hash.toString();
+            var next = location.pathname + (query ? '?' + query : '') + (nextHash ? '#' + nextHash : '');
+            var current = location.pathname + location.search + location.hash;
+            if (next !== current) history.replaceState(null, '', next);
+        })();
+    </script>
+    <script is:inline src="/bodymap/strings-sv.js"></script>
+    <script is:inline>
+        window.BODYMAP_STRINGS.emptyMusclesTitle = 'Välj en muskel';
+        window.BODYMAP_STRINGS.emptyMusclesText = 'Ursprung, fäste och funktion visas här.';
+    </script>
+    <script is:inline src="/bodymap/bodymap-data.js" defer></script>
+    <script is:inline src="/bodymap/bodymap-zones.js" defer></script>
+    <script is:inline src="/bodymap/bodymap.js" defer></script>
+    <script>
+        import { startMusclePage } from '../scripts/muscle-page';
+        startMusclePage();
+    </script>
+</Layout>

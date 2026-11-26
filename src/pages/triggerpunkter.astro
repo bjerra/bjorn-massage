@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import MapTabs from '../components/MapTabs.astro';
 
 const description =
     'Triggerpunkter. Områden och latinska muskelnamn. Kartan är ingen undersökning.';
@@ -13,6 +14,7 @@ const description =
         <h1>Triggerpunkter</h1>
     </header>
     <p class="map-lede">Områden och latinska muskelnamn. Kartan är ingen undersökning.</p>
+    <MapTabs />
 
     <div class="trigger-map">
         <div data-bodymap></div>

@@ -1,0 +1,67 @@
+---
+const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
+
+const tabs = [
+    { label: 'Muskler', href: '/muskler' },
+    { label: 'Triggerpunkter', href: '/triggerpunkter' },
+    { label: 'Rörlighet', href: '/rom' },
+    { label: 'Övningar', href: '/ovningar' }
+];
+---
+
+<nav class="map-tabs" aria-label="Kartor">
+    <ul>
+        {
+            tabs.map((tab) => (
+                <li>
+                    <a href={tab.href} aria-current={pathname === tab.href ? 'page' : undefined}>
+                        {tab.label}
+                    </a>
+                </li>
+            ))
+        }
+    </ul>
+</nav>
+
+<script>
+    type Sel = { type: string; id: string };
+    type MapRoot = HTMLElement & { __bodymap?: { sel: Sel | null } };
+
+    const nav = document.querySelector('.map-tabs');
+    if (nav instanceof HTMLElement) {
+        const selectedMuscle = () => {
+            const map = document.querySelector('[data-bodymap]') as MapRoot | null;
+            const sel = map?.__bodymap?.sel;
+            if (sel?.type === 'muscle' && sel.id) return sel.id;
+            const params = new URLSearchParams(location.search);
+            const fromQuery = params.get('muskel') || '';
+            if (fromQuery) return fromQuery;
+            const hash = new URLSearchParams((location.hash || '').replace(/^#/, ''));
+            return hash.get('muscle') || hash.get('muskel') || '';
+        };
+
+        const sync = () => {
+            const id = selectedMuscle();
+            nav.querySelectorAll('a').forEach((link) => {
+                if (!(link instanceof HTMLAnchorElement)) return;
+                const path = link.pathname;
+                link.search = id ? `?muskel=${encodeURIComponent(id)}` : '';
+                if (link.pathname !== path) link.pathname = path;
+            });
+        };
+
+        const centerCurrent = () => {
+            const current = nav.querySelector('[aria-current="page"]');
+            if (!(current instanceof HTMLElement) || nav.scrollWidth <= nav.clientWidth + 1) return;
+            const navRect = nav.getBoundingClientRect();
+            const rect = current.getBoundingClientRect();
+            nav.scrollLeft += rect.left - navRect.left - (nav.clientWidth - rect.width) / 2;
+        };
+
+        document.addEventListener('bodymap-change', sync);
+        window.addEventListener('hashchange', sync);
+        window.addEventListener('popstate', sync);
+        sync();
+        requestAnimationFrame(centerCurrent);
+    }
+</script>
