@@ -18,12 +18,15 @@ test('the modal hash can sit beside the map selection and Back can remove only t
     assert.equal(new URLSearchParams(closed.slice(1)).get('muscle'), 'trapezius_desc');
 });
 
-test('muscle facts use functions that exist and skip ursprung and fäste when the data has none', () => {
+test('muscle facts use functions that exist and fill ursprung and fäste from the attachment list', () => {
     const facts = muscleFacts(catalog, 'deltoideus');
     assert.equal(facts.latin, 'Deltoideus');
     assert.equal(facts.common, 'Deltamuskeln');
-    assert.equal(facts.origin, '');
-    assert.equal(facts.insertion, '');
+    assert.match(facts.origin, /clavicula/i);
+    assert.match(facts.insertion, /tuberositas deltoidea/i);
     assert.ok(facts.functions.some((line) => line.includes('Abduktion') && line.includes('arm ut åt sidan')));
     assert.ok(facts.description.includes('Område'));
+    const unknown = muscleFacts(catalog, 'not_a_muscle');
+    assert.equal(unknown.origin, '');
+    assert.equal(unknown.insertion, '');
 });

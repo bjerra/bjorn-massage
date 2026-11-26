@@ -1,3 +1,5 @@
+import { MUSCLE_ATTACHMENTS } from './muscle-attachments.ts';
+
 /**
  * Joints, plain-language glosses and search for the ROM page.
  * Movement roles still come from public/movements/data.json.
@@ -20,9 +22,9 @@ export type CatalogMuscle = {
     regionSv?: string;
     /** Free text, when a data file has it. The current movement file does not. */
     description?: string;
-    /** Ursprung. Absent from the current movement file. */
+    /** Ursprung, when the movement file itself carries it. */
     origin?: string;
-    /** Fäste. Absent from the current movement file. */
+    /** Fäste, when the movement file itself carries it. */
     insertion?: string;
     functions?: MuscleFunctionRef[];
 };
@@ -409,12 +411,13 @@ export function muscleFacts(catalog: RomCatalog, id: string): MuscleFact {
             return `${movement.groupLabel}: ${movement.term}${gloss}${roleText}`;
         })
         .filter(Boolean);
+    const attachment = MUSCLE_ATTACHMENTS[id];
     return {
         latin,
         common,
         description,
-        origin: (muscle?.origin || '').trim(),
-        insertion: (muscle?.insertion || '').trim(),
+        origin: (muscle?.origin || attachment?.origin || '').trim(),
+        insertion: (muscle?.insertion || attachment?.insertion || '').trim(),
         functions
     };
 }
