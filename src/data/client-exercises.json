@@ -1,0 +1,124 @@
+{
+  "nacksmarta": {
+    "page": "/nacksmarta",
+    "safety": "Avbryt om smärtan ökar, eller om den strålar ut i arm eller hand eller ger domningar/stickningar.",
+    "exercises": [
+      {
+        "exerciseId": "Shoulder_Circles",
+        "titleSv": "Axelcirklar",
+        "muscleId": "trapezius_desc",
+        "type": "stretching",
+        "level": "beginner",
+        "equipment": null,
+        "deepLink": "/ovningar?muskel=trapezius_desc&ovning=Shoulder_Circles",
+        "why": "Lugn rörelse för nacke och skuldror. Studier och riktlinjer tyder på att rörelse och aktivitet hjälper mer än vila; ett enkelt sätt att bryta långt stillasittande."
+      },
+      {
+        "exerciseId": "Side_Neck_Stretch",
+        "titleSv": "Sidonackstretch",
+        "muscleId": "trapezius_desc",
+        "type": "stretching",
+        "level": "beginner",
+        "equipment": null,
+        "deepLink": "/ovningar?muskel=trapezius_desc&ovning=Side_Neck_Stretch",
+        "why": "Mjuk stretch av m. trapezius (pars descendens) och angränsande muskler på sidan av halsen. Stretch kan ge kortvarig lindring av stelhet (1177). Gör den utan att dra med handen eller med mycket lätt drag."
+      },
+      {
+        "exerciseId": "Chin_To_Chest_Stretch",
+        "titleSv": "Nackstretch, haka mot bröstet",
+        "muscleId": "levator_scapulae",
+        "type": "stretching",
+        "level": "beginner",
+        "equipment": null,
+        "deepLink": "/ovningar?muskel=levator_scapulae&ovning=Chin_To_Chest_Stretch",
+        "why": "Stretch för baksidan av nacken, inklusive m. levator scapulae. Låt huvudets egen tyngd göra jobbet; dra inte hårt med händerna."
+      },
+      {
+        "exerciseId": "Isometric_Neck_Exercise_-_Front_And_Back",
+        "titleSv": "Isometrisk nackövning – fram och bak",
+        "muscleId": "sternocleidomastoideus",
+        "type": "strengthen",
+        "level": "beginner",
+        "equipment": "body only",
+        "deepLink": "/ovningar?muskel=sternocleidomastoideus&ovning=Isometric_Neck_Exercise_-_Front_And_Back",
+        "why": "Lätt statisk styrka för nackmusklerna utan rörelse i nacken. Närmaste övning i databasen till djup nackflexorträning (chin tuck), som inte finns. Nackträning ingår i riktlinjer (APTA 2017, OPTIMa 2016)."
+      },
+      {
+        "exerciseId": "Band_Pull_Apart",
+        "titleSv": "Isärdrag med band",
+        "muscleId": "rhomboids",
+        "type": "strengthen",
+        "level": "beginner",
+        "equipment": "bands",
+        "deepLink": "/ovningar?muskel=rhomboids&ovning=Band_Pull_Apart",
+        "why": "Lätt styrka för skulderbladens bakre muskler (mm. rhomboidei, m. trapezius pars transversa) med skulderbladen dragna bakåt-nedåt. Skulderblads- och övre ryggträning ingår i aktiv nackrehabilitering enligt riktlinjer. Kräver ett lätt träningsband."
+      }
+    ]
+  },
+  "landryggssmarta": {
+    "page": "/landryggssmarta",
+    "safety": "Avbryt om smärtan ökar, eller om den strålar ner i benet eller ger domningar/stickningar.",
+    "exercises": [
+      {
+        "exerciseId": "Cat_Stretch",
+        "titleSv": "Kattstretch",
+        "muscleId": "erector_spinae",
+        "type": "stretching",
+        "level": "beginner",
+        "equipment": null,
+        "deepLink": "/ovningar?muskel=erector_spinae&ovning=Cat_Stretch",
+        "why": "Mjuk rörlighet för hela ryggen på alla fyra. Studier och riktlinjer (NICE, Lancet 2018, 1177) tyder på att rörelse och att fortsätta vara aktiv hjälper. Varva gärna med att mjukt svanka (katt–ko)."
+      },
+      {
+        "exerciseId": "One_Knee_To_Chest",
+        "titleSv": "Ett knä mot bröstet",
+        "muscleId": "multifidus",
+        "type": "stretching",
+        "level": "beginner",
+        "equipment": null,
+        "deepLink": "/ovningar?muskel=multifidus&ovning=One_Knee_To_Chest",
+        "why": "Skonsam ländryggs- och sätesstretch liggande på rygg. Ofta behaglig när ryggen är stel; ett knä i taget belastar mindre än båda."
+      },
+      {
+        "exerciseId": "Butt_Lift_Bridge",
+        "titleSv": "Höftbrygga",
+        "muscleId": "gluteus_maximus",
+        "type": "strengthen",
+        "level": "beginner",
+        "equipment": "body only",
+        "deepLink": "/ovningar?muskel=gluteus_maximus&ovning=Butt_Lift_Bridge",
+        "why": "Höftbrygga: lätt styrka för m. gluteus maximus och baksida lår. Höft- och bålträning är vanliga delar av träningsprogram som riktlinjer rekommenderar vid ryggsmärta."
+      },
+      {
+        "exerciseId": "Dead_Bug",
+        "titleSv": "Död skalbagge",
+        "muscleId": "rectus_abdominis",
+        "type": "strengthen",
+        "level": "beginner",
+        "equipment": "body only",
+        "deepLink": "/ovningar?muskel=rectus_abdominis&ovning=Dead_Bug",
+        "why": "Lugn bålkontroll liggande på rygg, med ländryggen stilla. Används här i stället för bird-dog, som saknas i övningsdatabasen. Börja med bara benen, små rörelser."
+      },
+      {
+        "exerciseId": "Kneeling_Hip_Flexor",
+        "titleSv": "Knästående höftböjarstretch",
+        "muscleId": "rectus_femoris",
+        "type": "stretching",
+        "level": "beginner",
+        "equipment": null,
+        "deepLink": "/ovningar?muskel=rectus_femoris&ovning=Kneeling_Hip_Flexor",
+        "why": "Stretch för framsida höft och lår (höftböjare). OBS: databasen kopplar övningen till m. rectus femoris; m. iliopsoas har inga kopplade övningar på kartan."
+      },
+      {
+        "exerciseId": "Hamstring_Stretch",
+        "titleSv": "Hamstringsstretch",
+        "muscleId": "hamstrings",
+        "type": "stretching",
+        "level": "beginner",
+        "equipment": null,
+        "deepLink": "/ovningar?muskel=hamstrings&ovning=Hamstring_Stretch",
+        "why": "Stretch för baksida lår liggande på rygg med band eller handduk, vilket skonar ryggen. Avbryt om det strålar eller sticker i benet."
+      }
+    ]
+  }
+}

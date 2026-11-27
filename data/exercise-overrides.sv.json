@@ -54,7 +54,12 @@
     "name_sv": "Uppress från underarmsplanka"
   },
   "Butt_Lift_Bridge": {
-    "name_sv": "Höftbrygga"
+    "name_sv": "Höftbrygga",
+    "cue_sv": [
+      "Ligg plant på rygg med händerna längs sidorna och knäna böjda. Fötterna ska stå ungefär axelbrett isär. Detta är din startposition.",
+      "Driv främst med hälarna och lyft höften från golvet med rak rygg. Andas ut under denna del av rörelsen och håll i toppläget en sekund.",
+      "Sänk dig långsamt tillbaka till startpositionen medan du andas in."
+    ]
   },
   "Butt-Ups": {
     "name_sv": "Säteslyft från underarmsplanka"
@@ -72,7 +77,11 @@
     "name_sv": "Stretch för bröst och axelns framsida"
   },
   "Chin_To_Chest_Stretch": {
-    "name_sv": "Nackstretch, haka mot bröstet"
+    "name_sv": "Nackstretch, haka mot bröstet",
+    "cue_sv": [
+      "Sitt ned på golvet.",
+      "Låt hakan sjunka mot bröstet av huvudets egen tyngd. Händerna kan vila lätt baktill på huvudet, men dra inte nedåt. Håll i 20–30 sekunder."
+    ]
   },
   "Chin-Up": {
     "name_sv": "Chins med underhandsgrepp"
@@ -87,7 +96,16 @@
     "name_sv": "Dansarens vridstretch"
   },
   "Dead_Bug": {
-    "name_sv": "Död skalbagge"
+    "name_sv": "Död skalbagge",
+    "cue_sv": [
+      "Börja liggandes på rygg med händerna sträckta uppåt mot taket.",
+      "För fötterna, knäna och höfterna upp till 90 graders vinkel.",
+      "Andas ut kraftigt för att sänka bröstkorgen och platta ut ryggen mot golvet, rotera bäckenet uppåt och spänn sätesmusklerna. Håll denna position under hela övningen. Detta är din startposition.",
+      "Påbörja rörelsen genom att sträcka ut ett ben — sträck knä och höft för att föra benet strax ovanför golvet.",
+      "Bibehåll ländryggens och bäckenets position under rörelsen — ryggen kommer vilja svanka.",
+      "Håll spänning och återgå med det arbetande benet till startpositionen.",
+      "Upprepa på motsatt sida och alternera tills serien är klar."
+    ]
   },
   "Decline_Dumbbell_Triceps_Extension": {
     "name_sv": "Tricepsextension med hantlar i nedåtlutad bänk"
@@ -423,6 +441,12 @@
   },
   "Side_Leg_Raises": {
     "name_sv": "Stående bensving åt sidan"
+  },
+  "Side_Neck_Stretch": {
+    "cue_sv": [
+      "Börja med avslappnade axlar och luta försiktigt huvudet åt sidan, så att huvudets egen tyngd ger stretchen.",
+      "En hand kan vila lätt mot sidan av huvudet. Dra inte."
+    ]
   },
   "Side_Wrist_Pull": {
     "name_sv": "Korsande armdrag för ryggen"
